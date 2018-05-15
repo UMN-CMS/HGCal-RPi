@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
 	// Set the rdout_mask.
 	int rdout_mask;
 	rdout_mask = cables_mask;
-	rdout_mask = RDOUT_MASK; // for debug
+	// rdout_mask = RDOUT_MASK; // for debug
 	SYNC_put_rdout_mask(rdout_mask);
 	int mask;
 	mask = SYNC_get_rdout_mask();
