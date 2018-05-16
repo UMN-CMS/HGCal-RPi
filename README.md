@@ -3,10 +3,13 @@
 This repository contains the software and firmware to be placed on the Raspberry Pis.
 A cleanup effort is being made on the `cleanup` branch.
 
+## Main Executables
 There are two main files: `new_rdout` located in `RDOUT_BOARD_IPBus/rdout_software/` and `sync_debug` in `SYNCH_BOARD/`.
 These two files act as helpers to facilitate the data collection process with IPBus.
+Both need to be started on each sync/readout board during each data-taking session.
+They do not necessarily need to be restarted for each run.
 
-## sync\_debug
+### sync\_debug
 This program prints out statistics to help with debugging while a run is being taken.
 A typical printout is as follows (with comments after the hashes):
 ```
@@ -35,18 +38,18 @@ loop =   0, trigger = 0x0000 0x03e9       1001      # trigger count
 ```
 Compilation of this file is done using the `SYNCH_BOARD/compile` shell script.
 
-## new\_rdout
+### new\_rdout
 This program facilitates the IPBus readout.
 At startup, resets are performed and general information is printed.
 During each iteration of the event loop, the following actions are performed:
-1. Each hexaboard is sent the reset command (`CMD_RESETPULSE`)
-2. Each hexaboard is sent the command to start acquisition (`CMD_SETSTARTACQ`)
-3. The CTL's FIFOs are reset
-4. We wait for a trigger
+  1. Each hexaboard is sent the reset command (`CMD_RESETPULSE`)
+  2. Each hexaboard is sent the command to start acquisition (`CMD_SETSTARTACQ`)
+  3. The CTL's FIFOs are reset
+  4. We wait for a trigger
     - The `date_stamp` register is used to tell the syncboard when we are OK for the next trigger.
       This register is set to 1 when we are OK to recieve one, and set to 0 when we don't currently want one (while we wait for readout to complete, etc...)
-5. Once we have recieved a trigger, each hexaboard is sent the start conversion command (`CMD_STARTCONPUL`) and then the start readout command (`CMD_STARTROPUL`)
-6. We wait until the FIFO is empty, as an empty FIFO indicates that the IPBus readout is complete and we can safely move on to the next event.
+  5. Once we have recieved a trigger, each hexaboard is sent the start conversion command (`CMD_STARTCONPUL`) and then the start readout command (`CMD_STARTROPUL`)
+  6. We wait until the FIFO is empty, as an empty FIFO indicates that the IPBus readout is complete and we can safely move on to the next event.
    This process is repeated for each event until the data taking is complete.
 
 An example output is as follows (with comments after the hashes):
@@ -119,3 +122,23 @@ Event 1
 # After this is just event counting
 ``` 
 Compilation of this file is done using the `RDOUT_BOARD_IPBus/rdout_software/compile` shell script.
+
+## ORM Programming 
+At the start of a data-taking session or when things stop working, it is useful to reprogram all the ORMs on each readout and sync board.
+This is accomplished using the `ProgramFPGA` executable, located in the `prgm_fpga/` folders of both `RDOUT_BOARD_IPBus/` (note that this is *not* the inner `rdout_software/` directory) and `SYNCH_BOARD/`.
+The relevant firmware files ending in '.hex' are also located in these directories.
+The program reads from stdin; the usage is:
+```
+sudo ./ProgramFPGA [ORM] < [HEX FILE]
+```
+ORMs 0-3 are the DATA ORMs - they are only present on the readout boards.
+These should be programmed with the `data_*.hex` files.
+ORM 4 is the CTL orm - present on both readout and sync boards.
+For the readout board, the CTL should be programmed with the `ctl_*.hex` files.
+For the sync board, the CTL should be programmed with the `sync_*.hex` files.
+The newest firmwares are:
+  - DATA: `data_orm1.hex`
+  - RDOUT CTL: `ctl_orm_rst.hex`
+  - SYNC CTL: `sync_orm1.hex`
+Note that the `prog_all_orms.sh` shell script inside `RDOUT_BOARD_IPBus/prgm_fpga/` does all 4 DATA ORMs plus the CTL ORM.
+There is no source code for this executable inside the current directories. It will be added to the `cleanup` branch as the cleanup progresses.
