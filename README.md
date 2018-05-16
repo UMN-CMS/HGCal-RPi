@@ -43,10 +43,12 @@ During each iteration of the event loop, the following actions are performed:
 2. Each hexaboard is sent the command to start acquisition (`CMD_SETSTARTACQ`)
 3. The CTL's FIFOs are reset
 4. We wait for a trigger
-    - The `date_stamp` register is used to tell the syncboard when we are OK for the next trigger. This register is set to 1 when we are OK to recieve one, and set to 0 when we don't currently want one (while we wait for readout to complete, etc...).
+    - The `date_stamp` register is used to tell the syncboard when we are OK for the next trigger.
+      This register is set to 1 when we are OK to recieve one, and set to 0 when we don't currently want one (while we wait for readout to complete, etc...)
 5. Once we have recieved a trigger, each hexaboard is sent the start conversion command (`CMD_STARTCONPUL`) and then the start readout command (`CMD_STARTROPUL`)
 6. We wait until the FIFO is empty, as an empty FIFO indicates that the IPBus readout is complete and we can safely move on to the next event.
-This process is repeated for each event until the data taking is complete.
+   This process is repeated for each event until the data taking is complete.
+
 An example output is as follows (with comments after the hashes):
 ```
 # The following lines are unused with IPBus
