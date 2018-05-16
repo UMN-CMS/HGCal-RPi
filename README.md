@@ -3,8 +3,19 @@
 This repository contains the software and firmware to be placed on the Raspberry Pis.
 A cleanup effort is being made on the `cleanup` branch.
 
+## General Execution
+The procedure to start up the proper scripts on the Raspberry Pis is as follows:
+  1. Stop any running programs on the Pis.
+     This is often done using `pgrep` to find the process numbers and then killing them.
+  2. Program the ORMs with the correct firmware.
+     (Note: this step is usually only done at the start of a data-taking session or when things start to break)
+  3. Set the IP and MAC addresses for IPBus on each readout board.
+  4. Start up the main executables `new_rdout.exe` and `sync_debug.exe`.
+     These must be left running during the whole data-taking session.
+Information on the last three steps can be found below.
+
 ## Main Executables
-There are two main files: `new_rdout` located in `RDOUT_BOARD_IPBus/rdout_software/` and `sync_debug` in `SYNCH_BOARD/`.
+There are two main files: `new_rdout.exe` located in `RDOUT_BOARD_IPBus/rdout_software/bin/` and `sync_debug.exe` in `SYNCH_BOARD/bin/`.
 These two files act as helpers to facilitate the data collection process with IPBus.
 Both need to be started on each sync/readout board during each data-taking session.
 They do not necessarily need to be restarted for each run.
@@ -143,3 +154,9 @@ The newest firmwares are:
 
 Note that the `prog_all_orms.sh` shell script inside `RDOUT_BOARD_IPBus/prgm_fpga/` does all 4 DATA ORMs plus the CTL ORM.
 There is no source code for this executable inside the current directories. It will be added to the `cleanup` branch as the cleanup progresses.
+
+## IPBus IP/MAC Addresses
+The IPBus IP/MAC addresses can be set using the `RDOUT_BOARD_IPBus/rdout_software/ip_mac_addr.sh` shell script.
+This invokes `set_ip_mac_address.exe`, which sets the IP and MAC addresses according to flags set in the source file `src/set_ip_mac_address.c`.
+There were 3 readout boards at the CERN test beam, which is why there are 3 flags.
+Each board must have a unique IP and MAC address to be able to connect to it over the network.
