@@ -140,5 +140,6 @@ The newest firmwares are:
   - DATA: `data_orm1.hex`
   - RDOUT CTL: `ctl_orm_rst.hex`
   - SYNC CTL: `sync_orm1.hex`
+
 Note that the `prog_all_orms.sh` shell script inside `RDOUT_BOARD_IPBus/prgm_fpga/` does all 4 DATA ORMs plus the CTL ORM.
 There is no source code for this executable inside the current directories. It will be added to the `cleanup` branch as the cleanup progresses.
