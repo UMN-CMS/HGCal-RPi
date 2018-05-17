@@ -14,3 +14,5 @@ gcc -O src/read_flash_mem.c -l bcm2835 -o bin/read_flash_mem
 
 gcc -O src/get_board_type.c -l bcm2835 -o bin/get_board_type
 
+gcc -O src/set_ip_mac_address.c src/ctl_orm.c src/spi_common.c -I include -l bcm2835 -o bin/set_ip_mac_address.exe
+
