@@ -24,13 +24,14 @@
 
 int main(int argc, char *argv[])
 {
-    int res;
-    int i, k, hexbd;
+    int res, i, k, hx;
 
-    int hx;
     int junk[2000];
 
-    // Setting up number of run events, file name, etc
+    //====================================================================
+    // ARGUMENT PROCESSING
+    //====================================================================
+
     int runid = 0;
     int maxevents = 1000;
     int PED = 0;
@@ -43,6 +44,10 @@ int main(int argc, char *argv[])
     runid = atoi(argv[1]);
     maxevents = atoi(argv[2]);
     PED = atoi(argv[3]);
+
+    //====================================================================
+    // PRE-RUN SETUP
+    //====================================================================
 
     // Startup the SPI interface on the Pi.
     init_spi();
@@ -75,7 +80,7 @@ int main(int argc, char *argv[])
 
     // Set the date stamp to zero.
     int date_stamp0, date_stamp1;
-    CTL_put_date_stamp0(0);// To be used as Trigger_Send_OK
+    CTL_put_date_stamp0(0); // To be used as Trigger_Send_OK
     CTL_put_date_stamp1(0);
     date_stamp0 =  CTL_get_date_stamp0();
     date_stamp1 =  CTL_get_date_stamp1();
@@ -148,7 +153,7 @@ int main(int argc, char *argv[])
     hexbd_mask = HEXBD_verify_communication(1);
     fprintf(stderr,"hexbd_mask = 0x%02x\n",(int)hexbd_mask);
 
-    // Set the skiroc mask.
+    // Set the skiroc mask from the hexbd mask
     int skiroc_mask0, skiroc_mask1;
     skiroc_mask0 = 0;
     for (hx=0; hx<4; hx++) {
@@ -214,9 +219,12 @@ int main(int argc, char *argv[])
     fprintf(stderr,"date_stamp = 0x%04x 0x%04x\n",
             (int)date_stamp1, (int)date_stamp0);
 
+
     //===============================================================
+    // EVENT LOOP
+    //===============================================================
+
     fprintf(stderr,"\nStart events acquisition\n");
-    //===============================================================
 
     // reset trigger count
     CTL_reset_trig_count();
@@ -240,30 +248,33 @@ int main(int argc, char *argv[])
     int fifo_ready, block_ready, block_ready0, block_ready1, skiroc, j;
     int value0, value1;
     int raw_it;
+
     // Send a pulse back to the SYNC board. Give us a trigger.
     CTL_put_done();
-
+    
+    // start event loop
     for(i = 0; i < maxevents; i = i + 1) {
 
-        if( !(i % 10) && (access( "stop.run.please", R_OK ) != -1) ) break;// exit if file is created     
+        // exit if file is created
+        if( !(i % 10) && (access( "stop.run.please", R_OK ) != -1) ) break;
 
         // Get hexaboards ready.
-        for(hexbd = 0; hexbd < MAXHEXBDS; hexbd++) {
-            if((hexbd_mask & (1 << hexbd)) != 0) { 
-                res = HEXBD_send_command(hexbd, CMD_RESETPULSE);
+        for(hx = 0; hx < MAXHEXBDS; hx++) {
+            if((hexbd_mask & (1 << hx)) != 0) { 
+                res = HEXBD_send_command(hx, CMD_RESETPULSE);
             }
         }
 
         usleep(HX_DELAY1);// Can be reduced to 1 MuS
 
         // Start acquisition.
-        for(hexbd = 0; hexbd < MAXHEXBDS; hexbd++) {
-            if((hexbd_mask & (1 << hexbd)) != 0) { 
-                res = HEXBD_send_command(hexbd, CMD_SETSTARTACQ | 1);
+        for(hx = 0; hx < MAXHEXBDS; hx++) {
+            if((hexbd_mask & (1 << hx)) != 0) { 
+                res = HEXBD_send_command(hx, CMD_SETSTARTACQ | 1);
                 // usleep(HX_DELAY2);// Can be reduced to 1 MuS
-                // res = HEXBD_send_command(hexbd, CMD_SETSTARTACQ); // this acts as a software trigger - don't use!
-            }// if hexbd_mask
-        }// hexbd loop
+                // res = HEXBD_send_command(hx, CMD_SETSTARTACQ); // this acts as a software trigger - don't use!
+            }
+        }
 
         CTL_reset_fifos();
 
@@ -280,10 +291,8 @@ int main(int argc, char *argv[])
             // Send a pulse back to the SYNC board. Give us a trigger.
             old_trig0 = CTL_get_trig_count0();
 
-            ////////////////////////Set Send_Trigger_OK to 1//////////////////////////////
+            // OK to send trigger
             CTL_put_date_stamp0(1);
-            /////////////////////////////////////////////////////////////////////////////
-            /////////////////////////////////////////////////////////////////////////////
 
             // Wait for trigger.
             trig0 = old_trig0;
@@ -291,34 +300,37 @@ int main(int argc, char *argv[])
                 trig0 = CTL_get_trig_count0();
             }
 
-            CTL_put_date_stamp0(0); // We have received a trigger, so its not OK to receive another one till readout is complete and SKIs are reset.
-
+            // We have received a trigger, so its not OK to receive another
+            // one until readout is complete and SKIs are reset.
+            CTL_put_date_stamp0(0);
         }
-        for(hexbd = 0; hexbd < MAXHEXBDS; hexbd++) {
-            if((hexbd_mask & (1 << hexbd)) != 0) {
 
-                // tell skirocs to send data back
-                res = HEXBD_send_command(hexbd, CMD_STARTCONPUL);
+        // tell skirocs to send data back
+        for(hx = 0; hx < MAXHEXBDS; hx++) {
+            if((hexbd_mask & (1 << hx)) != 0) {
+                res = HEXBD_send_command(hx, CMD_STARTCONPUL);
                 usleep(HX_DELAY3);
-                res = HEXBD_send_command(hexbd, CMD_STARTROPUL);
+                res = HEXBD_send_command(hx, CMD_STARTROPUL);
                 usleep(HX_DELAY4);
+            }
+        }
 
-            }// if hexbd_mask
-        }// hexbd loop
-
+        // wait for the FIFO to be empty, indicating IPBus has read it out
         int isFifoEmpty = 0;
-
         while(!isFifoEmpty){
             isFifoEmpty = CTL_get_empty();
         }
 
     }// event loop
 
-    fclose(fout);
-    fclose(fraw);
-    fclose(ftrig);
+
+    //===============================================================
+    // CLOSING ACTIONS
+    //===============================================================
+
+    // done
     end_spi();
     return(0);    
 
-}// Main ends here
+}// end main
 
