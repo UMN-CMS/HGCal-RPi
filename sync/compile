@@ -8,7 +8,7 @@ gcc -O src/get_trigger_enabled.c src/sync_orm.c src/spi_common.c -I include/ -l 
 
 gcc -O src/program_fpga.c src/spi_common.c -I include/ -l bcm2835 -o bin/program_fpga
 
-gcc -O src/read_board_id.c -l bcm2835 -o bin/read_board_id
+gcc -O src/read_board_id.c src/spi_common.c -I include/ -l bcm2835 -o bin/read_board_id
 
-gcc -O src/get_board_type.c -l bcm2835 -o bin/get_board_type
+gcc -O src/get_board_type.c src/spi_common.c -I include/ -l bcm2835 -o bin/get_board_type
 

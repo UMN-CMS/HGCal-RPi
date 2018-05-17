@@ -5,17 +5,16 @@
 #include <bcm2835.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "spi_common.h"
 
 
 void die(const char *s);
-void init_SPI();
-void end_SPI();
 
 
 int main()
 {
 	// Setting up SPI
-	init_SPI();
+	init_spi();
 
 	// Let's read the DIP switches
 	bcm2835_spi_chipSelect(BCM2835_SPI_CS0);
@@ -32,7 +31,7 @@ int main()
 	printf("%u\n", PORTA_DIPS[2]);
 
 	// Close SPI
-	end_SPI();
+	end_spi();
 	return 0;
 }
 
@@ -42,34 +41,4 @@ void die(const char *s)
 {
 	printf(s);
 	exit(1);
-}
-
-
-
-void init_SPI()
-{
-	if(!bcm2835_init())
-	{
-		die("bcm2825_init failed. You most likely are not running as root.\n");
-	}
-
-	if(!bcm2835_spi_begin())
-	{
-		die("bcm2825_spi_begin failed. You most likely are not running as root.\n");
-	}
-
-	bcm2835_spi_begin();
-	bcm2835_spi_setBitOrder(BCM2835_SPI_BIT_ORDER_MSBFIRST);
-	bcm2835_spi_setDataMode(BCM2835_SPI_MODE0);
-	bcm2835_spi_setClockDivider(BCM2835_SPI_CLOCK_DIVIDER_256);	// 1.5625 MHz
-	bcm2835_spi_chipSelect(BCM2835_SPI_CS0);			// Chip-Select 0
-	bcm2835_spi_setChipSelectPolarity(BCM2835_SPI_CS0, LOW);	// Value of CS when active
-}
-
-
-
-void end_SPI()
-{
-	bcm2835_spi_end();
-	bcm2835_close();
 }
