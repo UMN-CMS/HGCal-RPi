@@ -1,5 +1,5 @@
-# HGCal-RPi:sync-auto-detect
+# HGCal-RPi:new-prog-exe
 
-This branch changes one thing: the `rdout_mask` set by the user is not used.
-It is now automatically set by the `cables_mask` that the sync board provides.
-This allows easier swapping/addition of readout boards, since the `rdout_mask` doesn't have to be set whenever the cables get changed.
+The executable which flashes the FPGAs (`ProgramFPGA`) has been updated.
+It now waits until it can properly read the chip ID back until exiting, and declares failure if this does not happen within 15 seconds.
+This extra wait time fixes issues when trying to set the IPBus IP/MAC addresses immediately after programming the CTL ORM.
