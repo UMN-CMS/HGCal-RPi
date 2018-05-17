@@ -1,12 +1,14 @@
 # HGCal-RPi
 
 This repository contains the software and firmware to be placed on the Raspberry Pis.
-A cleanup effort is being made on the `cleanup` branch.
+A cleanup effort is being made on the [cleanup](https://github.com/UMN-CMS/HGCal-RPi/tree/cleanup) branch.
+There are currently two branches with small improvements - [new-prog-exe](https://github.com/UMN-CMS/HGCal-RPi/tree/new-prog-exe) and [sync-auto-detect](https://github.com/UMN-CMS/HGCal-RPi/tree/sync-auto-detect).
+Until the cleanup is done, the [new-prog-exe](https://github.com/UMN-CMS/HGCal-RPi/tree/new-prog-exe) branch should be used.
 
 ## Table of Contents
    * [HGCal-RPi](#hgcal-rpi)
       * [General Execution](#general-execution)
-      * [ORM Programming](#orm-programming)
+      * [ORM Programming](#orm-programming)`
       * [IPBus IP/MAC Addresses](#ipbus-ipmac-addresses)
       * [Main Executables](#main-executables)
          * [sync_debug](#sync_debug)
