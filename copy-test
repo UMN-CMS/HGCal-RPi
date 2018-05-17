@@ -1,0 +1,7 @@
+#!/bin/bash
+
+HOMEDIR=/home/pi
+TESTDIR=$HOMEDIR/cleanup
+
+rsync -az --delete rdout/ rdout:$TESTDIR-rdout/
+rsync -az --delete sync/ sync:$TESTDIR-sync/
