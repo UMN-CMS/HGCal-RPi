@@ -3,9 +3,7 @@
 This repository contains the software and firmware to be placed on the Raspberry Pis.
 A cleanup effort is being made on the `cleanup` branch.
 
-Table of Contents
-=================
-
+## Table of Contents
    * [HGCal-RPi](#hgcal-rpi)
       * [General Execution](#general-execution)
       * [ORM Programming](#orm-programming)
