@@ -17,24 +17,6 @@
 #include "ejf_rdout.h"
 #include "spi_common.h"
 
-int readout_skiroc_fifo(int block_size)
-{
-  // Wait for block_ready.
-  int block_ready;
-  block_ready = CTL_get_block_ready();
-  while(block_ready == 0) block_ready = CTL_get_block_ready();
-
-  // Get a block of values.
-  int j, value0, value1, value;
-  for (j=0; j<block_size; j++) {
-    value0 = CTL_get_fifo_LS16();
-    value1 = CTL_get_fifo_MS16();
-    raw_32bit_new[j] = (value1<<16) | value0;
-  }
-
-  // Reset fifos.
-  CTL_reset_fifos();
-}
 
 //========================================================================
 // MAIN
@@ -133,7 +115,7 @@ int main(int argc, char *argv[])
 
   // Power cycle the ORMs.
   if (0) {
-/*
+
     fprintf(stderr,"power cycle orm: data_0...");
     power_cycle(0); // DATA_0
     fprintf(stderr,"done.\n");
@@ -146,7 +128,6 @@ int main(int argc, char *argv[])
     power_cycle(2); // DATA_2
     fprintf(stderr,"done.\n");
     sleep(1);
-*/
     fprintf(stderr,"power cycle orm: data_3...");
     power_cycle(3); // DATA_3
     fprintf(stderr,"done.\n");
@@ -229,10 +210,9 @@ int main(int argc, char *argv[])
   for (hx=0; hx<MAXHEXBDS; hx++) HEXBD_read1000_local_fifo(hx,junk);
   fprintf(stderr,"done.\n");
 
-  // Run a test on each of the8 hexaboards looking for good communication.
+  // Run a test on each of the 8 hexaboards looking for good communication.
   int hexbd_mask;
   hexbd_mask = HEXBD_verify_communication(1);
-  //hexbd_mask = 1; // debug
   fprintf(stderr,"hexbd_mask = 0x%02x\n",(int)hexbd_mask);
 
   // Set the skiroc mask.
@@ -348,7 +328,7 @@ int main(int argc, char *argv[])
         if((hexbd_mask & (1 << hexbd)) != 0) { 
 	   res = HEXBD_send_command(hexbd, CMD_SETSTARTACQ | 1);
 	   // usleep(HX_DELAY2);// Can be reduced to 1 MuS
-	   // res = HEXBD_send_command(hexbd, CMD_SETSTARTACQ); // CAN BE USED FOR SOFTWARE TRIGGER. NOT FOR REAL DATA!!!!!
+	   // res = HEXBD_send_command(hexbd, CMD_SETSTARTACQ); // this acts as a software trigger - don't use!
         }// if hexbd_mask
       }// hexbd loop
 
@@ -370,10 +350,7 @@ int main(int argc, char *argv[])
 ////////////////////////Set Send_Trigger_OK to 1//////////////////////////////
 	CTL_put_date_stamp0(1);
 /////////////////////////////////////////////////////////////////////////////
-
-///////////////WITH IPBus, EUDAQ does this/////////////////////////////////
-//        CTL_put_done();
-//////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 
         // Wait for trigger.
         trig0 = old_trig0;
@@ -384,27 +361,6 @@ int main(int argc, char *argv[])
 	CTL_put_date_stamp0(0); // We have received a trigger, so its not OK to receive another one till readout is complete and SKIs are reset.
 
       }
-/*
-      // get time stamp and trig count
-      p_stamp = stamp0 | (stamp1 << 16) | (stamp2 << 32);
-      stamp0 = CTL_get_clk_count0();
-      stamp1 = CTL_get_clk_count1();
-      stamp2 = CTL_get_clk_count2();
-      if(i == 0) {
-        f_stamp0 = stamp0;
-        f_stamp1 = stamp1;
-        f_stamp2 = stamp2;
-      }
-
-      trig1 = CTL_get_trig_count1();
-
-      fprintf(stderr, "Trig Number: %04d\n", (int)(i));
-      fprintf(ftrig, "%04d\t", (int)(i));
-      fprintf(ftrig, "%04d\t", (int)( (trig1 << 16) | trig0));
-      fprintf(ftrig, "%04x", (int)(stamp2 - f_stamp2)); fprintf(ftrig, "%04x", (int)(stamp1 - f_stamp1)); fprintf(ftrig, "%04x\t", (int)(stamp0 - f_stamp0));
-      fprintf(ftrig, "%llu\n", (long long unsigned int)( ( (stamp2 << 32) | (stamp1 << 16) | stamp0 ) - p_stamp ) );
-*/
-
       for(hexbd = 0; hexbd < MAXHEXBDS; hexbd++) {
         if((hexbd_mask & (1 << hexbd)) != 0) {
 
@@ -417,72 +373,12 @@ int main(int argc, char *argv[])
         }// if hexbd_mask
       }// hexbd loop
 
-/*
-      for(hexbd = 0; hexbd < MAXHEXBDS; hexbd++) {
-        if((hexbd_mask & (1 << hexbd)) != 0) {
-
-	  // READOUT one hexaboard.
-	  res = read_raw_faster(hexbd);
-
-	  // save raw to be converted to 32bit format
-	  memcpy(tmp_raw[hexbd], raw, sizeof(raw));
-	  
-	
-	  res = decode_raw();
-	  
-	  chip= 1;
-	  for(k = 0; k < 1664; k = k + 1){
-	    if((ev[chip][k] & 0x8000 ) == 0){
-	      fprintf(stderr,"Wrong MSB at %d %x \n",k,ev[chip][k]);
-	      exit(-1);
-	    }
-	    //if((ev[chip][k] & 0x7E00 ) != 0x0000){
-	    //  fprintf(stderr,"Wrong word at %d %d %x\n", i, k,ev[chip][k] );
-	    //  exit(-1);
-	    //}
-	  }
-	  if(ev[chip][1923] != 0xc099){
-	    fprintf(stderr,"Wrong Trailer is %x \n",ev[chip][1923]);
-	    exit(-1);
-	  }
-	  
-	  res = format_channels();
-	  
-	  for(chip = 0; chip < 4; chip = chip + 1){
-	    fprintf(fout, "Event %d Chip %d RollMask %x \n",
-		    i, chip + 4*hexbd, ev[chip][1920]);
-	    for(ch = 0; ch < 128; ch = ch +1){
-	      for (sample = 0; sample < 15; sample = sample +1){
-		fprintf(fout, "%d  ", data[chip][ch][sample]);
-	      }
-	      fprintf(fout, "\n");
-            }// for ch
-          }// for chip
-
-        }// if hexbd_mask
-      }// hexbd loop
-*/
-
-/*
-      for(raw_it = 0; raw_it < RAWSIZE; raw_it++) {
-	raw_32bit[raw_it] = 0;
-	for(hexbd = 0; hexbd < MAXHEXBDS; hexbd++) {
-	  raw_32bit[raw_it] |= ( (tmp_raw[hexbd][raw_it] & 0xf) << (4*hexbd) );
-	}// layer
-      }// raw_it
-*/
-///////////////////////////////////////
-//     readout_skiroc_fifo(RAWSIZE);
-///////////////////////////////////////
-
 int isFifoEmpty = 0;
 
 while(!isFifoEmpty){
 	isFifoEmpty = CTL_get_empty();
 }
 
-//      raw_32bit[RAWSIZE] = 0x0a0b0c0d;
-  //    if (saveraw) fwrite(raw_32bit_new, 1, sizeof(raw_32bit_new), fraw);
     }// event loop
   
   fclose(fout);
