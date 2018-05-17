@@ -1,8 +1,20 @@
 #!/bin/bash -v
 
-gcc -O src/sync_debug.c src/sync_orm.c src/spi_common.c -I include/ -l bcm2835 -o bin/sync_debug.exe
+gcc -c src/spi_common.c -I include -l bcm2835
+gcc -c src/sync_orm.c -I include -l bcm2835
+mkdir obj/
+mv *.o obj/
 
-gcc -O src/enable_triggers.c src/sync_orm.c src/spi_common.c -I include/ -l bcm2835 -o bin/enable_triggers.exe
+gcc -O src/sync_debug.c obj/sync_orm.o obj/spi_common.o -I include/ -l bcm2835 -o bin/sync_debug.exe
 
-gcc -O src/get_trigger_enabled.c src/sync_orm.c src/spi_common.c -I include/ -l bcm2835 -o bin/get_trigger_enabled.exe
+gcc -O src/enable_triggers.c obj/sync_orm.o obj/spi_common.o -I include/ -l bcm2835 -o bin/enable_triggers.exe
+
+gcc -O src/get_trigger_enabled.c obj/sync_orm.o obj/spi_common.o -I include/ -l bcm2835 -o bin/get_trigger_enabled.exe
+
+
+#gcc -O src/sync_debug.c src/sync_orm.c src/spi_common.c -I include/ -l bcm2835 -o bin/sync_debug.exe
+
+#gcc -O src/enable_triggers.c src/sync_orm.c src/spi_common.c -I include/ -l bcm2835 -o bin/enable_triggers.exe
+
+#gcc -O src/get_trigger_enabled.c src/sync_orm.c src/spi_common.c -I include/ -l bcm2835 -o bin/get_trigger_enabled.exe
 
