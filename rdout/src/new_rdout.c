@@ -24,27 +24,15 @@
 
 int main(int argc, char *argv[])
 {
-  int res,status;
-  int ch, sample, chip;
+  int res;
   int i, k, hexbd;
-  time_t rawtime;
-  bool saveraw;
-  struct tm *info;
-  char buffer[80];
-  char fname [160];
-  char dirname[] = "/home/pi/RDOUT_BOARD_IPBus/rdout_software/data/";
-  
-  int maxevents = 1000;
-  char instr [1024];
-  FILE *fraw;
-  FILE *fout;
-  FILE *ftrig;// for trigger info
 
   int hx;
   int junk[2000];
 
   // Setting up number of run events, file name, etc
   int runid = 0;
+  int maxevents = 1000;
   int PED = 0;
 
   if( argc < 4 ){
@@ -55,60 +43,6 @@ int main(int argc, char *argv[])
   runid = atoi(argv[1]);
   maxevents = atoi(argv[2]);
   PED = atoi(argv[3]);
-
-  char runNum[8];
-  sprintf (runNum, "RUN_%04d", runid);
-  if(PED) sprintf(runNum, "PED_RUN_%04d", runid);
-
-  FILE *fid;
-  if ((fid=fopen("BoardID","r")) == NULL) {fprintf(stderr,"ERROR: BoardID file not found.\n"); exit(-1);}
-  char id[2] = {0};
-  id[0] = fgetc(fid);
-  int board_id = atoi(id);
-  char boardID_str[20]; sprintf(boardID_str, "_RDOUT%i", board_id);
-  fclose(fid);
-
-  saveraw = true;
-  
-  fprintf(stderr,"The run number is: %s, Number of events: %d. Save Raw: %d \n \n", runNum, maxevents, (int)saveraw);
-  
-  // Make up a file name for data
-  time(&rawtime);
-  info = localtime(&rawtime);
-  strftime(buffer,80,"_%d%m%y_%H%M", info);
-  
-  strcpy(fname, dirname);
-  strcat(fname, runNum);
-  strcat(fname, buffer);
-  strcat(fname, boardID_str);
-  strcat(fname,".txt");
-  fprintf(stderr,"Filename will be %s\n",fname);
-
-  fout = fopen(fname, "w");
-  fprintf(fout,"\nTotal number of events: %d",maxevents);
-  fprintf(fout,"\n%s\n##########################################\n",buffer);
-  
-  // optional save raw data
-  strcpy(fname, dirname);
-  strcat(fname, runNum);
-  strcat(fname, buffer);
-  strcat(fname, boardID_str);
-  strcat(fname,".raw");
-  fprintf(stderr,"Raw filename will be %s\n",fname);
-
-  fraw = fopen(fname, "w");
-  if ((fraw=fopen(fname,"w")) == NULL) {fprintf(stderr,"ERROR: fopen failed.\n"); exit(-1);}
-
-  // save text data
-  strcpy(fname, dirname);
-  strcat(fname, runNum);
-  strcat(fname, buffer);
-  strcat(fname, "_TIMING");
-  strcat(fname, boardID_str);
-  strcat(fname, ".txt");
-  fprintf(stderr, "Trigger timing file will be %s\n", fname);
-  ftrig = fopen(fname, "w");
-  fprintf(ftrig, "TrigNumber TrigCount TimeStamp TimeDiff\n");
 
   // Startup the SPI interface on the Pi.
   init_spi();
