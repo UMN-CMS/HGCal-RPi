@@ -1,22 +1,13 @@
-//---------------------------------------------------------------------
-// COMPILE:
-// gcc program_fpga.c -o program_fpga -l bcm2835 -Wall -std=c11
-//---------------------------------------------------------------------
-// USAGE:
-//  sudo ./program_fpga < sync_flash.hex
-//---------------------------------------------------------------------
-//  Programs the FPGA at the address specified in `FLASH_PAGE`
-//  with the data provided in `sync_flash.hex`. The FPGA is then
-//  rebooted, and the chip ID is read back and compared to the
-//  value in`CHIP_ID` to see if the programming operation was a
-//  success.
-//---------------------------------------------------------------------
+//
+//	Program FPGA
+//
 
 #include <bcm2835.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include "spi_common.h"
 
 
 #define PAGES_PER_SECTOR 256
@@ -32,8 +23,6 @@
 
 
 void die(const char *s);
-void init_SPI();
-void end_SPI();
 
 
 int main(int argc, char *argv[]) {
@@ -42,7 +31,7 @@ int main(int argc, char *argv[]) {
 
 
     // Setting up SPI
-    init_SPI();
+    init_spi();
 
 
 
@@ -234,7 +223,7 @@ int main(int argc, char *argv[]) {
 
 
     // Closing time
-    end_SPI();
+    end_spi();
     return 0;
 }
 
@@ -245,38 +234,6 @@ void die(const char *s)
     printf("\n");
     printf(s);
     printf("\n");
-    end_SPI();
+    end_spi();
     exit(1);
-}
-
-
-
-void init_SPI()
-{
-    if(!bcm2835_init())
-    {
-        die("bcm2825_init failed. You most likely are not running as root.");
-    }
-
-    if(!bcm2835_spi_begin())
-    {
-        die("bcm2825_spi_begin failed. You most likely are not running as root.");
-    }
-
-    bcm2835_spi_begin();
-    bcm2835_spi_setBitOrder(BCM2835_SPI_BIT_ORDER_MSBFIRST);
-    bcm2835_spi_setDataMode(BCM2835_SPI_MODE0);
-    bcm2835_spi_setClockDivider(BCM2835_SPI_CLOCK_DIVIDER_256);	// 1.5625 MHz
-    bcm2835_spi_chipSelect(BCM2835_SPI_CS0);			// Chip-Select 0
-    bcm2835_spi_setChipSelectPolarity(BCM2835_SPI_CS0, LOW);	// Value of CS when active
-
-
-}
-
-
-
-void end_SPI()
-{
-    bcm2835_spi_end();
-    bcm2835_close();
 }

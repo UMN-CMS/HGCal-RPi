@@ -6,7 +6,7 @@ gcc -O src/enable_triggers.c src/sync_orm.c src/spi_common.c -I include/ -l bcm2
 
 gcc -O src/get_trigger_enabled.c src/sync_orm.c src/spi_common.c -I include/ -l bcm2835 -o bin/get_trigger_enabled.exe
 
-gcc -O src/program_fpga.c -l bcm2835 -o bin/program_fpga
+gcc -O src/program_fpga.c src/spi_common.c -I include/ -l bcm2835 -o bin/program_fpga
 
 gcc -O src/read_board_id.c -l bcm2835 -o bin/read_board_id
 
