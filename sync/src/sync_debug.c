@@ -6,20 +6,8 @@
 #include <unistd.h>
 
 
-// RDOUT MASK OPTIONS:
-#define PI1_MASK 0x0004
-#define PI2_MASK 0x4000
-#define PI3_MASK 0x0001
-#define AHCAL_MASK 0x8000
-// OR together the devices that you want (i.e. PI2_MASK | PI3_MASK)
-#define RDOUT_MASK (PI1_MASK | PI2_MASK | PI3_MASK)
-
-// ANABLE_VETO1 Options:
-// 0 - ignores AHCAL
-// 1 - listens to AHCAL
-// If you include AHCAL in the RDOUT_MASK then you must listen to AHCL (ie set 1)
 #define ENABLE_VETO1 0
-#define ENABLE_VETO2 0// not gonna work anyways - not populated
+#define ENABLE_VETO2 0
 
 int main(int argc, char *argv[])
 {
@@ -64,7 +52,6 @@ int main(int argc, char *argv[])
 	// Set the rdout_mask.
 	int rdout_mask;
 	rdout_mask = cables_mask;
-	// rdout_mask = RDOUT_MASK; // for debug
 	SYNC_put_rdout_mask(rdout_mask);
 	int mask;
 	mask = SYNC_get_rdout_mask();
@@ -107,14 +94,12 @@ int main(int argc, char *argv[])
 	end_spi();
 
 	// Loop.
-	int i, max_loops;
+	int i;
 	int waiting, hold;
 	int trig0, trig1;
 	double trig_value;
 
-	max_loops = 360; // Wait about an hour...
-	//for (i=0; i<max_loops; i++) {
-	i = 0;
+	i = 0; // loop counter
 	while(1) {
 		sleep(10); // Sleep 10 seconds.
 
@@ -127,7 +112,6 @@ int main(int argc, char *argv[])
 
 		// Set the rdout_mask.
 		rdout_mask = cables_mask;
-		rdout_mask = RDOUT_MASK; // for debug
 		SYNC_put_rdout_mask(rdout_mask);
 		mask = SYNC_get_rdout_mask();
 		fprintf(stderr,"rdout_mask = 0x%04x\n",(int)mask);
