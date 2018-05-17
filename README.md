@@ -3,6 +3,18 @@
 This repository contains the software and firmware to be placed on the Raspberry Pis.
 A cleanup effort is being made on the `cleanup` branch.
 
+Table of Contents
+=================
+
+   * [HGCal-RPi](#hgcal-rpi)
+      * [General Execution](#general-execution)
+      * [ORM Programming](#orm-programming)
+      * [IPBus IP/MAC Addresses](#ipbus-ipmac-addresses)
+      * [Main Executables](#main-executables)
+         * [sync_debug](#sync_debug)
+         * [new_rdout](#new_rdout)
+
+
 ## General Execution
 The procedure to start up the proper scripts on the Raspberry Pis is as follows:
   1. Stop any running programs on the Pis.
@@ -13,6 +25,36 @@ The procedure to start up the proper scripts on the Raspberry Pis is as follows:
   4. Start up the main executables `new_rdout.exe` and `sync_debug.exe`.
      These must be left running during the whole data-taking session.
 Information on the last three steps can be found below.
+
+
+## ORM Programming 
+At the start of a data-taking session or when things stop working, it is useful to reprogram all the ORMs on each readout and sync board.
+This is accomplished using the `ProgramFPGA` executable, located in the `prgm_fpga/` folders of both `RDOUT_BOARD_IPBus/` (note that this is *not* the inner `rdout_software/` directory) and `SYNCH_BOARD/`.
+The relevant firmware files ending in '.hex' are also located in these directories.
+The program reads from stdin; the usage is:
+```
+sudo ./ProgramFPGA [ORM] < [HEX FILE]
+```
+ORMs 0-3 are the DATA ORMs - they are only present on the readout boards.
+These should be programmed with the `data_*.hex` files.
+ORM 4 is the CTL orm - present on both readout and sync boards.
+For the readout board, the CTL should be programmed with the `ctl_*.hex` files.
+For the sync board, the CTL should be programmed with the `sync_*.hex` files.
+The newest firmwares are:
+  - DATA: `data_orm1.hex`
+  - RDOUT CTL: `ctl_orm_rst.hex`
+  - SYNC CTL: `sync_orm1.hex`
+
+Note that the `prog_all_orms.sh` shell script inside `RDOUT_BOARD_IPBus/prgm_fpga/` does all 4 DATA ORMs plus the CTL ORM.
+There is no source code for this executable inside the current directories. It will be added to the `cleanup` branch as the cleanup progresses.
+
+
+## IPBus IP/MAC Addresses
+The IPBus IP/MAC addresses can be set using the `RDOUT_BOARD_IPBus/rdout_software/ip_mac_addr.sh` shell script.
+This invokes `set_ip_mac_address.exe`, which sets the IP and MAC addresses according to flags set in the source file `src/set_ip_mac_address.c`.
+There were 3 readout boards at the CERN test beam, which is why there are 3 flags.
+Each board must have a unique IP and MAC address to be able to connect to it over the network.
+
 
 ## Main Executables
 There are two main files: `new_rdout.exe` located in `RDOUT_BOARD_IPBus/rdout_software/bin/` and `sync_debug.exe` in `SYNCH_BOARD/bin/`.
@@ -134,29 +176,3 @@ Event 1
 ``` 
 Compilation of this file is done using the `RDOUT_BOARD_IPBus/rdout_software/compile` shell script.
 
-## ORM Programming 
-At the start of a data-taking session or when things stop working, it is useful to reprogram all the ORMs on each readout and sync board.
-This is accomplished using the `ProgramFPGA` executable, located in the `prgm_fpga/` folders of both `RDOUT_BOARD_IPBus/` (note that this is *not* the inner `rdout_software/` directory) and `SYNCH_BOARD/`.
-The relevant firmware files ending in '.hex' are also located in these directories.
-The program reads from stdin; the usage is:
-```
-sudo ./ProgramFPGA [ORM] < [HEX FILE]
-```
-ORMs 0-3 are the DATA ORMs - they are only present on the readout boards.
-These should be programmed with the `data_*.hex` files.
-ORM 4 is the CTL orm - present on both readout and sync boards.
-For the readout board, the CTL should be programmed with the `ctl_*.hex` files.
-For the sync board, the CTL should be programmed with the `sync_*.hex` files.
-The newest firmwares are:
-  - DATA: `data_orm1.hex`
-  - RDOUT CTL: `ctl_orm_rst.hex`
-  - SYNC CTL: `sync_orm1.hex`
-
-Note that the `prog_all_orms.sh` shell script inside `RDOUT_BOARD_IPBus/prgm_fpga/` does all 4 DATA ORMs plus the CTL ORM.
-There is no source code for this executable inside the current directories. It will be added to the `cleanup` branch as the cleanup progresses.
-
-## IPBus IP/MAC Addresses
-The IPBus IP/MAC addresses can be set using the `RDOUT_BOARD_IPBus/rdout_software/ip_mac_addr.sh` shell script.
-This invokes `set_ip_mac_address.exe`, which sets the IP and MAC addresses according to flags set in the source file `src/set_ip_mac_address.c`.
-There were 3 readout boards at the CERN test beam, which is why there are 3 flags.
-Each board must have a unique IP and MAC address to be able to connect to it over the network.
