@@ -5,3 +5,12 @@ gcc -O src/new_rdout.c src/ejf_rdout.c src/ctl_orm.c src/data_orm.c src/hexbd.c 
 gcc src/sleep.c -o bin/take_a_nap.exe
 
 gcc -O src/pwr_cycle_fpgas.c src/ejf_rdout.c src/ctl_orm.c src/data_orm.c src/hexbd.c src/hexbd_config.c src/spi_common.c -I include/ -l bcm2835 -o bin/pwr_cycle_fpgas.exe
+
+gcc -O src/program_fpga.c -l bcm2835 -o bin/program_fpga
+
+gcc -O src/read_board_id.c -l bcm2835 -o bin/read_board_id
+
+gcc -O src/read_flash_mem.c -l bcm2835 -o bin/read_flash_mem
+
+gcc -O src/get_board_type.c -l bcm2835 -o bin/get_board_type
+
