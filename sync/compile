@@ -10,7 +10,5 @@ gcc -O src/program_fpga.c -l bcm2835 -o bin/program_fpga
 
 gcc -O src/read_board_id.c -l bcm2835 -o bin/read_board_id
 
-gcc -O src/read_flash_mem.c -l bcm2835 -o bin/read_flash_mem
-
 gcc -O src/get_board_type.c -l bcm2835 -o bin/get_board_type
 
