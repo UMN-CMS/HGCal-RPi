@@ -126,7 +126,7 @@ int main(int argc, char *argv[])
 
 		// Set the rdout_mask.
 		rdout_mask = cables_mask;
-		rdout_mask = RDOUT_MASK; // for debug
+		// rdout_mask = RDOUT_MASK; // for debug
 		SYNC_put_rdout_mask(rdout_mask);
 		mask = SYNC_get_rdout_mask();
 		fprintf(stderr,"rdout_mask = 0x%04x\n",(int)mask);
