@@ -59,11 +59,11 @@ int DATA_put_dummy1(int orm, int value16bits)
 int DATA_put_trigger_pulse(int orm)
 { return(spi_put_16bits(orm, DATA_TRIG_PULSE, 0)); }
 
-int DATA_get_xfer_disable(int orm)
-{ return(spi_get_16bits(orm, DATA_XFER_DISABLE)); }
+int DATA_get_xfer_enable(int orm)
+{ return(spi_get_16bits(orm, DATA_XFER_ENABLE)); }
 
-int DATA_put_xfer_disable(int orm, int value2bits)
-{ return(spi_put_16bits(orm, DATA_XFER_DISABLE, value2bits & 3)); }
+int DATA_put_xfer_enable(int orm, int value2bits)
+{ return(spi_put_16bits(orm, DATA_XFER_ENABLE, value2bits & 3)); }
 
 int DATA_get_calib_mode(int orm)
 { return(spi_get_16bits(orm, DATA_CALIB_MODE)); }

@@ -137,27 +137,24 @@ int CTL_get_clk_count1(void)
 int CTL_get_clk_count2(void)
 { return(spi_get_16bits(4, CTL_CLK_COUNT2)); }
 
-int CTL_get_block_ready0(void)
-{ return(spi_get_16bits(4, CTL_BLOCK_READY0)); }
+int CTL_get_block_ready(void)
+{ return(spi_get_16bits(4, CTL_BLOCK_READY)); }
 
-int CTL_get_block_ready1(void)
-{ return(spi_get_16bits(4, CTL_BLOCK_READY1)); }
+int CTL_get_almost_full(void)
+{ return(spi_get_16bits(4, CTL_ALMOST_FULL)); }
 
-int CTL_get_half_empty0(void)
-{ return(spi_get_16bits(4, CTL_HALF_EMPTY0)); }
+int CTL_get_empty(void)
+{ return(spi_get_16bits(4, CTL_EMPTY)); }
 
-int CTL_get_half_empty1(void)
-{ return(spi_get_16bits(4, CTL_HALF_EMPTY1)); }
+int CTL_get_full(void)
+{ return(spi_get_16bits(4, CTL_FULL)); }
 
-int CTL_get_empty0(void)
-{ return(spi_get_16bits(4, CTL_EMPTY0)); }
+int CTL_get_occupancy(void)
+{ return(spi_get_16bits(4, CTL_OCCUPANCY)); }
 
-int CTL_get_empty1(void)
-{ return(spi_get_16bits(4, CTL_EMPTY1)); }
+int CTL_get_fifo_LS16(void)
+{ return(spi_get_16bits(4, CTL_FIFO_0)); }
 
-int CTL_get_fifo_LS16(int index)
-{ return(spi_get_16bits(4, CTL_FIFO_00_0 + (2*index))); }
-
-int CTL_get_fifo_MS16(int index)
-{ return(spi_get_16bits(4, CTL_FIFO_00_1 + (2*index))); }
+int CTL_get_fifo_MS16(void)
+{ return(spi_get_16bits(4, CTL_FIFO_1)); }
 

@@ -41,6 +41,9 @@
 
 #define RAWSIZE 30787
 unsigned char raw[RAWSIZE];
+
+uint32_t raw_32bit_new[RAWSIZE+1];
+
 unsigned char tmp_raw[MAXHEXBDS][RAWSIZE];
 uint32_t raw_32bit[RAWSIZE+1];
 

@@ -5,9 +5,9 @@
 
 #include <stdio.h>
 
-#define USE_BD1 1
+#define USE_BD1 0
 #define USE_BD2 0
-#define USE_BD3 0
+#define USE_BD3 1
 
 int main() 
 {

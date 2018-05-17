@@ -10,7 +10,7 @@
 #define DATA_DUMMY_REG1       (0x105) // dummy_reg1[15:0] // writable, but does nothing
 
 #define DATA_TRIG_PULSE       (0x110) // trigger_pulse_spi // software generated trigger pulse
-#define DATA_XFER_DISABLE     (0x111) // 2-bits, disable the transfer of data from hexaboards to CTL_ORM
+#define DATA_XFER_ENABLE      (0x111) // 2-bits, disable the transfer of data from hexaboards to CTL_ORM
 
 #define DATA_CALIB_MODE       (0x120) // calib_mode // ignore external triggers, and prepare for calibration triggers
 #define DATA_CALIB_PULSE      (0x121) // calib_pulse_spi //  software generated calibration trigger pulse
@@ -21,7 +21,7 @@
 #define DATA_CALIB_DELAY_TRG  (0x126) // calib_delay_trigger[15:0] // number of 40 MHz ticks to delay the calibration trigger pulse
 #define DATA_CALIB_AMPLITUDE  (0x127) // calib_amplitude[15:0] // counter value for ct_pwm threshold
 #define DATA_PEDESTAL_MODE    (0x128) // ignore external triggers, and prepare for pedestal triggers
-#define DATA_DEBUG_MODE       (0x129)
+#define DATA_DEBUG_MODE       (0x129) // two bits
 
 #define DATA_HEXA0_COMMAND    (0x130) // hexa0_command[15:0]
 #define DATA_HEXA0_RESPONSE   (0x131) // hexa0_response[7:0]
@@ -83,7 +83,7 @@ int DATA_put_calib_amplitude(int orm, int value16bits);
 int DATA_get_pedestal_mode(int orm);
 int DATA_put_pedestal_mode(int orm, int value1bit);
 int DATA_get_debug_mode(int orm);
-int DATA_put_debug_mode(int orm, int value1bit);
+int DATA_put_debug_mode(int orm, int value2bits);
 int DATA_get_crc(int hexbd, int skiroc);
 int DATA_get_crc_fifo(int hexbd, int skiroc);
 int DATA_get_crc_fifo_empty(int hexbd);
