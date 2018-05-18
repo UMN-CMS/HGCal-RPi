@@ -1,0 +1,5 @@
+#!/bin/bash
+
+./compile
+
+nohup sudo ./bin/new_rdout.exe 0 100000 0 > rdout.log 2>&1 &
