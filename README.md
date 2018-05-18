@@ -22,14 +22,33 @@ If this happens, you can use prbs checking to test the rdout-sync link further.
 If the python script finishes and the `rdout_done_count` on the sync board does match the number of signals sent, the link should be OK.
 
 To run this test, first edit `copy-dirs` with the correct ssh aliases for the readout and sync boards you will be using.
-I will reference these aliases in the rest of the instructions as `SYNC_ALIAS` and `RDOUT_ALIAS`.
+Note that the IPBus IP I am using is 192.168.222.200, so make sure this IP is not currently used by something else.
+If it is, change the `rdout/src/set_ip_mac_address.c` file to set a different IP, and change `etc/connections.xml` to point to this IP.
   1. Run the `copy-dirs` script to copy the software over to the readout and sync boards.
   2. ssh into the readout board, and change to the copied directory: `cd ~/linktest-rdout/`
   3. Open a new terminal window, ssh into the sync board, and change into the copied directory: `cd ~/linktest-sync/`
   4. Run the setup scripts with `./run_rdout` and `./run_sync`, respectively. This compiles the software and programs the ORMs.
-      - The `sync_debug` executable will then start up on the sync board. You should see error and readout done counts for each cable on the sync board: `loop =   0, rdout_done_count[ 0] =     0` and `loop =   0, prbs_error_count[ 0] =    0`.
-  5. Exit from the readout board. Setup IPBus using `source etc/env.sh`.
-  6. Run `test_done_count.py`. On the sync board screen, you should see the trigger count for the connected cable increase.
-  7. Once the script finishes, change cable location on the sync board and repeat the test.
+      - The `sync_debug` executable will then start up on the sync board. You should see error and readout done counts for each cable on the sync board: `loop =   0, rdout_done_count[ 0] =     0` and `loop =   0, prbs_error_count[ 0] =    65535`. Note that the counts may not match.
+  5. Exit the readout board ssh session. Setup IPBus using `source etc/env.sh`.
+  6. Run `python test_done_count.py`. On the sync board screen, you should see the readout done count for the connected cable increase.
+  7. Once the script finishes, stop the `sync_debug` executable.
+  8. Change cable location on the sync board and repeat the test.
 
 ## PRBS Checking
+This test is intended to test the link between readout and sync boards.
+A pseudo-random bistream is sent from the readout board to the sync board where `RDOUT_DONE` signals are usually sent.
+The sync board checks to see if the bitstream that is sent matches a given pseudo-random pattern.
+If not, the `prbs_error_count` for that cable is incremented.
+
+If the prbs generator is started on the readout board and the `prbs_error_count` for that cable is nonzero, something is likely wrong with that link.
+It is expected that the `prbs_error_count` will be approximately maxed out (~65535) for unconnected cables or when the prbs generator is not running.
+
+I will assume the RDOUT\_DONE counting test has been done already, so the `copy-dirs` script has been edited with the proper aliases.
+  1. Edit the file `sync/src/sync_debug.c` and set `RESET_IN_LOOP` to 1 on line 8. This resets the error count on each loop iteration, so you can start and stop the prbs generator while the script is running and see immediate results.
+  2. The readout board should already be programmed and have its IP set. Run `./run_sync` on the sync board. You should see the same output as last time (except for possible count differences).
+  3. Run `python prbs_start.py` to start the prbs generator on the readout board.
+  4. Check that the `prbs_error_count` for the cable reduces to 0. The `rdout_done_count` should also increase.
+  5. Run `python prbs_stop.py` to stop the prbs generator.
+  6. Check that the `prbs_error_count` for the cable goes back to the maximum of 65535.
+      - A little fluctuation is OK -- you will most likely see this fluctuation on the first few cables since the error count is still increasing from when it was reset at the start of the loop.
+  7. Check the other cables. You should be able to hot-swap them without stopping the `sync_debug` executable.
