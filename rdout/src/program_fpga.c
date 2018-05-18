@@ -1,16 +1,15 @@
-//---------------------------------------------------------------------
-// COMPILATION:
-// gcc program_fpga.c -o program_fpga -l bcm2835 -Wall -std=c11
-//---------------------------------------------------------------------
-// USAGE:
-//  sudo ./program_fpga [ORM] < [HEX FILE]
-//---------------------------------------------------------------------
-//  Writes the hex file supplied through stdin to the flash memory of
-//  the ORM specified by the first argument. The ORM is rebooted and
-//  this new firmware is loaded in. The chip id is read back and
-//  compared to the value in `CHIP_ID` to make sure the programming
-//  operation was a success.
-//---------------------------------------------------------------------
+//--------------------------------------------------------------------------------------//
+// COMPILATION:                                                                         //
+//  gcc src/program_fpga.c src/spi_common.c -I include/ -l bcm2835 -o bin/program_fpga  //
+//--------------------------------------------------------------------------------------//
+// USAGE:                                                                               //
+//  sudo ./program_fpga [ORM] < [HEX FILE]                                              //
+//--------------------------------------------------------------------------------------//
+// Writes the hex file supplied through stdin to the flash memory of the ORM specified  //
+// by the first argument. The ORM is rebooted and this new firmware is loaded in. The   //
+// chip id is read back and compared to the value in `CHIP_ID` to make sure the         //
+// programming operation was a success.                                                 //
+//--------------------------------------------------------------------------------------//
 
 #include <bcm2835.h>
 #include "spi_common.h"
