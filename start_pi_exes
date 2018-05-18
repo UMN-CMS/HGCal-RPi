@@ -17,9 +17,6 @@ ssh $RDOUT_ALIAS "sudo killall $RDOUT_EXE"
 rsync -az --delete sync/ $SYNC_ALIAS:$PI_SYNCDIR
 rsync -az --delete rdout/ $RDOUT_ALIAS:$PI_RDOUTDIR
 
-# config ipbus
-ssh $RDOUT_ALIAS "cd $PI_RDOUTDIR; ./setup_ipbus"
-
 # start pi executables
 ssh $SYNC_ALIAS "cd $PI_SYNCDIR; ./run_sync"
 ssh $RDOUT_ALIAS "cd $PI_RDOUTDIR; ./run_rdout"

@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# general variables
+RDOUT_ALIAS="rdout"
+SYNC_ALIAS="sync"
+PI_HOMEDIR="/home/pi"
+PI_RDOUTDIR="$PI_HOMEDIR/cleanup-rdout/"
+PI_SYNCDIR="$PI_HOMEDIR/cleanup-sync/"
+RDOUT_EXE="new_rdout.exe"
+SYNC_EXE="sync_debug.exe"
+
+# copy directories over
+rsync -az --delete sync/ $SYNC_ALIAS:$PI_SYNCDIR
+rsync -az --delete rdout/ $RDOUT_ALIAS:$PI_RDOUTDIR
+
+# install firmware
+ssh $RDOUT_ALIAS "cd $PI_RDOUTDIR; ./prog_rdout"
+ssh $SYNC_ALIAS "cd $PI_SYNCDIR; ./prog_sync"
+
+# set ip/mac addresses
+ssh $RDOUT_ALIAS "cd $PI_RDOUTDIR; ./set_ip"

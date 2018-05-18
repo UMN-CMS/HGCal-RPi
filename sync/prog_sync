@@ -1,0 +1,5 @@
+#!/bin/bash
+
+./compile
+
+sudo ./bin/program_fpga 4 < fw/sync_orm_busy2.hex
