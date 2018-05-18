@@ -27,53 +27,7 @@ I will reference these aliases in the rest of the instructions as `SYNC_ALIAS` a
   2. ssh into the readout board, and change to the copied directory: `cd ~/linktest-rdout/`
   3. Open a new terminal window, ssh into the sync board, and change into the copied directory: `cd ~/linktest-sync/`
   4. Run the setup scripts with `./run_rdout` and `./run_sync`, respectively. This compiles the software and programs the ORMs.
-    - The `sync_debug` executable will then start up on the sync board. You should see an output similar to the following:
-```
-version = 0x1105
-constant = 0xbeef 0xdead
-dummy = 0x1234 0xabcd
-delay = 0x0008
-cables_mask = 0x1000
-rdout_mask = 0x1000
-max_count = 0x0000 0x0000
-enable_veto = 0
-enable_trig = 0
-cables_mask = 0x1000
-rdout_mask = 0x1000
-loop =   0, rdout_done_count[ 0] =      0
-loop =   0, rdout_done_count[ 1] =      0
-loop =   0, rdout_done_count[ 2] =      0
-loop =   0, rdout_done_count[ 3] =      0
-loop =   0, rdout_done_count[ 4] =      0
-loop =   0, rdout_done_count[ 5] =      0
-loop =   0, rdout_done_count[ 6] =      0
-loop =   0, rdout_done_count[ 7] =      0
-loop =   0, rdout_done_count[ 8] =      0
-loop =   0, rdout_done_count[ 9] =      0
-loop =   0, rdout_done_count[10] =      0
-loop =   0, rdout_done_count[11] =      0
-loop =   0, rdout_done_count[12] =      0
-loop =   0, rdout_done_count[13] =      0
-loop =   0, rdout_done_count[14] =      0
-loop =   0, rdout_done_count[15] =      0
-loop =   0, prbs_error_count[ 0] =  64953
-loop =   0, prbs_error_count[ 1] =  65535
-loop =   0, prbs_error_count[ 2] =  65535
-loop =   0, prbs_error_count[ 3] =  65535
-loop =   0, prbs_error_count[ 4] =  65535
-loop =   0, prbs_error_count[ 5] =  65535
-loop =   0, prbs_error_count[ 6] =  65535
-loop =   0, prbs_error_count[ 7] =  65535
-loop =   0, prbs_error_count[ 8] =  65535
-loop =   0, prbs_error_count[ 9] =  65535
-loop =   0, prbs_error_count[10] =  65535
-loop =   0, prbs_error_count[11] =  65535
-loop =   0, prbs_error_count[12] =  65535
-loop =   0, prbs_error_count[13] =  65535
-loop =   0, prbs_error_count[14] =  65535
-loop =   0, prbs_error_count[15] =  65535
-```
-with error and readout done counts for each cable on the sync board.
+      - The `sync_debug` executable will then start up on the sync board. You should see error and readout done counts for each cable on the sync board: `loop =   0, rdout_done_count[ 0] =     0` and `loop =   0, prbs_error_count[ 0] =    0`.
   5. Exit from the readout board. Setup IPBus using `source etc/env.sh`.
   6. Run `test_done_count.py`. On the sync board screen, you should see the trigger count for the connected cable increase.
   7. Once the script finishes, change cable location on the sync board and repeat the test.
