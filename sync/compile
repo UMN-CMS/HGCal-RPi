@@ -1,4 +1,4 @@
-#!/bin/bash -v
+#!/bin/bash
 
 gcc -O src/sync_debug.c src/sync_orm.c src/spi_common.c -I include/ -l bcm2835 -o bin/sync_debug.exe
 

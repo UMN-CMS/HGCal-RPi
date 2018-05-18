@@ -1,4 +1,4 @@
-#!/bin/bash -v
+#!/bin/bash
 
 gcc -c src/spi_common.c -I include/ -l bcm2835 -o obj/spi_common.o
 gcc -c src/sync_orm.c -I include/ -l bcm2835 -o obj/sync_orm.o
