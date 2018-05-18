@@ -25,8 +25,8 @@ To run this test, first edit `copy-dirs` with the correct ssh aliases for the re
 Note that the IPBus IP I am using is 192.168.222.200, so make sure this IP is not currently used by something else.
 If it is, change the `rdout/src/set_ip_mac_address.c` file to set a different IP, and change `etc/connections.xml` to point to this IP.
   1. Run the `copy-dirs` script to copy the software over to the readout and sync boards.
-  2. ssh into the readout board, and change to the copied directory: `cd ~/linktest-rdout/`
-  3. Open a new terminal window, ssh into the sync board, and change into the copied directory: `cd ~/linktest-sync/`
+  2. ssh into the readout board raspberry pi, and change to the copied directory: `cd ~/linktest-rdout/`
+  3. Open a new terminal window, ssh into the sync board raspberry pi, and change into the copied directory: `cd ~/linktest-sync/`
   4. Run the setup scripts with `./run_rdout` and `./run_sync`, respectively. This compiles the software and programs the ORMs.
       - The `sync_debug` executable will then start up on the sync board. You should see error and readout done counts for each cable on the sync board: `loop =   0, rdout_done_count[ 0] =     0` and `loop =   0, prbs_error_count[ 0] =    65535`. Note that the counts may not match.
   5. Exit the readout board ssh session. Setup IPBus using `source etc/env.sh`.
@@ -43,7 +43,7 @@ If not, the `prbs_error_count` for that cable is incremented.
 If the prbs generator is started on the readout board and the `prbs_error_count` for that cable is nonzero, something is likely wrong with that link.
 It is expected that the `prbs_error_count` will be approximately maxed out (~65535) for unconnected cables or when the prbs generator is not running.
 
-I will assume the RDOUT\_DONE counting test has been done already, so the `copy-dirs` script has been edited with the proper aliases.
+I will assume the RDOUT\_DONE counting test has been done already, so the `copy-dirs` script has been edited with the proper aliases, and two terminal windows are open: one on the computer running IPBus and the other in the `~/linktest-sync` directory on the sync board Raspberry Pi.
   1. Edit the file `sync/src/sync_debug.c` and set `RESET_IN_LOOP` to 1 on line 8. This resets the error count on each loop iteration, so you can start and stop the prbs generator while the script is running and see immediate results.
   2. The readout board should already be programmed and have its IP set. Run `./run_sync` on the sync board. You should see the same output as last time (except for possible count differences).
   3. Run `python prbs_start.py` to start the prbs generator on the readout board.
