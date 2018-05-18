@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# general variables
+RDOUT_ALIAS="rdout"
+SYNC_ALIAS="sync"
+PI_HOMEDIR="/home/pi"
+PI_RDOUTDIR="$PI_HOMEDIR/cleanup-rdout/"
+PI_SYNCDIR="$PI_HOMEDIR/cleanup-sync/"
+RDOUT_EXE="new_rdout.exe"
+SYNC_EXE="sync_debug.exe"
+
+# stop any old executables
+ssh $SYNC_ALIAS "sudo killall $SYNC_EXE"
+ssh $RDOUT_ALIAS "sudo killall $RDOUT_EXE"
+
+# copy directories over
+rsync -az --delete sync/ $SYNC_ALIAS:$PI_SYNCDIR
+rsync -az --delete rdout/ $RDOUT_ALIAS:$PI_RDOUTDIR
+
+# config ipbus
+ssh $RDOUT_ALIAS "cd $PI_RDOUTDIR; ./setup_ipbus"
+
+# start pi executables
+ssh $SYNC_ALIAS "cd $PI_SYNCDIR; ./run_sync"
+ssh $RDOUT_ALIAS "cd $PI_RDOUTDIR; ./run_rdout"
+
+# check if the executables are up
+ssh $SYNC_ALIAS "pgrep $SYNC_EXE"
+ssh $RDOUT_ALIAS "pgrep $RDOUT_EXE"
