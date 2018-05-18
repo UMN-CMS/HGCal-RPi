@@ -1,0 +1,7 @@
+#!/bin/bash
+
+./compile
+
+sudo ./bin/program_fpga 4 < fw/ctl_orm_prbs3.hex
+
+sudo ./bin/set_ip_mac_address

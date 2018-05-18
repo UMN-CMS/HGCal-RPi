@@ -1,0 +1,5 @@
+./compile
+
+sudo ./bin/program_fpga 4 < fw/sync_orm_prbs3.hex
+
+sudo ./bin/sync_debug 1
