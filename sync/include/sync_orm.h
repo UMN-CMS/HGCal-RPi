@@ -1,5 +1,4 @@
-#ifndef SYNC_ORM_H
-#define SYNC_ORM_H
+#include "spi_common.h"
 
 #define SYNC_RESET_PULSE      (0x100) // resets[15:0] { 12'h0, reset_waiting, reset_rdout, reset_trig_counter, reset_all}
 
@@ -155,4 +154,3 @@ int SYNC_put_max1_fake65(int value16bits);
 // have cables connected.
 int SYNC_cables_connected(void);
 
-#endif

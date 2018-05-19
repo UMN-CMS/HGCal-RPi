@@ -1,5 +1,4 @@
-#ifndef CTL_ORM_H
-#define CTL_ORM_H
+#include "spi_common.h"
 
 #define CTL_RESET_PULSE      (0x100) // resets[15:0] { 12'h0, reset_clk_count, reset_trig_count, reset_fifos, reset_all }
 
@@ -124,5 +123,3 @@ int CTL_get_full(void);
 int CTL_get_occupancy(void);
 int CTL_get_fifo_LS16(void);
 int CTL_get_fifo_MS16(void);
-
-#endif
