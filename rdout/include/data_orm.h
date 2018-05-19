@@ -1,4 +1,5 @@
-#include "spi_common.h"
+#ifndef DATA_ORM_H
+#define DATA_ORM H
 
 #define DATA_RESET_PULSE      (0x100) // resets[15:0] { 4'h0, reset_crc1_fifo, reset_crc1, reset_local_fifo1, reset_all1, 
                                       //                4'h0, reset_crc0_fifo, reset_crc0, reset_local_fifo0, reset_all0 }
@@ -103,3 +104,5 @@ int HEXBD_trigger_gen(int hexbd);
 int HEXBD_read200_local_fifo(int hexbd, int result[200]);
 int HEXBD_read1000_local_fifo(int hexbd, int result[1000]);
 int HEXBD_verify_communication(int verbose);
+
+#endif

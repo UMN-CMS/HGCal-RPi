@@ -1,13 +1,5 @@
-#include <bcm2835.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdint.h>
-#include <stdbool.h>
-#include <unistd.h>
-#include <math.h>
-#include <string.h>
-#include <time.h>
+#ifndef HEXBD_CONFIG_H
+#define HEXBD_CONFIG_H
 
 //************************************
 //* define commands for Master FPGA 
@@ -33,3 +25,5 @@ int ConvertProgrStrBittoByte(char * bits, char * bytes);
 int prog384(int hexbd, char * pNew, char * pPrevious, int verbose);
 int progandverify48 (int hexbd, char * pConfBytes, char * pPrevious, int verbose);
 int configure_hexaboard(int hexbd, int verbose);
+
+#endif

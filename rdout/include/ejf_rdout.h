@@ -1,13 +1,5 @@
-#include <bcm2835.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdint.h>
-#include <stdbool.h>
-#include <unistd.h>
-#include <math.h>
-#include <string.h>
-#include <time.h>
+#ifndef EJF_RDOUT_H
+#define EJF_RDOUT_H
 
 /*****************************************************/
 /* define commands for Master FPGA */
@@ -60,3 +52,5 @@ int read_raw(int hexbd);
 int read_raw_faster(int hexbd) ;
 int decode_raw();
 int format_channels();
+
+#endif
