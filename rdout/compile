@@ -1,5 +1,8 @@
 #!/bin/bash
 
+mkdir -p bin/
+mkdir -p obj/
+
 gcc -c src/spi_common.c -I include/ -l bcm2835 -o obj/spi_common.o
 gcc -c src/data_orm.c -I include/ -l bcm2835 -o obj/data_orm.o
 gcc -c src/ctl_orm.c -I include/ -l bcm2835 -o obj/ctl_orm.o
