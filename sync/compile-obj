@@ -13,5 +13,3 @@ gcc -O src/program_fpga.c obj/spi_common.o -I include/ -l bcm2835 -o bin/program
 
 gcc -O src/read_board_id.c obj/spi_common.o -I include/ -l bcm2835 -o bin/read_board_id
 
-gcc -O src/get_board_type.c obj/spi_common.o -I include/ -l bcm2835 -o bin/get_board_type
-
