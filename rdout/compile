@@ -1,14 +1,21 @@
 #!/bin/bash
 
-gcc -O src/new_rdout.c src/ejf_rdout.c src/ctl_orm.c src/data_orm.c src/hexbd.c src/hexbd_config.c src/spi_common.c -I include/ -l bcm2835 -o bin/new_rdout.exe
+gcc -c src/spi_common.c -I include/ -l bcm2835 -o obj/spi_common.o
+gcc -c src/data_orm.c -I include/ -l bcm2835 -o obj/data_orm.o
+gcc -c src/ctl_orm.c -I include/ -l bcm2835 -o obj/ctl_orm.o
+gcc -c src/ejf_rdout.c -I include/ -l bcm2835 -o obj/ejf_rdout.o
+gcc -c src/hexbd.c -I include/ -l bcm2835 -o obj/hexbd.o
+gcc -c src/hexbd_config.c -I include/ -l bcm2835 -o obj/hexbd_config.o
+
+gcc -O src/new_rdout.c obj/ejf_rdout.o obj/ctl_orm.o obj/data_orm.o obj/hexbd.o obj/hexbd_config.o obj/spi_common.o -I include/ -l bcm2835 -o bin/new_rdout.exe
 
 gcc src/sleep.c -o bin/take_a_nap.exe
 
-gcc -O src/pwr_cycle_fpgas.c src/ejf_rdout.c src/ctl_orm.c src/data_orm.c src/hexbd.c src/hexbd_config.c src/spi_common.c -I include/ -l bcm2835 -o bin/pwr_cycle_fpgas.exe
+gcc -O src/pwr_cycle_fpgas.c obj/ejf_rdout.o obj/ctl_orm.o obj/data_orm.o obj/hexbd.o obj/hexbd_config.o obj/spi_common.o -I include/ -l bcm2835 -o bin/pwr_cycle_fpgas.exe
 
-gcc -O src/program_fpga.c src/spi_common.c -I include/ -l bcm2835 -o bin/program_fpga
+gcc -O src/program_fpga.c obj/spi_common.o -I include/ -l bcm2835 -o bin/program_fpga
 
-gcc -O src/read_board_id.c src/spi_common.c -I include/ -l bcm2835 -o bin/read_board_id
+gcc -O src/read_board_id.c obj/spi_common.o -I include/ -l bcm2835 -o bin/read_board_id
 
-gcc -O src/set_ip_mac_address.c src/ctl_orm.c src/spi_common.c -I include -l bcm2835 -o bin/set_ip_mac_address.exe
+gcc -O src/set_ip_mac_address.c obj/ctl_orm.o obj/spi_common.o -I include -l bcm2835 -o bin/set_ip_mac_address.exe
 
