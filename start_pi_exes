@@ -1,13 +1,6 @@
 #!/bin/bash
 
-# general variables
-RDOUT_ALIAS="rdout"
-SYNC_ALIAS="sync"
-PI_HOMEDIR="/home/pi"
-PI_RDOUTDIR="$PI_HOMEDIR/cleanup-rdout/"
-PI_SYNCDIR="$PI_HOMEDIR/cleanup-sync/"
-RDOUT_EXE="new_rdout.exe"
-SYNC_EXE="sync_debug.exe"
+source etc/config
 
 # stop any old executables
 ssh $SYNC_ALIAS "sudo killall $SYNC_EXE"
