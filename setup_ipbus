@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# function to check return values
+check_retval () {
+    if [ $1 -ne 0 ]
+    then
+        exit 1
+    fi
+}
+
 # general variables
 RDOUT_ALIAS="rdout"
 SYNC_ALIAS="sync"
@@ -15,7 +23,10 @@ rsync -az --delete rdout/ $RDOUT_ALIAS:$PI_RDOUTDIR
 
 # install firmware
 ssh $RDOUT_ALIAS "cd $PI_RDOUTDIR; ./prog_rdout"
+check_retval "$?"
 ssh $SYNC_ALIAS "cd $PI_SYNCDIR; ./prog_sync"
+check_retval "$?"
 
 # set ip/mac addresses
 ssh $RDOUT_ALIAS "cd $PI_RDOUTDIR; ./set_ip"
+check_retval "$?"
