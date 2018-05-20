@@ -1,0 +1,19 @@
+#!/bin/bash
+
+source etc/config
+
+for SYNC_ALIAS in "${SYNC_ALIASES[@]}"
+do
+    echo "$SYNC_ALIAS:"
+    rsync --az --delete sync/ $SYNC_ALIAS:$PI_SYNCDIR
+    ssh $SYNC_ALIAS "cd $PI_SYNCDIR; ./prog_sync"
+    check_retval "$?"
+done
+
+for RDOUT_ALIAS in "${RDOUT_ALIASES[@]}"
+do
+    echo "$RDOUT_ALIAS:"
+    rsync -az --delete rdout/ $RDOUT_ALIAS:$PI_RDOUTDIR
+    ssh $RDOUT_ALIAS "cd $PI_RDOUTDIR; ./prog_rdout"
+    check_retval "$?"
+done
