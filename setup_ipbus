@@ -13,5 +13,5 @@ ssh $SYNC_ALIAS "cd $PI_SYNCDIR; ./prog_sync"
 check_retval "$?"
 
 # set ip/mac addresses
-ssh $RDOUT_ALIAS "cd $PI_RDOUTDIR; ./set_ip"
+ssh $RDOUT_ALIAS "cd $PI_RDOUTDIR; ./set_ip 0"
 check_retval "$?"

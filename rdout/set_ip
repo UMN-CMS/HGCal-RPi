@@ -1,8 +1,16 @@
 #!/bin/bash
+# usage: ./set_ip [BOARD NUMBER]
+
+BOARDNUM=$1
+if [ -z "$BOARDNUM" ] # indicates no argument was provided
+then
+    echo "usage: ./set_ip [BOARD NUMBER]"
+    exit 1
+fi
 
 # compile
 ./compile
 
 # set ip address
 echo "Setting IPBus IP/MAC"
-sudo ./bin/set_ip_mac_address.exe > ip.log 2>&1
+sudo ./bin/set_ip_mac_address.exe $BOARDNUM > ip.log 2>&1
