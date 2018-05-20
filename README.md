@@ -13,10 +13,10 @@ The (incomplete) list of changes includes:
 ## Instructions
 More will come soon.
 This has been tested with EUDAQ at UMN.
-Before running, edit `start_pi_exes`, `stop_pi_exes`, and `setup_ipbus` to contain the correct rdout and sync pi aliases.
 To run:
-  1. Make sure there are no running executables on the pis with `./stop_pi_exes`
-  2. Setup IPBus with `./setup_ipbus`
-  3. Start executables with `./start_pi_exes`
-  4. Start EUDAQ, take runs, etc...
-  5. Stop runs again with `./stop_pi_exes`
+  1. Modify `RDOUT_ALIASES` and `SYNC_ALIASES` in `etc/config` to be the ssh aliases of all your readout and sync boards (i.e. `RDOUT_ALIASES=("rdout0" "rdout1" "rdout2")`)
+  2. Make sure there are no running executables on the pis with `./stop_pi_exes`
+  3. Setup IPBus with `./setup_ipbus`
+  4. Start executables with `./start_pi_exes`
+  5. Start EUDAQ, take runs, etc...
+  6. Stop runs again with `./stop_pi_exes`
