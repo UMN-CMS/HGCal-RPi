@@ -3,5 +3,14 @@
 source etc/config
 
 # stop any old executables
-ssh $SYNC_ALIAS "sudo killall $SYNC_EXE"
-ssh $RDOUT_ALIAS "sudo killall $RDOUT_EXE"
+for SYNC_ALIAS in "${SYNC_ALIASES[@]}"
+do
+    echo "$SYNC_ALIAS:"
+    ssh $SYNC_ALIAS "sudo killall $SYNC_EXE"
+done
+
+for RDOUT_ALIAS in "${RDOUT_ALIASES[@]}"
+do
+    echo "$RDOUT_ALIAS:"
+    ssh $RDOUT_ALIAS "sudo killall $RDOUT_EXE"
+done
