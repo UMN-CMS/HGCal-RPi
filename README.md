@@ -102,7 +102,7 @@ Once data taking is done, stop the executables again with `./stop_pi_exes`.
 
 ## Documentation
 
-There are two main files: `new_rdout.exe` located in `RDOUT_BOARD_IPBus/rdout_software/bin/` and `sync_debug.exe` in `SYNCH_BOARD/bin/`.
+There are two main files: `new_rdout.c` located in `rdout/src/` and `sync_debug.c` in `sync/src/`.
 These two files act as helpers to facilitate the data collection process with IPBus.
 Both need to be started on each sync/readout board during each data-taking session.
 They do not necessarily need to be restarted for each run.
@@ -143,7 +143,7 @@ During each iteration of the event loop, the following actions are performed:
   2. Each hexaboard is sent the command to start acquisition (`CMD_SETSTARTACQ`)
   3. The CTL's FIFOs are reset
   4. We wait for a trigger
-    - The `date_stamp` register is used to tell the syncboard when we are OK for the next trigger.
+    - The `date_stamp` register is used to tell IPBus when we are OK for the next trigger.
       This register is set to 1 when we are OK to recieve one, and set to 0 when we don't currently want one (while we wait for readout to complete, etc...)
   5. Once we have recieved a trigger, each hexaboard is sent the start conversion command (`CMD_STARTCONPUL`) and then the start readout command (`CMD_STARTROPUL`)
   6. We wait until the FIFO is empty, as an empty FIFO indicates that the IPBus readout is complete and we can safely move on to the next event.
