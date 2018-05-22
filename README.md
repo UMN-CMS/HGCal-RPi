@@ -3,6 +3,19 @@
 This branch is the current cleanup effort of the Raspberry Pi code.
 The readout board Raspberry Pi code is in `rdout/`, and the sync board Pi code is in `sync/`.
 
+## Table of Contents
+   * [HGCal-RPi : cleanup](#hgcal-rpi--cleanup)
+      * [Table of Contents](#table-of-contents)
+      * [Instructions](#instructions)
+         * [1. Setup](#1-setup)
+         * [2. Stop Previously Running Executables](#2-stop-previously-running-executables)
+         * [3. IPBus Setup](#3-ipbus-setup)
+         * [4. Start Executables](#4-start-executables)
+         * [5. Start Data Taking](#5-start-data-taking)
+         * [6. Finishing Up](#6-finishing-up)
+      * [Documentation](#documentation)
+
+
 ## Instructions
 
 ### 1. Setup
