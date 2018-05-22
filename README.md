@@ -79,9 +79,10 @@ The process number is printed for each alias.
 If no number is printed, the executable was not properly started.
 There is currently no error checking for this, so check for each number.
 
-Once these executables are started, you can begin taking data.
+### 5. Start Data Taking
+Once these executables are started, you can begin taking data with EUDAQ.
 
-### 5. Finishing Up
+### 6. Finishing Up
 Stop the executables again with `./stop_pi_exes`.
 
 
