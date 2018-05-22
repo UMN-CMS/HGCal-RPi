@@ -12,6 +12,8 @@ The readout board Raspberry Pi code is in `rdout/`, and the sync board Pi code i
      * [5. Start Data Taking](#5-start-data-taking)
      * [6. Finishing Up](#6-finishing-up)
   * [Documentation](#documentation)
+     * [sync_debug](#sync_debug)
+     * [new_rdout](#new_rdout)
   * [Changes](#changes)
 
 
