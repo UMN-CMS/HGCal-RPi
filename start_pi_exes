@@ -1,4 +1,5 @@
 #!/bin/bash
+# starts the executables on the raspberry pis
 
 
 # get config

@@ -1,6 +1,7 @@
-# HGCal-RPi:cleanup
+# HGCal-RPi : cleanup
 
 This branch is the current cleanup effort of the Raspberry Pi code.
+The readout board Raspberry Pi code is in `rdout/`, and the sync board Pi code is in `sync/`.
 
 ## Instructions
   1. Modify `RDOUT_ALIASES` and `SYNC_ALIASES` in `etc/config` to be the ssh aliases of all your readout and sync boards
@@ -20,6 +21,7 @@ Programming DATA ORM3
 Programming CTL ORM
 Setting IPBus IP/MAC
 ```
+     The script will exit after printing an error message if an error occurs.
   4. Start executables with `./start_pi_exes`.
      An example output follows
 ```

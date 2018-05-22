@@ -1,4 +1,5 @@
 #!/bin/bash
+# stops the executables on the raspberry pis
 
 source etc/config
 
