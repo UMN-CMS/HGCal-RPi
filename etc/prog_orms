@@ -1,4 +1,5 @@
 #!/bin/bash
+# copy directories over and program the ORMs
 
 source etc/config
 

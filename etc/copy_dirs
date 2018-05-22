@@ -1,4 +1,5 @@
 #!/bin/bash
+# copy the directories over to all of the pis
 
 source etc/config
 
