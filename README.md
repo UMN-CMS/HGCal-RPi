@@ -83,7 +83,7 @@ There is currently no error checking for this, so check for each number.
 Once these executables are started, you can begin taking data with EUDAQ.
 
 ### 6. Finishing Up
-Stop the executables again with `./stop_pi_exes`.
+Once data taking is done, stop the executables again with `./stop_pi_exes`.
 
 
 ## Documentation
