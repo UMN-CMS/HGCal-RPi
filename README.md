@@ -100,14 +100,6 @@ Once data taking is done, stop the executables again with `./stop_pi_exes`.
 
 
 ## Documentation
-The (incomplete) list of changes includes:
-  - Moved header files into their own respective `include/` directories
-  - Added source files for the FPGA programming binary, as well as some others for reading the DIP switches
-  - Moved program\_fpga into the bin/ directory and the firmware files into the fw/ directory
-  - Merged RDOUT\_BOARD\_IPBus/rdout\_software with RDOUT\_BOARD\_IPBus
-  - Renamed RDOUT\_BOARD\_IPBus/ to rdout/ and SYNCH\_BOARD/ to sync/
-  - Removed unnecessary code in new\_rdout.c and sync\_debug.c
-  - Removed unused files
 
 There are two main files: `new_rdout.exe` located in `RDOUT_BOARD_IPBus/rdout_software/bin/` and `sync_debug.exe` in `SYNCH_BOARD/bin/`.
 These two files act as helpers to facilitate the data collection process with IPBus.
@@ -219,3 +211,18 @@ skiroc_mask = 0x000f 0x0000
 Event 1
 # After this is just event counting
 ``` 
+
+
+## Changes
+The (incomplete) list of changes from the master branch includes:
+  - Moved header files into their own respective `include/` directories
+  - Added source files for the FPGA programming binary, as well as some others for reading the DIP switches
+  - Moved program\_fpga into the bin/ directory and the firmware files into the fw/ directory
+  - Merged RDOUT\_BOARD\_IPBus/rdout\_software with RDOUT\_BOARD\_IPBus
+  - Renamed RDOUT\_BOARD\_IPBus/ to rdout/ and SYNCH\_BOARD/ to sync/
+  - Removed unnecessary code in new\_rdout.c and sync\_debug.c
+  - Removed unused files
+  - Created scripts for easy usage in rdout/ and sync/
+  - Created scripts to start executables, stop executables, setup IPBus, etc...
+  - Automatic IP address generation - much easier to use multiple readout boards
+  - Software and firmware are automatically copied to each Pi to ensure each has the most recent versions
