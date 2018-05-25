@@ -17,6 +17,8 @@
 #include "ejf_rdout.h"
 #include "spi_common.h"
 
+#define BLOCKSIZE 30000
+
 
 //========================================================================
 // MAIN
@@ -230,7 +232,7 @@ int main(int argc, char *argv[])
     CTL_reset_trig_count();
 
     // Agree on the size of the block of data that will set BLOCK_READY flag.
-    CTL_put_block_size(30000);
+    CTL_put_block_size(BLOCKSIZE);
 
     // Get the skiroc fifo block_size.
     block_size = CTL_get_block_size();
