@@ -307,15 +307,21 @@ int main(int argc, char *argv[])
             CTL_put_date_stamp0(0);
         }
 
-        // tell skirocs to send data back
+        // tell skirocs to start conversion
         for(hx = 0; hx < MAXHEXBDS; hx++) {
             if((hexbd_mask & (1 << hx)) != 0) {
                 res = HEXBD_send_command(hx, CMD_STARTCONPUL);
-                usleep(HX_DELAY3);
-                res = HEXBD_send_command(hx, CMD_STARTROPUL);
-                usleep(HX_DELAY4);
             }
         }
+        usleep(HX_DELAY3);
+
+        // tell skirocs to send their data out
+        for(hx = 0; hx < MAXHEXBDS; hx++) {
+            if((hexbd_mask & (1 << hx)) != 0) {
+                res = HEXBD_send_command(hx, CMD_STARTROPUL);
+            }
+        }
+        usleep(HX_DELAY4);
 
         // wait for the FIFO to be empty, indicating IPBus has read it out
         int isFifoEmpty = 0;
