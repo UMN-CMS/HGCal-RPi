@@ -405,13 +405,19 @@ int main(int argc, char *argv[])
       fprintf(ftrig, "%llu\n", (long long unsigned int)( ( (stamp2 << 32) | (stamp1 << 16) | stamp0 ) - p_stamp ) );
 */
 
+	  // tell skirocs to send data back
       for(hexbd = 0; hexbd < MAXHEXBDS; hexbd++) {
         if((hexbd_mask & (1 << hexbd)) != 0) {
-
-	  // tell skirocs to send data back
           res = HEXBD_send_command(hexbd, CMD_STARTCONPUL);
+        }
+      }
 	  usleep(HX_DELAY3);
-	  res = HEXBD_send_command(hexbd, CMD_STARTROPUL);
+
+      for(hexbd = 0; hexbd < MAXHEXBDS; hexbd++) {
+          if((hexbd_mask & (1 << hexbd)) != 0) {
+            res = HEXBD_send_command(hexbd, CMD_STARTROPUL);
+          }
+      }
 	  usleep(HX_DELAY4);
 
         }// if hexbd_mask
