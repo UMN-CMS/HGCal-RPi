@@ -26,7 +26,7 @@
 
 int main(int argc, char *argv[])
 {
-    int res, i, hx;
+    int res, hx;
 
     int junk[2000];
 
