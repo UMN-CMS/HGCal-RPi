@@ -5,11 +5,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
-#include <stdbool.h>
 #include <unistd.h>
 #include <math.h>
 #include <string.h>
 #include <time.h>
+#include <signal.h>
 
 #include "hexbd_config.h"
 #include "ctl_orm.h"
@@ -18,6 +18,15 @@
 #include "spi_common.h"
 
 #define BLOCKSIZE 30000
+
+
+static int keeprunning = 1;
+void handler(int signum) {
+    if(signum == SIGTERM) {
+        printf("recieved SIGTERM - handling\n");
+        keeprunning = 0;
+    }
+}
 
 
 //========================================================================
@@ -220,7 +229,8 @@ int main(int argc, char *argv[])
     CTL_put_done();
     
     // start event loop
-    while(1) {
+    signal(SIGTERM, handler);
+    while(keeprunning) {
 
         // Get hexaboards ready.
         for(hx = 0; hx < MAXHEXBDS; hx++) {
@@ -261,6 +271,10 @@ int main(int argc, char *argv[])
             // Wait for trigger.
             trig0 = old_trig0;
             while (trig0 == old_trig0) {
+                if(!keeprunning) {
+                    end_spi();
+                    return 0;
+                }
                 trig0 = CTL_get_trig_count0();
             }
 
@@ -288,6 +302,10 @@ int main(int argc, char *argv[])
         // wait for the FIFO to be empty, indicating IPBus has read it out
         int isFifoEmpty = 0;
         while(!isFifoEmpty){
+            if(!keeprunning) {
+                end_spi();
+                return 0;
+            }
             isFifoEmpty = CTL_get_empty();
         }
 
@@ -300,7 +318,7 @@ int main(int argc, char *argv[])
 
     // done
     end_spi();
-    return(0);    
+    return 0;    
 
 }// end main
 
