@@ -1,5 +1,7 @@
 #!/bin/bash
 
+PED=0
+
 ./compile
 
-nohup sudo ./bin/new_rdout.exe 0 100000 0 > rdout.log 2>&1 &
+nohup sudo ./bin/new_rdout.exe $PED > rdout.log 2>&1 &
