@@ -26,7 +26,7 @@
 
 int main(int argc, char *argv[])
 {
-    int res, i, k, hx;
+    int res, i, hx;
 
     int junk[2000];
 
@@ -34,18 +34,14 @@ int main(int argc, char *argv[])
     // ARGUMENT PROCESSING
     //====================================================================
 
-    int runid = 0;
-    int maxevents = 1000;
     int PED = 0;
 
-    if( argc < 4 ){
-        fprintf(stderr,"You need to provide more arguments: <RunNumber> <Number of Events> <PED> \n");
+    if( argc < 2 ){
+        printf("usage: sudo ./bin/new_rdout [PED]");
         return(0);
     }
 
-    runid = atoi(argv[1]);
-    maxevents = atoi(argv[2]);
-    PED = atoi(argv[3]);
+    PED = atoi(argv[1]);
 
     //====================================================================
     // PRE-RUN SETUP
@@ -53,32 +49,6 @@ int main(int argc, char *argv[])
 
     // Startup the SPI interface on the Pi.
     init_spi();
-
-    // Power cycle the ORMs.
-    if (0) {
-        fprintf(stderr,"power cycle orm: data_0...");
-        power_cycle(0); // DATA_0
-        fprintf(stderr,"done.\n");
-        sleep(1);
-        fprintf(stderr,"power cycle orm: data_1...");
-        power_cycle(1); // DATA_1
-        fprintf(stderr,"done.\n");
-        sleep(1);
-        fprintf(stderr,"power cycle orm: data_2...");
-        power_cycle(2); // DATA_2
-        fprintf(stderr,"done.\n");
-        sleep(1);
-        fprintf(stderr,"power cycle orm: data_3...");
-        power_cycle(3); // DATA_3
-        fprintf(stderr,"done.\n");
-        sleep(1);
-        fprintf(stderr,"power cycle orm: ctl...");
-        power_cycle(4); // CTL
-        fprintf(stderr,"done.\n");
-        fprintf(stderr,"sleeping for 10s...");
-        sleep(10);
-        fprintf(stderr,"done.\n");
-    }
 
     // Set the date stamp to zero.
     int date_stamp0, date_stamp1;
@@ -244,12 +214,7 @@ int main(int argc, char *argv[])
     fprintf(stderr,"skiroc_mask = 0x%04x 0x%04x\n\n",
             (int)skiroc_mask1, (int)skiroc_mask0);
 
-    uint64_t stamp0 = 0, stamp1 = 0, stamp2 = 0, trig0, trig1, old_trig0;
-    uint64_t p_stamp = 0, f_stamp0 = 0, f_stamp1 = 0, f_stamp2 = 0;
-    double trig_value, usec_value;
-    int fifo_ready, block_ready, block_ready0, block_ready1, skiroc, j;
-    int value0, value1;
-    int raw_it;
+    uint64_t trig0, old_trig0;
 
     // Send a pulse back to the SYNC board. Give us a trigger.
     CTL_put_done();
