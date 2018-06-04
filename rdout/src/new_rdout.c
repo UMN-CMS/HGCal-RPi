@@ -23,7 +23,6 @@
 static int keeprunning = 1;
 void handler(int signum) {
     if(signum == SIGTERM) {
-        printf("recieved SIGTERM - handling\n");
         keeprunning = 0;
     }
 }
