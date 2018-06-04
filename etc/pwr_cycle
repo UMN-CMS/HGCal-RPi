@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source config
+source etc/config
 
 for RDOUT_ALIAS in "${RDOUT_ALIASES[@]}"
 do
