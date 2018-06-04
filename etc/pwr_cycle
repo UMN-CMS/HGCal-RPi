@@ -1,10 +1,10 @@
 #!/bin/bash
 
-source etc/config
+source config
 
 for RDOUT_ALIAS in "${RDOUT_ALIASES[@]}"
 do
-    echo "$RDOUT_ALIAS ($BOARDNUM):"
+    echo "$RDOUT_ALIAS:"
 
     # copy directories over
     rsync -az --delete rdout/ $RDOUT_ALIAS:$PI_RDOUTDIR
