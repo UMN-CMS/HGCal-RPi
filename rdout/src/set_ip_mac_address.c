@@ -4,6 +4,7 @@
 #include "ctl_orm.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
 
 // base IP and MAC addresses
