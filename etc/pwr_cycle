@@ -1,0 +1,12 @@
+#!/bin/bash
+
+source etc/config
+
+for RDOUT_ALIAS in "${RDOUT_ALIASES[@]}"
+do
+    echo "$RDOUT_ALIAS ($BOARDNUM):"
+
+    # copy directories over
+    rsync -az --delete rdout/ $RDOUT_ALIAS:$PI_RDOUTDIR
+    ssh $RDOUT_ALIAS "cd $PI_RDOUTDIR; ./compile; sudo ./bin/pwr_cycle_fpgas.exe"
+done
