@@ -220,10 +220,7 @@ int main(int argc, char *argv[])
     CTL_put_done();
     
     // start event loop
-    for(i = 0; i < maxevents; i = i + 1) {
-
-        // exit if file is created
-        if( !(i % 10) && (access( "stop.run.please", R_OK ) != -1) ) break;
+    while(1) {
 
         // Get hexaboards ready.
         for(hx = 0; hx < MAXHEXBDS; hx++) {
