@@ -229,7 +229,8 @@ int main(int argc, char *argv[])
     CTL_put_done();
     
     // start event loop
-    signal(SIGTERM, handler);
+    signal(SIGTERM, handler); // handle `kill` commands
+    signal(SIGINT, handler); // handle Ctrl-c
     while(keeprunning) {
 
         // Get hexaboards ready.
