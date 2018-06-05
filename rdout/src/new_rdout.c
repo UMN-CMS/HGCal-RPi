@@ -254,11 +254,13 @@ int main(int argc, char *argv[])
 
         // get the next trigger
         if(PED) {
+
             // send put trigger to each ORM
             DATA_put_trigger_pulse(0);
             DATA_put_trigger_pulse(1);
             DATA_put_trigger_pulse(2);
             DATA_put_trigger_pulse(3);
+
         }
         else {
 
@@ -270,11 +272,7 @@ int main(int argc, char *argv[])
 
             // Wait for trigger.
             trig0 = old_trig0;
-            while (trig0 == old_trig0) {
-                if(!keeprunning) {
-                    end_spi();
-                    return 0;
-                }
+            while(keeprunning && (trig0 == old_trig0)){
                 trig0 = CTL_get_trig_count0();
             }
 
@@ -301,11 +299,7 @@ int main(int argc, char *argv[])
 
         // wait for the FIFO to be empty, indicating IPBus has read it out
         int isFifoEmpty = 0;
-        while(!isFifoEmpty){
-            if(!keeprunning) {
-                end_spi();
-                return 0;
-            }
+        while(keeprunning && !isFifoEmpty){
             isFifoEmpty = CTL_get_empty();
         }
 
