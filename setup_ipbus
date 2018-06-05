@@ -8,36 +8,36 @@ DOPROG=1 # set to 0 to skip firmware installation
 
 source etc/config
 
-for SYNC_ALIAS in "${SYNC_ALIASES[@]}"
+for SYNC_PI_ALIAS in "${SYNC_PI_ALIASES[@]}"
 do
-    echo "$SYNC_ALIAS:"
+    echo "$SYNC_PI_ALIAS:"
 
     # copy directories over and install firmware
     if [ $DOPROG -eq 1 ]
     then
-        rsync -az --delete sync/ $SYNC_ALIAS:$PI_SYNCDIR
-        ssh $SYNC_ALIAS "cd $PI_SYNCDIR; ./prog_sync"
+        rsync -az --delete sync/ $SYNC_PI_ALIAS:$PI_SYNCDIR
+        ssh $SYNC_PI_ALIAS "cd $PI_SYNCDIR; ./prog_sync"
         check_retval "$?"
     fi
 done
 
 BOARDNUM=0
-for RDOUT_ALIAS in "${RDOUT_ALIASES[@]}"
+for RDOUT_PI_ALIAS in "${RDOUT_PI_ALIASES[@]}"
 do
-    echo "$RDOUT_ALIAS ($BOARDNUM):"
+    echo "$RDOUT_PI_ALIAS ($BOARDNUM):"
 
     # copy directories over
-    rsync -az --delete rdout/ $RDOUT_ALIAS:$PI_RDOUTDIR
+    rsync -az --delete rdout/ $RDOUT_PI_ALIAS:$PI_RDOUTDIR
 
     # install firmware
     if [ $DOPROG -eq 1 ]
     then
-        ssh $RDOUT_ALIAS "cd $PI_RDOUTDIR; ./prog_rdout"
+        ssh $RDOUT_PI_ALIAS "cd $PI_RDOUTDIR; ./prog_rdout"
         check_retval "$?"
     fi
 
     # set ip/mac addresses
-    ssh $RDOUT_ALIAS "cd $PI_RDOUTDIR; ./set_ip $BOARDNUM"
+    ssh $RDOUT_PI_ALIAS "cd $PI_RDOUTDIR; ./set_ip $BOARDNUM"
     check_retval "$?"
 
     BOARDNUM=$((BOARDNUM+1))

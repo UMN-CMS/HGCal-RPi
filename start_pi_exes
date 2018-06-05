@@ -7,38 +7,38 @@ source etc/config
 
 
 # sync boards
-for SYNC_ALIAS in "${SYNC_ALIASES[@]}"
+for SYNC_PI_ALIAS in "${SYNC_PI_ALIASES[@]}"
 do
-    echo "$SYNC_ALIAS:"
+    echo "$SYNC_PI_ALIAS:"
 
     # stop any old executables
-    ssh $SYNC_ALIAS "sudo killall $SYNC_EXE"
+    ssh $SYNC_PI_ALIAS "sudo killall $SYNC_EXE"
 
     # copy directories over
-    rsync -az --delete sync/ $SYNC_ALIAS:$PI_SYNCDIR
+    rsync -az --delete sync/ $SYNC_PI_ALIAS:$PI_SYNCDIR
 
     # start pi executables
-    ssh $SYNC_ALIAS "cd $PI_SYNCDIR; ./run_sync"
+    ssh $SYNC_PI_ALIAS "cd $PI_SYNCDIR; ./run_sync"
 
     # make sure they are up
-    ssh $SYNC_ALIAS "pgrep $SYNC_EXE"
+    ssh $SYNC_PI_ALIAS "pgrep $SYNC_EXE"
 done
 
 
 # rdout boards
-for RDOUT_ALIAS in "${RDOUT_ALIASES[@]}"
+for RDOUT_PI_ALIAS in "${RDOUT_PI_ALIASES[@]}"
 do
-    echo "$RDOUT_ALIAS:"
+    echo "$RDOUT_PI_ALIAS:"
 
     # stop any old executables
-    ssh $RDOUT_ALIAS "sudo killall $RDOUT_EXE"
+    ssh $RDOUT_PI_ALIAS "sudo killall $RDOUT_EXE"
 
     # copy directories over
-    rsync -az --delete rdout/ $RDOUT_ALIAS:$PI_RDOUTDIR
+    rsync -az --delete rdout/ $RDOUT_PI_ALIAS:$PI_RDOUTDIR
 
     # start pi executables
-    ssh $RDOUT_ALIAS "cd $PI_RDOUTDIR; ./run_rdout"
+    ssh $RDOUT_PI_ALIAS "cd $PI_RDOUTDIR; ./run_rdout"
 
     # make sure they are up
-    ssh $RDOUT_ALIAS "pgrep $RDOUT_EXE"
+    ssh $RDOUT_PI_ALIAS "pgrep $RDOUT_EXE"
 done

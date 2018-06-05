@@ -9,8 +9,8 @@ check_retval () {
 }
 
 # general variables
-RDOUT_ALIASES=("rdout")                     # ssh aliases of the readout board pis
-SYNC_ALIASES=("sync")                       # ssh aliases of the sync board pis
+RDOUT_PI_ALIASES=("rdout")                  # ssh aliases of the readout board pis
+SYNC_PI_ALIASES=("sync")                    # ssh aliases of the sync board pis
 PI_HOMEDIR="/home/pi"
 PI_RDOUTDIR="$PI_HOMEDIR/cleanup-rdout/"    # directory to copy code into on rdout pis
 PI_SYNCDIR="$PI_HOMEDIR/cleanup-sync/"      # directory to copy code into on sync pis

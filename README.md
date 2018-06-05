@@ -20,7 +20,7 @@ The readout board Raspberry Pi code is in `rdout/`, and the sync board Pi code i
 ## Instructions
 
 ### 1. Setup
-Modify `RDOUT_ALIASES` and `SYNC_ALIASES` in `etc/config` to be the ssh aliases of all your readout and sync boards.
+Modify `RDOUT_PI_ALIASES` and `SYNC_PI_ALIASES` in `etc/config` to be the ssh aliases of all your readout and sync boards.
 As an example, if you have 3 readout boards with ssh aliases `rdout0` through `rdout2` and one sync board with ssh alias`sync0`, `etc/config` should read:
 ```bash
 #!/bin/bash
@@ -34,8 +34,8 @@ check_retval () {
 }
 
 # general variables
-RDOUT_ALIASES=("rdout0 rdout1 rdout2")      # ssh aliases of the readout board pis
-SYNC_ALIASES=("sync0")                      # ssh aliases of the sync board pis
+RDOUT_PI_ALIASES=("rdout0 rdout1 rdout2")   # ssh aliases of the readout board pis
+SYNC_PI_ALIASES=("sync0")                   # ssh aliases of the sync board pis
 PI_HOMEDIR="/home/pi"
 PI_RDOUTDIR="$PI_HOMEDIR/cleanup-rdout/"    # directory to copy code into on rdout pis
 PI_SYNCDIR="$PI_HOMEDIR/cleanup-sync/"      # directory to copy code into on sync pis
