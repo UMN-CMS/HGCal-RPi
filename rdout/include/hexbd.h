@@ -1,7 +1,3 @@
-#include "data_orm.h"
-#include <stdio.h>
-#include <stdlib.h>
-
 int HEXBD_send_generic(int hexbd, int rw, int a2, int a1, int a0, char c);
 int HEXBD_read_generic(int hexbd, int a2, int a1, int a0);
 int HEXBD_queue_status(int hexbd);
