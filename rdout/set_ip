@@ -13,4 +13,4 @@ fi
 
 # set ip address
 echo "Setting IPBus IP/MAC"
-sudo ./bin/set_ip_mac_address $BOARDNUM > ip.log 2>&1
+sudo ./bin/set_ipbus_ip $BOARDNUM > ip.log 2>&1
