@@ -197,7 +197,4 @@ date_stamp = 0x3434 0xaabb                  # dummy date stamp
 Start events acquisition
 block_size = 30000
 skiroc_mask = 0x000f 0x0000
-
-Event 1
-# After this is just event counting
 ``` 
