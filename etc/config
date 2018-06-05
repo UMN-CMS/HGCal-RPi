@@ -8,10 +8,12 @@ check_retval () {
     fi
 }
 
-# general variables
+# ssh aliases
 RDOUT_PI_ALIASES=("rdout")                  # ssh aliases of the readout board pis
 SYNC_PI_ALIASES=("sync")                    # ssh aliases of the sync board pis
-PI_RDOUTDIR="/home/pi/cleanup-rdout/"    # directory to copy code into on rdout pis
-PI_SYNCDIR="/home/pi/cleanup-sync/"      # directory to copy code into on sync pis
+
+# raspberry pi file/folder names
+PI_RDOUTDIR="/home/pi/cleanup-rdout/"       # directory to copy code into on rdout pis
+PI_SYNCDIR="/home/pi/cleanup-sync/"         # directory to copy code into on sync pis
 RDOUT_EXE="new_rdout.exe"                   # name of the rdout executable
 SYNC_EXE="sync_debug.exe"                   # name of the sync executable
