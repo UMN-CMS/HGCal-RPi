@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 	fprintf(stderr,"rdout_mask = 0x%04x\n",(int)mask);
 
 	// Disable the max_trig_count feature.
-	int max_count0, max_count1, max_count2;
+	int max_count0, max_count1;
 	SYNC_put_max_trig_count0(0);
 	SYNC_put_max_trig_count1(0);
 	max_count0 = SYNC_get_max_trig_count0();
