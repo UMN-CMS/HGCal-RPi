@@ -5,6 +5,25 @@
 #include <stdio.h>
 
 
+// Get the board ID from the dip switches
+int get_board_id() {
+
+	bcm2835_spi_chipSelect(BCM2835_SPI_CS0);
+	char PAGE[] = {0xD};				// Chip has PAGE 13
+	bcm2835_spi_writenb(PAGE,1);
+	bcm2835_spi_chipSelect(BCM2835_SPI_CS1);
+
+	char PORTA_pullup[] = {0x40, 0xC, 0xFF};	// Pulling up on PORTA
+	bcm2835_spi_writenb(PORTA_pullup, sizeof(PORTA_pullup));
+
+	char PORTA_read_DIPS[] = {0x41, 0x12, 0};	// Reading DIP switches
+	char PORTA_DIPS[sizeof(PORTA_read_DIPS)];
+	bcm2835_spi_transfernb(PORTA_read_DIPS, PORTA_DIPS, sizeof(PORTA_read_DIPS));
+    
+    return PORTA_DIPS[2];
+}
+
+
 // Set the page register so we can talk to an ORM.
 void spi_select_orm(int orm) {
     char page[1];

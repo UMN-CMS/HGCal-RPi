@@ -11,6 +11,6 @@ gcc -c src/spi_common.c $CCFLAGS -o obj/spi_common.o
 gcc -c src/sync_orm.c   $CCFLAGS -o obj/sync_orm.o
 
 # compile executables
-gcc -O src/sync_debug.c obj/sync_orm.o obj/spi_common.o          $CCFLAGS -o bin/sync_debug.exe
-gcc -O src/program_fpga.c obj/spi_common.o                       $CCFLAGS -o bin/program_fpga
-gcc -O src/read_board_id.c obj/spi_common.o                      $CCFLAGS -o bin/read_board_id
+gcc -O src/sync_debug.c obj/sync_orm.o obj/spi_common.o $CCFLAGS -o bin/sync_debug.exe
+gcc -O src/program_fpga.c obj/spi_common.o              $CCFLAGS -o bin/program_fpga
+gcc -O src/get_board_id.c obj/spi_common.o              $CCFLAGS -o bin/get_board_id
