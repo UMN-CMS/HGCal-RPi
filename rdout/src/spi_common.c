@@ -4,7 +4,7 @@
 
 
 // Set the page register so we can talk to an ORM.
-int spi_select_orm(int orm)
+void spi_select_orm(int orm)
 {
   char page[4];
   page[0] = 2 * (orm + 1);

@@ -7,7 +7,7 @@ void init_spi(void);
 void end_spi(void);
 
 // Set the page register so we can talk to an ORM.
-int spi_select_orm(int orm);
+void spi_select_orm(int orm);
 
 // Send a 32-bit spi_read command, and keep the 16 bits that are returned.
 int spi_get_16bits(int orm, int addr);
