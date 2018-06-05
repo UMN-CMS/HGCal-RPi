@@ -20,8 +20,8 @@ The readout board Raspberry Pi code is in `rdout/`, and the sync board Pi code i
 ## Instructions
 
 ### 1. Setup
-Modify `RDOUT_PI_ALIASES` and `SYNC_PI_ALIASES` in `etc/config` to be the ssh aliases of all your readout and sync boards.
-As an example, if you have 3 readout boards with ssh aliases `rdout0` through `rdout2` and one sync board with ssh alias`sync0`, `etc/config` should read:
+Modify `RDOUT_PI_ALIASES` and `SYNC_PI_ALIASES` in `etc/config` to be the ssh aliases of the Raspberry Pis on your readout and sync boards.
+As an example, if you have 3 readout boards with rpi ssh aliases `rdout0` through `rdout2` and one sync board with rpi ssh alias`sync0`, `etc/config` should read:
 ```bash
 #!/bin/bash
 
@@ -60,7 +60,7 @@ Setup IPBus with `./setup_ipbus`.
 Each ssh alias will be printed just like in the previous step.
 The board number will be printed after readout board aliases.
 The board number starts from 0 and determines the IP address of the CTL ORM.
-The IP is determined in `rdout/src/set_ip_mac_address.c` - currently, the structure is `192.168.222.[BOARD NUMBER]`.
+The IP is determined in `rdout/src/set_ip_mac_address.c` - currently, the structure is `192.168.222.[200 + BOARD NUMBER]`.
 An example output for this script follows:
 ```
 sync:
