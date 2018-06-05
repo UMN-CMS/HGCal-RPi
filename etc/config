@@ -20,3 +20,6 @@ SYNC_EXE="sync_debug"                       # name of the sync executable
 
 # program flags
 RSYNC_FLAGS=(-az --delete '--filter=P *.log')
+    # -az: archive & compress data
+    # --delete: delete files in dest directory that aren't in source directory
+    # --filter=P *.log: don't delete .log files
