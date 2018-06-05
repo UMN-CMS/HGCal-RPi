@@ -1,6 +1,5 @@
-# HGCal-RPi : cleanup
+# HGCal-RPi
 
-This branch is the current cleanup effort of the Raspberry Pi code.
 The computer where this repository is cloned acts as the central hub for the Pis.
 The Raspberry Pi software and ORM firmware are copied out from the hub at the start of each run using `rsync`, ensuring each is running the latest versions.
 Boards are designated as readout or sync in `etc/config`, and their respective code/fw is in `rdout/` and `sync/`.
@@ -19,7 +18,6 @@ The most notable scripts are `setup_ipbus`, `start_pi_exes`, and `stop_pi_exes`;
   * [Documentation](#documentation)
      * [sync_debug](#sync_debug)
      * [new_rdout](#new_rdout)
-  * [Changes](#changes)
 
 
 ## Instructions
