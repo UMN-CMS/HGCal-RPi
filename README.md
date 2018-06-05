@@ -40,9 +40,9 @@ If an executable is running, no output will be produced.
 An example output is as follows (with `rdout` and `sync` as the ssh aliases)
 ```
 sync:                            # syncboard Pi ssh alias
-sync_debug.exe: no process found # not printed if there is a process running
+sync_debug: no process found     # not printed if there is a process running
 rdout:                           # rdoutboad Pi ssh alias
-new_rdout.exe: no process found  # not printed if there is a process running
+new_rdout: no process found      # not printed if there is a process running
 ```
 ### 3. IPBus Setup
 Setup IPBus with `./setup_ipbus`.
@@ -71,10 +71,10 @@ It first checks and stops any currently running executables, so you will likely 
 An example output is below:
 ```
 sync:
-sync_debug.exe: no process found
+sync_debug: no process found
 32365
 rdout:
-new_rdout.exe: no process found
+new_rdout: no process found
 1535
 ```
 
