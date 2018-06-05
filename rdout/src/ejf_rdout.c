@@ -1,5 +1,6 @@
 #include "ejf_rdout.h"
 #include "ctl_orm.h"
+#include "hexbd.h"
 
 int power_cycle_just_fpgas()
 {

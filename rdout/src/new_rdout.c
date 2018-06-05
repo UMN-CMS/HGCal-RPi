@@ -12,6 +12,7 @@
 #include <signal.h>
 
 #include "hexbd_config.h"
+#include "hexbd.h"
 #include "ctl_orm.h"
 #include "data_orm.h"
 #include "ejf_rdout.h"

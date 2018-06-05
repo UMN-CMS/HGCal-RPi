@@ -1,4 +1,5 @@
 #include "data_orm.h"
+#include "hexbd.h"
 #include <stdio.h>
 #include <stdlib.h>
 
