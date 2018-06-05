@@ -1,6 +1,7 @@
 #!/bin/bash
 
+PED=0
+
 ./compile
 
-nohup sudo ./bin/sync_debug 0 > sync.log 2>&1 &
-# 0 for regular trigs, 1 for ped
+nohup sudo ./bin/sync_debug $PED > sync.log 2>&1 &
