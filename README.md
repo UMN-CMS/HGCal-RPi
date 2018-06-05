@@ -2,7 +2,7 @@
 
 This branch is the current cleanup effort of the Raspberry Pi code.
 The computer where this repository is cloned acts as the central hub for the Pis.
-The Raspberry Pi software and ORM firmware are copied out from the hub at the start of each run using `rsync`, ensuring each is running the latest versions of each.
+The Raspberry Pi software and ORM firmware are copied out from the hub at the start of each run using `rsync`, ensuring each is running the latest versions.
 Boards are designated as readout or sync in `etc/config`, and their respective code/fw is in `rdout/` and `sync/`.
 A number of shell scripts are provided to facilitate this process.
 The most notable scripts are `setup_ipbus`, `start_pi_exes`, and `stop_pi_exes`; others can be found in `etc/config`, `rdout/`, and `sync/` (though the last two folders contain scripts that are only run on the Pis after the corresponding directory has been copied over).
@@ -201,18 +201,3 @@ skiroc_mask = 0x000f 0x0000
 Event 1
 # After this is just event counting
 ``` 
-
-
-## Changes
-The (incomplete) list of changes from the master branch includes:
-  - Moved header files into their own respective `include/` directories
-  - Added source files for the FPGA programming binary, as well as some others for reading the DIP switches
-  - Moved program\_fpga into the bin/ directory and the firmware files into the fw/ directory
-  - Merged RDOUT\_BOARD\_IPBus/rdout\_software with RDOUT\_BOARD\_IPBus
-  - Renamed RDOUT\_BOARD\_IPBus/ to rdout/ and SYNCH\_BOARD/ to sync/
-  - Removed unnecessary code in new\_rdout.c and sync\_debug.c
-  - Removed unused files
-  - Created scripts for easy usage in rdout/ and sync/
-  - Created scripts to start executables, stop executables, setup IPBus, etc...
-  - Automatic IP address generation - much easier to use multiple readout boards
-  - Software and firmware are automatically copied to each Pi to ensure each has the most recent versions
