@@ -9,6 +9,13 @@
 #define ENABLE_VETO1 0
 #define ENABLE_VETO2 0
 
+static int keeprunning = 1;
+void handler(int signum) {
+    if(signum == SIGTERM) {
+        keeprunning = 0;
+    }
+}
+
 int main(int argc, char *argv[])
 {
 	// Startup the SPI interface on the Pi.
@@ -99,8 +106,11 @@ int main(int argc, char *argv[])
 	int trig0, trig1;
 	double trig_value;
 
+    // main loop
+    signal(SIGTERM, handler); // handle `kill` commands
+    signal(SIGINT, handler); // handle Ctrl-c
 	i = 0; // loop counter
-	while(1) {
+	while(keeprunning) {
 		sleep(10); // Sleep 10 seconds.
 
 		// initialize SPI
@@ -143,7 +153,7 @@ int main(int argc, char *argv[])
 		fprintf(stderr,"\n");
 
 		i++;
-	}
+	} // end main loop
 
 	init_spi();
 
