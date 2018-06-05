@@ -77,8 +77,7 @@ new_rdout: no process found
 ```
 
 The process number is printed for each alias.
-If no number is printed, the executable was not properly started.
-There is currently no error checking for this, so check for each number.
+If the process was not started (i.e. there is no pid for the process), the script will print an error message and exit.
 
 ### 5. Start Data Taking
 Once these executables are started, you can begin taking data with EUDAQ.

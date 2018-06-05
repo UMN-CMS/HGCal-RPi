@@ -21,7 +21,12 @@ do
     ssh $SYNC_PI_ALIAS "cd $PI_SYNCDIR; ./run_sync"
 
     # make sure they are up
-    ssh $SYNC_PI_ALIAS "pgrep $SYNC_EXE"
+    PID=$(ssh $SYNC_PI_ALIAS "pgrep $SYNC_EXE")
+    if [ -z "$PID" ]
+    then
+        echo "Aborting - the process on $SYNC_PI_ALIAS was not started"
+        exit 1
+    fi
 done
 
 
@@ -40,5 +45,10 @@ do
     ssh $RDOUT_PI_ALIAS "cd $PI_RDOUTDIR; ./run_rdout"
 
     # make sure they are up
-    ssh $RDOUT_PI_ALIAS "pgrep $RDOUT_EXE"
+    PID=$(ssh $RDOUT_PI_ALIAS "pgrep $RDOUT_EXE")
+    if [ -z "$PID" ]
+    then
+        echo "Aborting - the process on $RDOUT_PI_ALIAS was not started"
+        exit 1
+    fi
 done
