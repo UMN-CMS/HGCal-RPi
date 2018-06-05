@@ -7,6 +7,6 @@ do
     echo "$RDOUT_ALIAS:"
 
     # copy directories over
-    rsync $RSYNC_FLAGS rdout/ $RDOUT_ALIAS:$PI_RDOUTDIR
+    rsync "${RSYNC_FLAGS[@]}" rdout/ $RDOUT_ALIAS:$PI_RDOUTDIR
     ssh $RDOUT_ALIAS "cd $PI_RDOUTDIR; ./compile; sudo ./bin/pwr_cycle_fpgas.exe"
 done

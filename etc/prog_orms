@@ -6,7 +6,7 @@ source etc/config
 for SYNC_PI_ALIAS in "${SYNC_PI_ALIASES[@]}"
 do
     echo "$SYNC_PI_ALIAS:"
-    rsync $RSYNC_FLAGS sync/ $SYNC_PI_ALIAS:$PI_SYNCDIR
+    rsync "${RSYNC_FLAGS[@]}" sync/ $SYNC_PI_ALIAS:$PI_SYNCDIR
     ssh $SYNC_PI_ALIAS "cd $PI_SYNCDIR; ./prog_sync"
     check_retval "$?"
 done
@@ -14,7 +14,7 @@ done
 for RDOUT_PI_ALIAS in "${RDOUT_PI_ALIASES[@]}"
 do
     echo "$RDOUT_PI_ALIAS:"
-    rsync $RSYNC_FLAGS rdout/ $RDOUT_PI_ALIAS:$PI_RDOUTDIR
+    rsync "${RSYNC_FLAGS[@]}" rdout/ $RDOUT_PI_ALIAS:$PI_RDOUTDIR
     ssh $RDOUT_PI_ALIAS "cd $PI_RDOUTDIR; ./prog_rdout"
     check_retval "$?"
 done

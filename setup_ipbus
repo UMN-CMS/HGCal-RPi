@@ -15,7 +15,7 @@ do
     # copy directories over and install firmware
     if [ $DOPROG -eq 1 ]
     then
-        rsync $RSYNC_FLAGS sync/ $SYNC_PI_ALIAS:$PI_SYNCDIR
+        rsync "${RSYNC_FLAGS[@]}" sync/ $SYNC_PI_ALIAS:$PI_SYNCDIR
         ssh $SYNC_PI_ALIAS "cd $PI_SYNCDIR; ./prog_sync"
         check_retval "$?"
     fi
@@ -27,7 +27,7 @@ do
     echo "$RDOUT_PI_ALIAS ($BOARDNUM):"
 
     # copy directories over
-    rsync $RSYNC_FLAGS rdout/ $RDOUT_PI_ALIAS:$PI_RDOUTDIR
+    rsync "${RSYNC_FLAGS[@]}" rdout/ $RDOUT_PI_ALIAS:$PI_RDOUTDIR
 
     # install firmware
     if [ $DOPROG -eq 1 ]

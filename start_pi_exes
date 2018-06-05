@@ -15,7 +15,7 @@ do
     ssh $SYNC_PI_ALIAS "sudo killall $SYNC_EXE"
 
     # copy directories over
-    rsync $RSYNC_FLAGS sync/ $SYNC_PI_ALIAS:$PI_SYNCDIR
+    rsync "${RSYNC_FLAGS[@]}" sync/ $SYNC_PI_ALIAS:$PI_SYNCDIR
 
     # start pi executables
     ssh $SYNC_PI_ALIAS "cd $PI_SYNCDIR; ./run_sync"
@@ -34,7 +34,7 @@ do
     ssh $RDOUT_PI_ALIAS "sudo killall $RDOUT_EXE"
 
     # copy directories over
-    rsync $RSYNC_FLAGS rdout/ $RDOUT_PI_ALIAS:$PI_RDOUTDIR
+    rsync "${RSYNC_FLAGS[@]}" rdout/ $RDOUT_PI_ALIAS:$PI_RDOUTDIR
 
     # start pi executables
     ssh $RDOUT_PI_ALIAS "cd $PI_RDOUTDIR; ./run_rdout"
