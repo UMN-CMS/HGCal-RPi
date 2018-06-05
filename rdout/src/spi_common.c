@@ -1,6 +1,8 @@
+#include <bcm2835.h>
+#include "spi_common.h"
+
 #include <stdlib.h>
 #include <stdio.h>
-#include "spi_common.h"
 
 
 // Set the page register so we can talk to an ORM.

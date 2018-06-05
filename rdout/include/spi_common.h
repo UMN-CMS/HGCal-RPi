@@ -1,5 +1,3 @@
-#include <bcm2835.h>
-
 // Initialize the SPI interface.
 void init_spi(void);
 
