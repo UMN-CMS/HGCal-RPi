@@ -46,8 +46,8 @@ new_rdout: no process found      # not printed if there is a process running
 Setup IPBus with `./setup_ipbus`.
 Each ssh alias will be printed just like in the previous step.
 The board number will be printed after readout board aliases.
-The board number starts from 0 and determines the IP address of the CTL ORM.
-The IP is determined in `rdout/src/set_ip_mac_address.c` - currently, the structure is `192.168.222.[200 + BOARD NUMBER]`.
+The board number starts from 0 and determines the IPBus IP address of the CTL ORM.
+The IP is determined in `rdout/src/set_ipbus_ip.c` - currently, the structure is `192.168.222.[200 + BOARD NUMBER]`.
 An example output for this script follows:
 ```
 sync:
