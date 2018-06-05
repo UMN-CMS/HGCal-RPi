@@ -37,7 +37,7 @@ do
     fi
 
     # set ip/mac addresses
-    ssh $RDOUT_PI_ALIAS "cd $PI_RDOUTDIR; ./set_ip $BOARDNUM"
+    ssh $RDOUT_PI_ALIAS "cd $PI_RDOUTDIR; ./set_ipbus_ip $BOARDNUM"
     check_retval "$?"
 
     BOARDNUM=$((BOARDNUM+1))
