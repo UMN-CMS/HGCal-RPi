@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
     signal(SIGINT, handler); // handle Ctrl-c
 	i = 0; // loop counter
 	while(keeprunning) {
-		sleep(10); // Sleep 10 seconds.
+		sleep(5); // Sleep 5 seconds.
 
 		// initialize SPI
 		init_spi();
