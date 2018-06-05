@@ -1,7 +1,12 @@
 # HGCal-RPi : cleanup
 
 This branch is the current cleanup effort of the Raspberry Pi code.
-The readout board Raspberry Pi code is in `rdout/`, and the sync board Pi code is in `sync/`.
+The computer where this repository is cloned acts as the central hub for the Pis.
+The Raspberry Pi software and ORM firmware are copied out from the hub at the start of each run using `rsync`, ensuring each is running the latest versions of each.
+Boards are designated as readout or sync in `etc/config`, and their respective code/fw is in `rdout/` and `sync/`.
+A number of shell scripts are provided to facilitate this process.
+The most notable scripts are `setup_ipbus`, `start_pi_exes`, and `stop_pi_exes`; others can be found in `etc/config`, `rdout/`, and `sync/` (though the last two folders contain scripts that are only run on the Pis after the corresponding directory has been copied over).
+
 
 ## Table of Contents
   * [Instructions](#instructions)
@@ -23,24 +28,8 @@ The readout board Raspberry Pi code is in `rdout/`, and the sync board Pi code i
 Modify `RDOUT_PI_ALIASES` and `SYNC_PI_ALIASES` in `etc/config` to be the ssh aliases of the Raspberry Pis on your readout and sync boards.
 As an example, if you have 3 readout boards with rpi ssh aliases `rdout0` through `rdout2` and one sync board with rpi ssh alias`sync0`, `etc/config` should read:
 ```bash
-#!/bin/bash
-
-# function to check return values
-check_retval () {
-    if [ $1 -ne 0 ]
-    then
-        exit 1
-    fi
-}
-
-# general variables
 RDOUT_PI_ALIASES=("rdout0 rdout1 rdout2")   # ssh aliases of the readout board pis
 SYNC_PI_ALIASES=("sync0")                   # ssh aliases of the sync board pis
-PI_HOMEDIR="/home/pi"
-PI_RDOUTDIR="$PI_HOMEDIR/cleanup-rdout/"    # directory to copy code into on rdout pis
-PI_SYNCDIR="$PI_HOMEDIR/cleanup-sync/"      # directory to copy code into on sync pis
-RDOUT_EXE="new_rdout.exe"                   # name of the rdout executable
-SYNC_EXE="sync_debug.exe"                   # name of the sync executable
 ```
 
 ### 2. Stop Previously Running Executables
