@@ -19,4 +19,4 @@ RDOUT_EXE="new_rdout"                       # name of the rdout executable
 SYNC_EXE="sync_debug"                       # name of the sync executable
 
 # program flags
-RSYNC_FLAGS="-az --delete --filter='P *.log'"
+RSYNC_FLAGS=(-az --delete '--filter=P *.log')
