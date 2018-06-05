@@ -17,3 +17,6 @@ PI_RDOUTDIR="/home/pi/cleanup-rdout/"       # directory to copy code into on rdo
 PI_SYNCDIR="/home/pi/cleanup-sync/"         # directory to copy code into on sync pis
 RDOUT_EXE="new_rdout.exe"                   # name of the rdout executable
 SYNC_EXE="sync_debug.exe"                   # name of the sync executable
+
+# program flags
+RSYNC_FLAGS="-az --delete --filter='P *.log'"
