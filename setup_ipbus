@@ -4,7 +4,7 @@
 # firmware is installed, and the IP/MAC address of the
 # rdout CTL ORMs is set.
 
-DOPROG=1 # set to 0 to skip firmware installation
+DOPROG=0 # set to 0 to skip firmware installation
 
 source etc/config
 
