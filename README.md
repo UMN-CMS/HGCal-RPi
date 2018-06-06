@@ -1,4 +1,6 @@
-# HGCal-RPi
+# HGCal-RPi : CERN-tb-06-18
+
+This branch is used at CERN for the June 2018 beam tests.
 
 The computer where this repository is cloned acts as the central hub for the Pis.
 The Raspberry Pi software and ORM firmware are copied out from the hub at the start of each run using `rsync`, ensuring each is running the latest versions.
