@@ -20,7 +20,7 @@ void handler(int signum) {
 int main(int argc, char *argv[])
 {
     if(argc < 2) {
-        printf("usage: sudo ./sync_debug [PED] [VETO1] [VETO2]\n");
+        printf("usage: sudo ./sync_debug [PED]\n");
         return 1;
     }
 
