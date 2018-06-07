@@ -23,6 +23,7 @@ The most notable scripts are `setup_ipbus`, `start_pi_exes`, and `stop_pi_exes`;
      * [new_rdout](#new_rdout)
      * [Power Cycling](#power-cycling)
      * [FPGA Programming](#fpga-programming)
+     * [Setting IPBus IP](#setting-ipbus-ip)
   * [Current Software/Firmware](#current-softwarefirmware)
 
 
@@ -213,6 +214,12 @@ You can also check the [Current Software/Firmware](#current-softwarefirmware) se
 If programming an ORM fails, you will be notified.
 You can check the `prog.log` file on the pi where the programming failed to see what went wrong.
 Make sure any executables are stopped before running this script.
+
+### Setting IPBus IP
+The IPBus IP addresses on each ctl ORM are set during execution of `setup_ipbus`, which calls `rdout/set_ipbus_ip` on the pis.
+The IP form is currently `192.168.222.[200+BOARD NUMBER]` where the board number is determined by the position of the pi's alias in `etc/config` (starting from 0).
+This script will print an error message and exit if the IP setting fails for some reason.
+You can check `ip.log` on the board that failed to see what happened.
 
 ## Current Software/Firmware
 These are the current versions:
