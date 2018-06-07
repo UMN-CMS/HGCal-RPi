@@ -5,7 +5,8 @@ source etc/config
 
 for RDOUT_PI_ALIAS in "${RDOUT_PI_ALIASES[@]}"
 do
-    SKIROCMASK="$(ssh $RDOUT_PI_ALIAS "cat rdout.log | grep -m 1 skiroc_mask")"
+    echo "$RDOUT_PI_ALIAS:"
+    SKIROCMASK="$(ssh $RDOUT_PI_ALIAS "cat $PI_RDOUTDIR/rdout.log | grep -m 1 skiroc_mask")"
     HEXBDS="$(echo "$SKIROCMASK" | awk -F"f" '{print NF-1}')"
     echo "$SKIROCMASK ($HEXBDS hexbds)"
 done
