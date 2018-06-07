@@ -1,7 +1,7 @@
 # HGCal-RPi : CERN-tb-06-18
 
 This branch is used at CERN for the June 2018 beam tests.
-The aliases in `etc/config` are for the current setup.
+The aliases in `etc/config` are for the current setup, and the `setup_ipbus` script does NOT program the ORMs, since we are having problems with the hexaboards being too cold to startup after a power cycle.
 
 The computer where this repository is cloned acts as the central hub for the Pis.
 The Raspberry Pi software and ORM firmware are copied out from the hub at the start of each run using `rsync`, ensuring each is running the latest versions.
@@ -52,6 +52,7 @@ new_rdout: no process found      # not printed if there is a process running
 ### 3. IPBus Setup
 Setup IPBus with `./setup_ipbus`.
 Each ssh alias will be printed just like in the previous step.
+The ORMs on that board will be programmed - this can be changed with the `DOPROG` variable in the `setup_ipbus` script.
 The board number will be printed after readout board aliases.
 The board number starts from 0 and determines the IPBus IP address of the CTL ORM.
 The IP is determined in `rdout/src/set_ipbus_ip.c` - currently, the structure is `192.168.222.[200 + BOARD NUMBER]`.
@@ -218,6 +219,7 @@ Make sure any executables are stopped before running this script.
 ### Setting IPBus IP
 The IPBus IP addresses on each ctl ORM are set during execution of `setup_ipbus`, which calls `rdout/set_ipbus_ip` on the pis.
 The IP form is currently `192.168.222.[200+BOARD NUMBER]` where the board number is determined by the position of the pi's alias in `etc/config` (starting from 0).
+This can be changed in `rdout/src/set_ipbus_ip.c`.
 This script will print an error message and exit if the IP setting fails for some reason.
 You can check `ip.log` on the board that failed to see what happened.
 
