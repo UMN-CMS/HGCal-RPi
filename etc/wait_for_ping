@@ -1,0 +1,26 @@
+#!/bin/bash
+# waits for the ORMs to show up on the network
+
+BASE_IP="192.168.222."
+OFFSET=200
+
+source etc/config
+
+BOARDNUM=0
+for RDOUT_PI_ALIAS in "${RDOUT_PI_ALIASES[@]}"
+do
+    echo "$RDOUT_PI_ALIAS ($BOARDNUM):"
+
+    IP="$BASE_IP$((OFFSET+BOARDNUM))"
+
+    for i in {1..20}
+    do
+        ping -c1 -w1 $IP &> /dev/null
+        if [ $? -eq 0 ]
+        then
+            break
+        fi
+    done
+
+    BOARDNUM=$((BOARDNUM+1))
+done
