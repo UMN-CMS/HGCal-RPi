@@ -20,4 +20,4 @@ gcc -O src/program_fpga.c    obj/spi_common.o                                   
 gcc -O src/pwr_cycle_fpgas.c obj/ejf_rdout.o obj/ctl_orm.o obj/data_orm.o obj/hexbd.o obj/hexbd_config.o obj/spi_common.o $CCFLAGS -o bin/pwr_cycle_fpgas
 gcc -O src/get_board_id.c    obj/spi_common.o                                                                             $CCFLAGS -o bin/get_board_id
 gcc -O src/set_ipbus_ip.c    obj/ctl_orm.o obj/spi_common.o                                                               $CCFLAGS -o bin/set_ipbus_ip
-gcc -O srd/test_hexbds.c     obj/hexbd.o obj/spi_common.o                                                                 $CCFLAGS -o bin/test_hexbds
+gcc -O src/test_hexbds.c     obj/hexbd.o obj/spi_common.o                                                                 $CCFLAGS -o bin/test_hexbds

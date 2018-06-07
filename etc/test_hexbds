@@ -1,0 +1,10 @@
+#!/bin/bash
+# copy the directories over to all of the pis
+
+source etc/config
+
+for RDOUT_PI_ALIAS in "${RDOUT_PI_ALIASES[@]}"
+do
+    echo "$RDOUT_PI_ALIAS:"
+    ssh $RDOUT_PI_ALIAS "cd $PI_RDOUTDIR; ./compile; ./bin/test_hexbds"
+done
