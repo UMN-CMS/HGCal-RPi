@@ -22,6 +22,7 @@ The most notable scripts are `setup_ipbus`, `start_pi_exes`, and `stop_pi_exes`;
      * [sync_debug](#sync_debug)
      * [new_rdout](#new_rdout)
      * [Power Cycling](#power-cycling)
+     * [FPGA Programming](#fpga-programming)
   * [Current Software/Firmware](#current-softwarefirmware)
 
 
