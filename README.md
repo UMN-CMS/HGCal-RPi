@@ -1,6 +1,7 @@
 # HGCal-RPi : CERN-tb-06-18
 
 This branch is used at CERN for the June 2018 beam tests.
+The aliases in `etc/config` are for the current setup.
 
 The computer where this repository is cloned acts as the central hub for the Pis.
 The Raspberry Pi software and ORM firmware are copied out from the hub at the start of each run using `rsync`, ensuring each is running the latest versions.
@@ -20,6 +21,7 @@ The most notable scripts are `setup_ipbus`, `start_pi_exes`, and `stop_pi_exes`;
   * [Documentation](#documentation)
      * [sync_debug](#sync_debug)
      * [new_rdout](#new_rdout)
+     * [Power Cycling](#power-cycling)
   * [Current Software/Firmware](#current-softwarefirmware)
 
 
@@ -199,6 +201,20 @@ block_size = 30000
 skiroc_mask = 0x000f 0x0000
 ``` 
 
+### Power Cycling
+The script to power cycle the ORMs is `etc/pwr_cycle`.
+This power cycles all 4 data ORMs and the CTL ORM on each readout board.
+At the moment, this also power cycles the hexaboards connected to the ORMs.
+Be sure that the hexaboards turn back on before taking data - sometimes they may need to be warmed up.
+
+### FPGA Programming
+The ORMs can be reprogrammed using the `etc/prog_orms` script.
+This programs all of the readout and sync board ORMs.
+The `rdout/prog_rdout` and `sync/prog_sync` scripts get run on the pis over ssh - these contain the names of the firmware to be used.
+You can also check the [Current Software/Firmware](#current-softwarefirmware) section for the hex files to use; this should be updated whenever there is new firmware.
+If programming an ORM fails, you will be notified.
+You can check the `prog.log` file on the pi where the programming failed to see what went wrong.
+Make sure any executables are stopped before running this script.
 
 ## Current Software/Firmware
 These are the current versions:
