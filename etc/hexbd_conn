@@ -1,0 +1,10 @@
+#!/bin/bash
+# check the log files and see which hexbds are connected on each rdout board
+
+source etc/config
+
+for RDOUT_PI_ALIAS in "${RDOUT_PI_ALIASES[@]}"
+do
+    echo "$RDOUT_PI_ALIAS"
+    ssh $RDOUT_PI_ALIAS "cat $PI_RDOUTDIR/rdout.log"
+done
