@@ -76,13 +76,10 @@ An example output is below:
 ```
 sync:
 sync_debug: no process found
-32365
 rdout:
 new_rdout: no process found
-1535
 ```
 
-The process number is printed for each alias.
 If the process was not started (i.e. there is no pid for the process), the script will print an error message and exit.
 
 ### 5. Start Data Taking
