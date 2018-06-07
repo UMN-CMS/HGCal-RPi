@@ -23,9 +23,7 @@
 
 static int keeprunning = 1;
 void handler(int signum) {
-    if(signum == SIGTERM) {
-        keeprunning = 0;
-    }
+    keeprunning = 0;
 }
 
 
