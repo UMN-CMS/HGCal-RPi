@@ -38,11 +38,20 @@ do
     # stop any old executables
     ssh $RDOUT_PI_ALIAS "sudo killall $RDOUT_EXE"
 
-    # copy directories over
-    rsync "${RSYNC_FLAGS[@]}" rdout/ $RDOUT_PI_ALIAS:$PI_RDOUTDIR
+    if [ "$RDOUT_PI_ALIAS" = "pi5"]
+    then
+        # copy directories over
+        rsync "${RSYNC_FLAGS[@]}" rdout-timing/ $RDOUT_PI_ALIAS:$PI_RDOUTDIR
 
-    # start pi executables
-    ssh $RDOUT_PI_ALIAS "cd $PI_RDOUTDIR; ./run_rdout"
+        # start pi executables
+        ssh $RDOUT_PI_ALIAS "cd $PI_RDOUTDIR; ./run_rdout"
+    else
+        # copy directories over
+        rsync "${RSYNC_FLAGS[@]}" rdout/ $RDOUT_PI_ALIAS:$PI_RDOUTDIR
+
+        # start pi executables
+        ssh $RDOUT_PI_ALIAS "cd $PI_RDOUTDIR; ./run_rdout"
+    fi
 
     # make sure they are up
     PID=$(ssh $RDOUT_PI_ALIAS "pgrep $RDOUT_EXE")
