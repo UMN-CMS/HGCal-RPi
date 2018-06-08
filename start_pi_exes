@@ -38,7 +38,7 @@ do
     # stop any old executables
     ssh $RDOUT_PI_ALIAS "sudo killall $RDOUT_EXE"
 
-    if [ "$RDOUT_PI_ALIAS" = "pi5"]
+    if [ "$RDOUT_PI_ALIAS" = "pi5" ]
     then
         # copy directories over
         rsync "${RSYNC_FLAGS[@]}" rdout-timing/ $RDOUT_PI_ALIAS:$PI_RDOUTDIR
