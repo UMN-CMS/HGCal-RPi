@@ -6,11 +6,12 @@ source etc/config
 for RDOUT_PI_ALIAS in "${RDOUT_PI_ALIASES[@]}"
 do
     echo "$RDOUT_PI_ALIAS"
-    rsync "${RSYNC_FLAGS[@]}" rdout/ $RDOUT_PI_ALIAS:$PI_RDOUTDIR
+    rsync "${RSYNC_FLAGS[@]}" rdout/ $RDOUT_PI_ALIAS:$PI_RDOUTDIR &
 done
 
 for SYNC_PI_ALIAS in "${SYNC_PI_ALIASES[@]}"
 do
     echo "$SYNC_PI_ALIAS"
-    rsync "${RSYNC_FLAGS[@]}" sync/ $SYNC_PI_ALIAS:$PI_SYNCDIR
+    rsync "${RSYNC_FLAGS[@]}" sync/ $SYNC_PI_ALIAS:$PI_SYNCDIR &
 done
+wait
