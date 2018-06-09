@@ -3,15 +3,33 @@
 
 source etc/config
 
+
+# copy directories over
 for RDOUT_PI_ALIAS in "${RDOUT_PI_ALIASES[@]}"
 do
-    echo "$RDOUT_PI_ALIAS"
+    echo "copying to $RDOUT_PI_ALIAS"
     rsync "${RSYNC_FLAGS[@]}" rdout/ $RDOUT_PI_ALIAS:$PI_RDOUTDIR &
 done
 
 for SYNC_PI_ALIAS in "${SYNC_PI_ALIASES[@]}"
 do
-    echo "$SYNC_PI_ALIAS"
+    echo "copying to $SYNC_PI_ALIAS"
     rsync "${RSYNC_FLAGS[@]}" sync/ $SYNC_PI_ALIAS:$PI_SYNCDIR &
 done
 wait
+
+
+# compile
+for RDOUT_PI_ALIAS in "${RDOUT_PI_ALIASES[@]}"
+do
+    echo "compiling on $RDOUT_PI_ALIAS"
+    ssh $RDOUT_PI_ALIAS "cd $PI_RDOUTDIR; ./compile" &
+done
+
+for SYNC_PI_ALIAS in "${SYNC_PI_ALIASES[@]}"
+do
+    echo "compiling on $SYNC_PI_ALIAS"
+    ssh $SYNC_PI_ALIAS "cd $PI_RDOUTDIR; ./compile" &
+done
+wait
+
