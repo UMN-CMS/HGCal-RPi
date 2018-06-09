@@ -4,15 +4,13 @@
 BOARDNUM=$1
 if [ -z "$BOARDNUM" ] # indicates no argument was provided
 then
-    echo "usage: ./set_ip [BOARD NUMBER]"
+    echo "usage: ./set_ipbus_ip [BOARD NUMBER]"
     exit 1
 fi
 
+# compile
+./compile
+
 # set ip address
-echo "Setting IPBus IP/MAC"
 sudo ./bin/set_ipbus_ip $BOARDNUM > ip.log 2>&1
-if [ $? -ne 0 ]
-then
-    echo "IPBus IP setting failed. Check ip.log"
-    exit 1
-fi
+exit $?

@@ -10,15 +10,31 @@ source etc/config
 ./etc/copy_dirs
 
 
-# setup IPBus
+# set IPBus ip addresses
+PIDS=""
 BOARDNUM=0
 for RDOUT_PI_ALIAS in "${RDOUT_PI_ALIASES[@]}"
 do
-    echo "$RDOUT_PI_ALIAS ($BOARDNUM):"
 
     # set ip/mac addresses
-    ssh $RDOUT_PI_ALIAS "cd $PI_RDOUTDIR; ./set_ipbus_ip $BOARDNUM"
-    check_retval "$?"
+    ssh $RDOUT_PI_ALIAS "cd $PI_RDOUTDIR; ./set_ipbus_ip $BOARDNUM" &
+    PID="$!"
+    echo "setting IPBus ip on $RDOUT_PI_ALIAS (board number $BOARDNUM, pid $PID)"
 
+    # keep pid for later
+    PIDS+=" $PID"
+
+    # next board
     BOARDNUM=$((BOARDNUM+1))
+done
+
+
+# make sure everything exits ok
+for PID in $PIDS
+do
+    wait "$PID"
+    if [ $? -ne 0 ]
+    then
+        echo "Setting IPBus (pid $PID) failed. Check prog.log on the rdout board with that pid"
+    fi
 done
