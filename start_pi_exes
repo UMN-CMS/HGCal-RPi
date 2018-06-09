@@ -8,10 +8,6 @@ source etc/config
 ./stop_pi_exes
 
 
-# copy and compile
-./etc/copy_dirs
-
-
 # sync boards
 for SYNC_PI_ALIAS in "${SYNC_PI_ALIASES[@]}"
 do
