@@ -6,12 +6,12 @@ source etc/config
 # stop any old executables
 for SYNC_PI_ALIAS in "${SYNC_PI_ALIASES[@]}"
 do
-    echo "$SYNC_PI_ALIAS:"
+    echo "stopping exes on $SYNC_PI_ALIAS"
     ssh $SYNC_PI_ALIAS "sudo killall $SYNC_EXE" &
 done
 
 for RDOUT_PI_ALIAS in "${RDOUT_PI_ALIASES[@]}"
 do
-    echo "$RDOUT_PI_ALIAS:"
+    echo "stopping exes on $RDOUT_PI_ALIAS:"
     ssh $RDOUT_PI_ALIAS "sudo killall $RDOUT_EXE" &
 done
