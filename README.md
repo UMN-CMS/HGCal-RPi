@@ -29,6 +29,8 @@ The most notable scripts are `setup_ipbus`, `start_pi_exes`, and `stop_pi_exes`;
 
 ## Instructions
 
+NOTE: The example outputs that are in these sections are not necessarily accurate. Things run in parallel now, so the output scheme is being changed.
+
 ### 1. Setup
 Modify `RDOUT_PI_ALIASES` and `SYNC_PI_ALIASES` in `etc/config` to be the ssh aliases of the Raspberry Pis on your readout and sync boards.
 As an example, if you have 3 readout boards with rpi ssh aliases `rdout0` through `rdout2` and one sync board with rpi ssh alias`sync0`, `etc/config` should read:
