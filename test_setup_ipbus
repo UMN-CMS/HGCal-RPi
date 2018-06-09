@@ -1,0 +1,41 @@
+#!/bin/bash
+# IPBus setup
+# the rdout/ and sync/ directories are copied to the pis,
+# firmware is installed, and the IP/MAC address of the
+# rdout CTL ORMs is set.
+
+source etc/config
+
+# copy and compile
+./etc/copy_dirs
+
+
+# set IPBus ip addresses
+PIDS=""
+BOARDNUM=0
+for RDOUT_PI_ALIAS in "${RDOUT_PI_ALIASES[@]}"
+do
+
+    # set ip/mac addresses
+    ssh $RDOUT_PI_ALIAS "cd $PI_RDOUTDIR; ./test_ipbus_ip $BOARDNUM" &
+    PID="$!"
+
+    echo "setting IPBus ip on $RDOUT_PI_ALIAS (board number $BOARDNUM, pid $PID)"
+
+    # keep pid for later
+    PIDS+=" $PID"
+
+    # next board
+    BOARDNUM=$((BOARDNUM+1))
+done
+
+
+# make sure everything exits ok
+for PID in $PIDS
+do
+    RETVAL="$(wait $PID)"
+    if [ "$RETVAL" != "0" ]
+    then
+        echo "Setting IPBus on pid $PID failed. Check prog.log on the rdout board"
+    fi
+done
