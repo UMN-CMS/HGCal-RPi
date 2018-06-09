@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# compile
-./compile
-
 # SYNC ORM
 echo "Programming SYNC ORM"
 sudo ./bin/program_fpga 4 < fw/sync_orm_busy2.hex > prog.log 2>&1
