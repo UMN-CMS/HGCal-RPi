@@ -29,7 +29,7 @@ done
 for SYNC_PI_ALIAS in "${SYNC_PI_ALIASES[@]}"
 do
     echo "compiling on $SYNC_PI_ALIAS"
-    ssh $SYNC_PI_ALIAS "cd $PI_RDOUTDIR; ./compile" &
+    ssh $SYNC_PI_ALIAS "cd $PI_SYNCDIR; ./compile" &
 done
 wait
 
