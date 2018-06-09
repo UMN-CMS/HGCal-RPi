@@ -4,37 +4,17 @@
 # firmware is installed, and the IP/MAC address of the
 # rdout CTL ORMs is set.
 
-DOPROG=0 # set to 0 to skip firmware installation
-
 source etc/config
 
-for SYNC_PI_ALIAS in "${SYNC_PI_ALIASES[@]}"
-do
-    echo "$SYNC_PI_ALIAS:"
+# copy and compile
+./etc/copy_dirs
 
-    # copy directories over and install firmware
-    if [ $DOPROG -eq 1 ]
-    then
-        rsync "${RSYNC_FLAGS[@]}" sync/ $SYNC_PI_ALIAS:$PI_SYNCDIR
-        ssh $SYNC_PI_ALIAS "cd $PI_SYNCDIR; ./prog_sync"
-        check_retval "$?"
-    fi
-done
 
+# setup IPBus
 BOARDNUM=0
 for RDOUT_PI_ALIAS in "${RDOUT_PI_ALIASES[@]}"
 do
     echo "$RDOUT_PI_ALIAS ($BOARDNUM):"
-
-    # copy directories over
-    rsync "${RSYNC_FLAGS[@]}" rdout/ $RDOUT_PI_ALIAS:$PI_RDOUTDIR
-
-    # install firmware
-    if [ $DOPROG -eq 1 ]
-    then
-        ssh $RDOUT_PI_ALIAS "cd $PI_RDOUTDIR; ./prog_rdout"
-        check_retval "$?"
-    fi
 
     # set ip/mac addresses
     ssh $RDOUT_PI_ALIAS "cd $PI_RDOUTDIR; ./set_ipbus_ip $BOARDNUM"
