@@ -33,9 +33,9 @@ done
 # make sure everything exits ok
 for PID in $PIDS
 do
-    RETVAL="$(wait $PID)"
-    if [ "$RETVAL" != "0" ]
+    wait "$PID"
+    if [ $? -ne 0 ]
     then
-        echo "Setting IPBus on pid $PID failed. Check prog.log on the rdout board"
+        echo "Setting IPBus (pid $PID) failed. Check prog.log on the rdout board with that pid"
     fi
 done
