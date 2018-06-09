@@ -8,9 +8,6 @@ then
     exit 1
 fi
 
-# compile
-./compile
-
 # set ip address
 echo "Setting IPBus IP/MAC"
 sudo ./bin/set_ipbus_ip $BOARDNUM > ip.log 2>&1
