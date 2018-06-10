@@ -7,13 +7,21 @@
 
 #define CHIP_ID 0x20ba18
 
-int read_chip_id(int orm) {
 
-    // send page to talk to an ORM's EEPROM
+// set page to talk to an ORM's EEPROM
+void spi_select_eeprom(int orm) {
     char page[1] = { 1 + (2 * (orm + 1)) };
     bcm2835_spi_chipSelect(BCM2835_SPI_CS0);
     bcm2835_spi_writenb(page, 1);
     bcm2835_spi_chipSelect(BCM2835_SPI_CS1);
+}
+
+
+// read the chip ID from an ORM's EEPROM
+int read_chip_id(int orm) {
+
+    // send page to talk to the EEPROM
+    spi_select_eeprom(orm);
 
     // send command to get the EEPROM's chip ID
     char read_id[] = {0x9e, 0x00, 0x00, 0x00};

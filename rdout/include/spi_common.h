@@ -18,3 +18,6 @@ int get_board_id();
 
 // get the chip ID of the EEPROM
 int read_chip_id();
+
+// set the page register so we can talk to an ORM's EEPROM
+void spi_select_eeprom(int orm);
