@@ -22,7 +22,7 @@ int main() {
     int orm, chip_id, sec;
     for(orm = 0; orm < 5; orm++) {
         sec = 0;
-        chip_id = read_chip_id();
+        chip_id = read_chip_id(orm);
         while(chip_id != CHIP_ID) {
             if(sec > MAX_WAIT) {
                 printf("Power cycle failed for ORM%d. Could not read the chip ID back in %d seconds.\n", orm, MAX_WAIT);
@@ -30,7 +30,7 @@ int main() {
                 break;
             }
             sleep(1);
-            chip_id = read_chip_id();
+            chip_id = read_chip_id(orm);
             sec++;
         }
     }
