@@ -13,4 +13,11 @@ int spi_get_16bits(int orm, int addr);
 // Send a 32-bit spi_write command, which writes 16 bits into the address.
 int spi_put_16bits(int orm, int addr, int value);
 
+// get the board ID set by the dip switches
 int get_board_id();
+
+// get the chip ID of the EEPROM
+int read_chip_id();
+
+// set the page register so we can talk to an ORM's EEPROM
+void spi_select_eeprom(int orm);

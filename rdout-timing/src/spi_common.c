@@ -5,6 +5,33 @@
 #include <stdio.h>
 
 
+#define CHIP_ID 0x20ba18
+
+
+// set page to talk to an ORM's EEPROM
+void spi_select_eeprom(int orm) {
+    char page[1] = { 1 + (2 * (orm + 1)) };
+    bcm2835_spi_chipSelect(BCM2835_SPI_CS0);
+    bcm2835_spi_writenb(page, 1);
+    bcm2835_spi_chipSelect(BCM2835_SPI_CS1);
+}
+
+
+// read the chip ID from an ORM's EEPROM
+int read_chip_id(int orm) {
+
+    // send page to talk to the EEPROM
+    spi_select_eeprom(orm);
+
+    // send command to get the EEPROM's chip ID
+    char read_id[] = {0x9e, 0x00, 0x00, 0x00};
+    char response[4];
+    bcm2835_spi_transfernb(read_id, response, 4);
+    int chip_id = (response[1]<<16) | (response[2]<<8) | response[3];
+    return chip_id;
+}
+
+
 // Get the board ID from the dip switches
 int get_board_id() {
 
