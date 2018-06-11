@@ -2,6 +2,8 @@
 
 This branch is used at CERN for the June 2018 beam tests.
 The aliases in `etc/config` are for the current setup, and the `setup_ipbus` script does NOT program the ORMs, since we are having problems with the hexaboards being too cold to startup after a power cycle.
+There is also a special configuration string for the 29th layer which is used for timing.
+This is dealt with inside the `rdout_timing/` folder, which is only copied to the last readout board (the one connected to the timing hexaboard).
 
 The computer where this repository is cloned acts as the central hub for the Pis.
 The Raspberry Pi software and ORM firmware are copied out from the hub at the start of each run using `rsync`, ensuring each is running the latest versions.
