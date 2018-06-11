@@ -1,8 +1,8 @@
 #!/bin/bash
 # IPBus setup
 # the rdout/ and sync/ directories are copied to the pis,
-# firmware is installed, and the IP/MAC address of the
-# rdout CTL ORMs is set.
+# the software is compiled, and the IP/MAC address of the
+# readout CTL ORMs is set.
 
 source etc/config
 
