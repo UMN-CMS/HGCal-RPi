@@ -166,14 +166,8 @@ int main(int argc, char *argv[])
 
             // Configure the hexaboard.
             fprintf(stderr,"Configuring hexbd %d...",(int)hx);
-            if(hx == 7) {
-                config_status = configure_hexaboard_timing(hx, 0);
-                config_status = configure_hexaboard_timing(hx, 1);
-            }
-            else {
-                config_status = configure_hexaboard(hx,0);
-                config_status = configure_hexaboard(hx,1);
-            }
+            config_status = configure_hexaboard(hx,0);
+            config_status = configure_hexaboard(hx,1);
             fprintf(stderr,"done.\n");
             if (config_status < 0) {
                 fprintf(stderr,"ERROR in configuration.\n");
@@ -256,6 +250,8 @@ int main(int argc, char *argv[])
         }
 
         CTL_reset_fifos();
+
+        CTL_put_done();
 
         // get the next trigger
         if(PED) {
