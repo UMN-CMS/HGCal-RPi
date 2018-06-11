@@ -257,8 +257,6 @@ int main(int argc, char *argv[])
 
         CTL_reset_fifos();
 
-        CTL_put_done();
-
         // get the next trigger
         if(PED) {
 
@@ -274,11 +272,18 @@ int main(int argc, char *argv[])
             // Send a pulse back to the SYNC board. Give us a trigger.
             old_trig0 = CTL_get_trig_count0();
 
+            // OK to send trigger
+            CTL_put_date_stamp0(1);
+
             // Wait for trigger.
             trig0 = old_trig0;
             while(keeprunning && (trig0 == old_trig0)){
                 trig0 = CTL_get_trig_count0();
             }
+
+            // We have received a trigger, so its not OK to receive another
+            // one until readout is complete and SKIs are reset.
+            CTL_put_date_stamp0(0);
         }
 
         // tell skirocs to start conversion
