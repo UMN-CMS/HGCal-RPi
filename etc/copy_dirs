@@ -9,13 +9,7 @@ for RDOUT_PI_ALIAS in "${RDOUT_PI_ALIASES[@]}"
 do
     echo "copying to $RDOUT_PI_ALIAS"
 
-    if [ "$RDOUT_PI_ALIAS" = "pi5" ]
-    then
-        # copy special timing folder over to pi5
-        rsync "${RSYNC_FLAGS[@]}" rdout-timing/ $RDOUT_PI_ALIAS:$PI_RDOUTDIR &
-    else
-        rsync "${RSYNC_FLAGS[@]}" rdout/ $RDOUT_PI_ALIAS:$PI_RDOUTDIR &
-    fi
+    rsync "${RSYNC_FLAGS[@]}" rdout/ $RDOUT_PI_ALIAS:$PI_RDOUTDIR &
 done
 
 for SYNC_PI_ALIAS in "${SYNC_PI_ALIASES[@]}"
