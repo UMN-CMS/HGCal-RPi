@@ -3,6 +3,10 @@
 This branch contains code and firmware intended for testing connections between readout and sync boards.
 It should be considered entirely separate from the other branches.
 
+This code is _currently in development_ for multiple readout boards.
+The new software will follow the general procedure as the master branch.
+This README is currently outdated.
+
 # Instructions
 There are two main tests that can be run.
 
