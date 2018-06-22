@@ -1,6 +1,15 @@
-#!/bin/bash -v
+#!/bin/bash
 
-gcc -O src/sync_debug.c src/sync_orm.c src/spi_common.c -I include/ -l bcm2835 -o bin/sync_debug
+CCFLAGS="-I include/ -l bcm2835"
 
-gcc -O src/program_fpga.c src/spi_common.c -I include/ -l bcm2835 -o bin/program_fpga
+# make directories
+mkdir -p bin/
+mkdir -p obj/
 
+# compile object files
+gcc -c src/spi_common.c $CCFLAGS -o obj/spi_common.o
+gcc -c src/sync_orm.c   $CCFLAGS -o obj/sync_orm.o
+
+# compile executables
+gcc -O src/sync_debug.c obj/sync_orm.o obj/spi_common.o $CCFLAGS -o bin/sync_debug
+gcc -O src/program_fpga.c obj/spi_common.o              $CCFLAGS -o bin/program_fpga

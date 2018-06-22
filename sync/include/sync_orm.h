@@ -37,9 +37,6 @@
 #define SYNC_MAX0_FAKE65      (0x172) 
 #define SYNC_MAX1_FAKE65      (0x173) 
 
-#define SYNC_DONE_COUNT00     (0x180)
-#define SYNC_PRBS_COUNT00     (0x190)
-
 // Send reset pulses to the firmware.
 int SYNC_reset_all(void);
 int SYNC_reset_trig_counter(void);
@@ -157,8 +154,3 @@ int SYNC_put_max1_fake65(int value16bits);
 // have cables connected.
 int SYNC_cables_connected(void);
 
-// Get a counter of the rdout_done signals received from each RDOUT board.
-int SYNC_get_rdout_done_count(int indx);
-
-// Get a counter of the prbs errors received from each RDOUT board.
-int SYNC_get_prbs_error_count(int indx);

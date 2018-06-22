@@ -1,5 +1,4 @@
-// gcc -g -c sync_orm.c
-
+#include <bcm2835.h>
 #include "sync_orm.h"
 
 int SYNC_reset_all(void)
@@ -197,9 +196,3 @@ int SYNC_cables_connected(void)
   CONN_LIST ^= 0xFFFF; // List the cables that are connected.
   return(CONN_LIST);
 }
-
-int SYNC_get_rdout_done_count(int indx)
-{ return(spi_get_16bits(4, (SYNC_DONE_COUNT00+(indx & 0xF)))); }
-
-int SYNC_get_prbs_error_count(int indx)
-{ return(spi_get_16bits(4, (SYNC_PRBS_COUNT00+(indx & 0xF)))); }

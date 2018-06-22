@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<connections>
-	<connection id="hgcal.rdout0" uri="chtcp-2.0://localhost:10203?target=192.168.222.200:50001" address_table="file://rdout.xml"/>
-</connections>

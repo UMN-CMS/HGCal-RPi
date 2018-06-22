@@ -1,0 +1,25 @@
+#!/bin/bash
+
+check_retval () {
+    if [ $1 -ne 0 ]
+    then
+        echo "Programming failed. Check prog.log"
+        exit 1
+    fi
+}
+
+# clear log file
+echo "" > prog.log
+
+# DATA ORMs
+for ORM_IDX in {0..3}
+do
+    echo "Programming DATA ORM$ORM_IDX"
+    sudo ./bin/program_fpga $ORM_IDX < fw/data_orm_dly.hex >> prog.log 2>&1
+    check_retval "$?"
+done
+
+# CTL ORM
+echo "Programming CTL ORM"
+sudo ./bin/program_fpga 4 < fw/ctl_orm_prbs3.hex >> prog.log 2>&1
+check_retval "$?"

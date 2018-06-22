@@ -1,6 +1,20 @@
-#!/bin/bash -v
+#!/bin/bash
 
-gcc -O src/program_fpga.c src/spi_common.c -I include/ -l bcm2835 -o bin/program_fpga
+CCFLAGS="-I include/ -l bcm2835"
 
-gcc -O src/set_ip_mac_address.c src/ctl_orm.c src/spi_common.c -I include -l bcm2835 -o bin/set_ip_mac_address
+# make directories
+mkdir -p bin/
+mkdir -p obj/
 
+# compile object files
+gcc -c src/spi_common.c   $CCFLAGS -o obj/spi_common.o
+gcc -c src/data_orm.c     $CCFLAGS -o obj/data_orm.o
+gcc -c src/ctl_orm.c      $CCFLAGS -o obj/ctl_orm.o
+gcc -c src/ejf_rdout.c    $CCFLAGS -o obj/ejf_rdout.o
+gcc -c src/hexbd.c        $CCFLAGS -o obj/hexbd.o
+gcc -c src/hexbd_config.c $CCFLAGS -o obj/hexbd_config.o
+
+# compile executables
+gcc -O src/program_fpga.c    obj/spi_common.o                                                                             $CCFLAGS -o bin/program_fpga
+gcc -O src/pwr_cycle_fpgas.c obj/ejf_rdout.o obj/ctl_orm.o obj/data_orm.o obj/hexbd.o obj/hexbd_config.o obj/spi_common.o $CCFLAGS -o bin/pwr_cycle_fpgas
+gcc -O src/set_ipbus_ip.c    obj/ctl_orm.o obj/spi_common.o                                                               $CCFLAGS -o bin/set_ipbus_ip

@@ -1,5 +1,5 @@
-./compile
+#!/bin/bash
 
-sudo ./bin/program_fpga 4 < fw/sync_orm_prbs3.hex
+PED=1
 
-sudo ./bin/sync_debug 1
+sudo ./bin/sync_debug $PED
