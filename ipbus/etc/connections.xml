@@ -2,4 +2,7 @@
 
 <connections>
 	<connection id="hgcal.rdout0" uri="chtcp-2.0://localhost:10203?target=192.168.222.200:50001" address_table="file://rdout.xml"/>
+	<connection id="hgcal.rdout1" uri="chtcp-2.0://localhost:10203?target=192.168.222.201:50001" address_table="file://rdout.xml"/>
+	<connection id="hgcal.rdout2" uri="chtcp-2.0://localhost:10203?target=192.168.222.202:50001" address_table="file://rdout.xml"/>
+	<connection id="hgcal.rdout3" uri="chtcp-2.0://localhost:10203?target=192.168.222.203:50001" address_table="file://rdout.xml"/>
 </connections>
