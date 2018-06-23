@@ -1,4 +1,3 @@
-#include <iostream>
 #include <uhal/uhal.hpp>
 #include <uhal/definitions.hpp>
 
