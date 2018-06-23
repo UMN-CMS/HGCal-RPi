@@ -58,7 +58,7 @@ INCLUDE_PATH =  \
 
 
 # Set your library name here
-LIBNAME = myprojectlibname
+LIBNAME = linktest
 
 LIBRARY = lib/lib${LIBNAME}.so
 LIBRARY_SOURCES = $(wildcard src/common/*.cpp)
