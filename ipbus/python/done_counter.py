@@ -24,7 +24,7 @@ for i in range(NUM_SIG):
 
     for idx in range(len(rdouts)):
         if (count1[idx] - 1) != count0[idx]:
-            print 'BAD! RDOUT_DONE_COUNT for', rdouts[idx].id(), 'didn't increment by one!'
+            print 'BAD! RDOUT_DONE_COUNT for', rdouts[idx].getId(), 'didn't increment by one!'
             exit()
 
 print 'Done. Counter increments correctly'
