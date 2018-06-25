@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
             count1.push_back(x.value());
         }
 
-        for(int idx = 0; idx < rdouts.size(); idx++) {
+        for(unsigned int idx = 0; idx < rdouts.size(); idx++) {
             if(count1[idx]-1 != count0[idx]) {
                 std::cout << "bad rdout_done count for " << rdouts[idx].id() << std::endl;
                 return 0;
