@@ -4,7 +4,7 @@
 #define PRBS_STOP 0xABCDEF20
 
 int main(int argc,char** argv) {
-	uhal::ConnectionManager manager("file://etc/connections.xml");
+    uhal::ConnectionManager manager("file://etc/connections.xml");
     std::vector<std::string> rdout_ids = manager.getDevices();
 
     std::vector<uhal::HwInterface> rdouts;
@@ -16,5 +16,5 @@ int main(int argc,char** argv) {
         rdout->dispatch();
     }
 
-	return 0;
+    return 0;
 }
