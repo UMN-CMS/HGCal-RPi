@@ -1,0 +1,9 @@
+#!/bin/bash
+# Uses SPI to send RDOUT_DONE 65535 times
+
+source etc/config
+
+for RDOUT_PI_ALIAS in "${RDOUT_PI_ALIASES[@]}"
+do
+	ssh $RDOUT_PI_ALIAS "cd $PI_RDOUTDIR; sudo ./bin/done_sender" &
+done
