@@ -1,5 +1,6 @@
 // gcc -g -c sync_orm.c
 
+#include <bcm2835.h>
 #include "sync_orm.h"
 
 int SYNC_reset_all(void)
