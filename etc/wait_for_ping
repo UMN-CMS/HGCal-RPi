@@ -13,14 +13,22 @@ do
 
     IP="$BASE_IP$((OFFSET+BOARDNUM))"
 
-    for i in {1..20}
+    FOUND=0
+    for i in {1..30}
     do
         ping -c1 -w1 $IP &> /dev/null
         if [ $? -eq 0 ]
         then
+	    FOUND=1
+            echo "found!"
             break
         fi
     done
+    if [ $FOUND -ne 1 ]
+    then
+        echo "not found in 30s - exiting"
+        exit 1
+    fi
 
     BOARDNUM=$((BOARDNUM+1))
 done
