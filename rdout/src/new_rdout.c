@@ -224,7 +224,7 @@ int main(int argc, char *argv[])
     uint64_t trig0, old_trig0;
 
     // Send a pulse back to the SYNC board. Give us a trigger.
-    CTL_put_done();
+    // CTL_put_done();
     
     // start event loop
     signal(SIGTERM, handler); // handle `kill` commands
@@ -237,7 +237,6 @@ int main(int argc, char *argv[])
                 res = HEXBD_send_command(hx, CMD_RESETPULSE);
             }
         }
-
         usleep(HX_DELAY1);// Can be reduced to 1 MuS
 
         // Start acquisition.
@@ -250,8 +249,6 @@ int main(int argc, char *argv[])
         }
 
         CTL_reset_fifos();
-
-	CTL_put_done();
 
         // get the next trigger
         if(PED) {
@@ -268,8 +265,10 @@ int main(int argc, char *argv[])
             // Send a pulse back to the SYNC board. Give us a trigger.
             old_trig0 = CTL_get_trig_count0();
 
+	    CTL_put_done();
+
             // OK to send trigger
-            CTL_put_date_stamp0(1);
+            // CTL_put_date_stamp0(1);
 
             // Wait for trigger.
             trig0 = old_trig0;
@@ -279,7 +278,7 @@ int main(int argc, char *argv[])
 
             // We have received a trigger, so its not OK to receive another
             // one until readout is complete and SKIs are reset.
-            CTL_put_date_stamp0(0);
+            // CTL_put_date_stamp0(0);
         }
 
         // tell skirocs to start conversion
