@@ -233,8 +233,6 @@ int main(int argc, char *argv[])
     int count = 0;
     while(keeprunning) {
 
-        fprintf(stderr, "%d reset fifos\n", count);
-        CTL_reset_fifos();
 
         fprintf(stderr, "%d hexbd setup\n", count);
         // Get hexaboards ready.
@@ -253,22 +251,19 @@ int main(int argc, char *argv[])
                 // res = HEXBD_send_command(hx, CMD_SETSTARTACQ); // this acts as a software trigger - don't use!
             }
         }
-
-        // fprintf(stderr, "%d reset fifos\n", count);
-        // clear out any leftovers inside the FIFOs
-        // CTL_reset_fifos();
-
+        
         // get the next trigger
         if(PED) {
-
             // send put trigger to each ORM
             DATA_put_trigger_pulse(0);
             DATA_put_trigger_pulse(1);
             DATA_put_trigger_pulse(2);
             DATA_put_trigger_pulse(3);
-
         }
         else {
+            fprintf(stderr, "%d reset fifos\n", count);
+            // clear out any leftovers inside the FIFOs
+            CTL_reset_fifos();
 
             fprintf(stderr, "%d getting old trig count\n", count);
             // get old trigger count
