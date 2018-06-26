@@ -229,6 +229,7 @@ int main(int argc, char *argv[])
     // start event loop
     signal(SIGTERM, handler); // handle `kill` commands
     signal(SIGINT, handler); // handle Ctrl-c
+    int count = 0;
     while(keeprunning) {
 
         // Get hexaboards ready.
@@ -237,7 +238,6 @@ int main(int argc, char *argv[])
                 res = HEXBD_send_command(hx, CMD_RESETPULSE);
             }
         }
-
         usleep(HX_DELAY1);// Can be reduced to 1 MuS
 
         // Start acquisition.
@@ -269,11 +269,15 @@ int main(int argc, char *argv[])
             // OK to send trigger
             CTL_put_date_stamp0(1);
 
+            CTL_put_done();
+
             // Wait for trigger.
             trig0 = old_trig0;
+            fprintf(stderr, "%d trigger wait - old=%d new=%d\n", count, (int)old_trig0, (int)trig0);
             while(keeprunning && (trig0 == old_trig0)){
                 trig0 = CTL_get_trig_count0();
             }
+            fprintf(stderr, "%d done wait - old=%d new=%d\n", count, (int)old_trig0, (int)trig0);
 
             // We have received a trigger, so its not OK to receive another
             // one until readout is complete and SKIs are reset.
@@ -296,12 +300,13 @@ int main(int argc, char *argv[])
         }
         usleep(HX_DELAY4);
 
+        fprintf(stderr, "%d wait for fifo to empty\n", count);
         // wait for the FIFO to be empty, indicating IPBus has read it out
         int isFifoEmpty = 0;
         while(keeprunning && !isFifoEmpty){
             isFifoEmpty = CTL_get_empty();
         }
-
+        count++;
     }// event loop
 
 
