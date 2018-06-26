@@ -251,6 +251,8 @@ int main(int argc, char *argv[])
 
         CTL_reset_fifos();
 
+	CTL_put_done();
+
         // get the next trigger
         if(PED) {
 
