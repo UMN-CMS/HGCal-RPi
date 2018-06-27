@@ -279,8 +279,8 @@ int main(int argc, char *argv[])
                 curr_trig = CTL_get_trig_count0() | (CTL_get_trig_count1() << 16);
                 usleep(1);
             }
-            old_trig = curr_trig;
 	    fprintf(stderr, "%lu     after loop - curr: %7lu old: %7lu\n", count, curr_trig, old_trig);
+            old_trig = curr_trig;
         }
 
         fprintf(stderr, "%lu start rdout\n", count);
