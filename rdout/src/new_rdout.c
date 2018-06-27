@@ -285,7 +285,6 @@ int main(int argc, char *argv[])
             clock_count = CTL_get_clk_count0() | (CTL_get_clk_count1() << 16) | ((uint64_t)CTL_get_clk_count2() << 32);
             fprintf(stderr, "%lu    clock count: %llu (diff=%llu)\n", count, clock_count, clock_count-prev_clock_count);
             prev_clock_count = clock_count;
-            fprintf(stderr, "%lu    ipb clk0: %u clk1: %u\n", count, (unsigned)spi_get_16bits(4,IPB_CLK_COUNT0), (unsigned)spi_get_16bits(4,IPB_CLK_COUNT1));
 
             fprintf(stderr, "%lu trig wait time: %fms\n", count, diff);
         }
