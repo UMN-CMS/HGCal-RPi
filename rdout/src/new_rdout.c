@@ -232,6 +232,7 @@ int main(int argc, char *argv[])
     signal(SIGINT, handler); // handle Ctrl-c
     uint32_t count = 0;
     old_trig = CTL_get_trig_count0() | (CTL_get_trig_count1() << 16);
+    curr_trig = old_trig;
     while(keeprunning) {
 
 
