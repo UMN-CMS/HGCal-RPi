@@ -276,7 +276,7 @@ int main(int argc, char *argv[])
 	    fprintf(stderr, "%lu    before loop - curr: %7lu old: %7lu\n", count, curr_trig, old_trig);
             while(keeprunning && (curr_trig == old_trig)){
                 curr_trig = CTL_get_trig_count0() | (CTL_get_trig_count1() << 16);
-                usleep(1);
+                // usleep(1); // this ruins timing measurements
             }
 	    fprintf(stderr, "%lu    after loop - curr: %7lu old: %7lu\n", count, curr_trig, old_trig);
             old_trig = curr_trig;
@@ -312,6 +312,7 @@ int main(int argc, char *argv[])
         int isFifoEmpty = 0;
         while(keeprunning && !isFifoEmpty){
             isFifoEmpty = CTL_get_empty();
+            // usleep(1); // this ruins timing measurements
         }
         diff = (clock() - start)*1000. /CLOCKS_PER_SEC;
         fprintf(stderr, "%lu fifo wait time: %fms\n", count, diff);
