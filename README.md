@@ -3,9 +3,6 @@
 This branch contains code and firmware intended for testing connections between readout and sync boards.
 It should be considered entirely separate from the other branches.
 
-This code is _currently in development_ for multiple readout boards.
-The new software will follow the general procedure as the master branch.
-This README is currently outdated.
 
 # Instructions
 There are two main tests that can be run.
@@ -26,13 +23,12 @@ If this happens, you can use prbs checking to test the rdout-sync link further.
 If the python script finishes and the `rdout_done_count` on the sync board does match the number of signals sent, the link should be OK.
 
 To run this test, first edit `copy-dirs` with the correct ssh aliases for the readout and sync boards you will be using.
-Note that the IPBus IP I am using is 192.168.222.200, so make sure this IP is not currently used by something else.
-If it is, change the `rdout/src/set_ip_mac_address.c` file to set a different IP, and change `etc/connections.xml` to point to this IP.
-  1. Run the `copy-dirs` script to copy the software over to the readout and sync boards.
-  2. ssh into the readout board raspberry pi, and change to the copied directory: `cd ~/linktest-rdout/`
+The IPBus IP addresses of the readout boards will increment from 192.168.222.200.
+Modify `etc/connections.xml` to have the same number of readout boards as you have, following the IPBus IP address scheme.
+  1. Program the ORMs with `etc/prog_orms`.
+  2. Setup the readout boards with `setup_ipbus`.
   3. Open a new terminal window, ssh into the sync board raspberry pi, and change into the copied directory: `cd ~/linktest-sync/`
-  4. Run the setup scripts with `./run_rdout` and `./run_sync`, respectively. This compiles the software and programs the ORMs.
-      - The `sync_debug` executable will then start up on the sync board. You should see error and readout done counts for each cable on the sync board: `loop =   0, rdout_done_count[ 0] =     0` and `loop =   0, prbs_error_count[ 0] =    65535`. Note that the counts may not match.
+  4. Start the sync exe with `./run_sync`.
   5. Exit the readout board ssh session. Setup IPBus using `source etc/env.sh`.
   6. Run `python test_done_count.py`. On the sync board screen, you should see the readout done count for the connected cable increase.
   7. Once the script finishes, stop the `sync_debug` executable.
