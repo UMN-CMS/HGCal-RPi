@@ -221,7 +221,7 @@ int main(int argc, char *argv[])
     fprintf(stderr,"skiroc_mask = 0x%04x 0x%04x\n\n",
             (int)skiroc_mask1, (int)skiroc_mask0);
 
-    uint64_t curr_trig, old_trig;
+    uint32_t curr_trig, old_trig;
 
     // Send a pulse back to the SYNC board. Give us a trigger.
     // CTL_put_done();
@@ -230,11 +230,12 @@ int main(int argc, char *argv[])
     // start event loop
     signal(SIGTERM, handler); // handle `kill` commands
     signal(SIGINT, handler); // handle Ctrl-c
-    int count = 0;
+    uint32_t count = 0;
+    old_trig = CTL_get_trig_count0() | (CTL_get_trig_count1() << 16);
     while(keeprunning) {
 
 
-        fprintf(stderr, "%d hexbd setup\n", count);
+        fprintf(stderr, "%lu hexbd setup\n", count);
         // Get hexaboards ready.
         for(hx = 0; hx < MAXHEXBDS; hx++) {
             if((hexbd_mask & (1 << hx)) != 0) { 
@@ -261,30 +262,27 @@ int main(int argc, char *argv[])
             DATA_put_trigger_pulse(3);
         }
         else {
-            fprintf(stderr, "%d reset fifos\n", count);
-            // clear out any leftovers inside the FIFOs
-            CTL_reset_fifos();
+            // fprintf(stderr, "%lu getting old trig count\n", count);
+            // // get old trigger count
+            // old_trig = CTL_get_trig_count0() | (CTL_get_trig_count1() << 16);
 
-            fprintf(stderr, "%d getting old trig count\n", count);
-            // get old trigger count
-            old_trig = CTL_get_trig_count0();
-
-            fprintf(stderr, "%d send done\n", count);
+            fprintf(stderr, "%lu send done\n", count);
             // send RDOUT_DONE to get a new trigger
             CTL_put_done();
 
             // wait for trigger count to increment
-            fprintf(stderr, "%d wait for trig\n", count);
-            curr_trig = old_trig;
-	    fprintf(stderr, "%d     before loop - curr: %7d old: %7d\n", count, (int) curr_trig, (int) old_trig);
+            fprintf(stderr, "%lu wait for trig\n", count);
+            // curr_trig = old_trig;
+	    fprintf(stderr, "%lu     before loop - curr: %7lu old: %7lu\n", count, curr_trig, old_trig);
             while(keeprunning && (curr_trig == old_trig)){
-                curr_trig = CTL_get_trig_count0();
+                curr_trig = CTL_get_trig_count0() | (CTL_get_trig_count1() << 16);
                 usleep(1);
             }
-	    fprintf(stderr, "%d     after loop - curr: %7d old: %7d\n", count, (int) curr_trig, (int) old_trig);
+            old_trig = curr_trig;
+	    fprintf(stderr, "%lu     after loop - curr: %7lu old: %7lu\n", count, curr_trig, old_trig);
         }
 
-        fprintf(stderr, "%d start rdout\n", count);
+        fprintf(stderr, "%lu start rdout\n", count);
         // tell skirocs to start conversion
         for(hx = 0; hx < MAXHEXBDS; hx++) {
             if((hexbd_mask & (1 << hx)) != 0) {
@@ -301,7 +299,7 @@ int main(int argc, char *argv[])
         }
         usleep(HX_DELAY4);
 
-        fprintf(stderr, "%d wait for fifo to empty\n", count);
+        fprintf(stderr, "%lu wait for fifo to empty\n", count);
         // wait for the FIFO to be empty, indicating IPBus has read it out
         int isFifoEmpty = 0;
         while(keeprunning && !isFifoEmpty){
