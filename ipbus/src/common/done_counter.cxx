@@ -21,7 +21,9 @@ int main(int argc, char** argv) {
             uhal::ValWord<uint32_t> x = rdout->getNode("RDOUT_DONE_COUNT").read();
             rdout->dispatch();
             count0.push_back(x.value());
+	}
 
+	for(std::vector<uhal::HwInterface>::iterator rdout = rdouts.begin(); rdout != rdouts.end(); rdout++) {
             rdout->getNode("RDOUT_DONE").write(RDOUT_DONE_MAGIC);
             rdout->dispatch();
         }
