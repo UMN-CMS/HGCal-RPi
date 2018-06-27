@@ -223,8 +223,7 @@ int main(int argc, char *argv[])
 
     uint32_t curr_trig, old_trig;
 
-    // Send a pulse back to the SYNC board. Give us a trigger.
-    // CTL_put_done();
+    // reset the fifos for new data
     CTL_reset_fifos();
     
     // start event loop
@@ -234,7 +233,6 @@ int main(int argc, char *argv[])
     old_trig = CTL_get_trig_count0() | (CTL_get_trig_count1() << 16);
     curr_trig = old_trig;
     while(keeprunning) {
-
 
         fprintf(stderr, "%lu hexbd setup\n", count);
         // Get hexaboards ready.
@@ -263,10 +261,6 @@ int main(int argc, char *argv[])
             DATA_put_trigger_pulse(3);
         }
         else {
-            // fprintf(stderr, "%lu getting old trig count\n", count);
-            // // get old trigger count
-            // old_trig = CTL_get_trig_count0() | (CTL_get_trig_count1() << 16);
-
             fprintf(stderr, "%lu send done\n", count);
             // send RDOUT_DONE to get a new trigger
             CTL_put_done();
