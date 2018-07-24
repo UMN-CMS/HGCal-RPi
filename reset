@@ -1,0 +1,6 @@
+./stop_pi_exes
+./etc/pwr_cycle
+./setup_ipbus
+./start_pi_exes
+./etc/wait_for_ping
+./etc/hexbd_conn
