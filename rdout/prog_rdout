@@ -22,5 +22,6 @@ done
 # CTL ORM
 echo "Programming CTL ORM"
 #sudo ./bin/program_fpga 4 < fw/ctl_orm_dly.hex >> prog.log 2>&1
-sudo ./bin/program_fpga 4 < fw/ctl_orm_rst.hex >> prog.log 2>&1
+#sudo ./bin/program_fpga 4 < fw/ctl_orm_rst.hex >> prog.log 2>&1
+sudo ./bin/program_fpga 4 < fw/ctl_orm_regs.hex >> prog.log 2>&1
 check_retval "$?"
