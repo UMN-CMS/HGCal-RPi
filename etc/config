@@ -9,8 +9,8 @@ check_retval () {
 }
 
 # ssh aliases
-RDOUT_PI_ALIASES=("rdout")                  # ssh aliases of the readout board pis
-SYNC_PI_ALIASES=("SYNC20")                  # ssh aliases of the sync board pis
+RDOUT_PI_ALIASES=("piR3")                   # ssh aliases of the readout board pis
+SYNC_PI_ALIASES=("piS20")                   # ssh aliases of the sync board pis
 
 # raspberry pi file/folder names
 PI_RDOUTDIR="/home/pi/rdout/"               # directory to copy code into on rdout pis
