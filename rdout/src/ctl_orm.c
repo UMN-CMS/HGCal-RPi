@@ -158,3 +158,5 @@ int CTL_get_fifo_LS16(void)
 int CTL_get_fifo_MS16(void)
 { return(spi_get_16bits(4, CTL_FIFO_1)); }
 
+int CTL_write_ipb_fifo(int value16bits)
+{ return(spi_put_16bits(4, CTL_WRITE_IPB_FIFO, value16bits)); }

@@ -235,8 +235,6 @@ int main(int argc, char *argv[])
     curr_trig = old_trig;
     while(keeprunning) {
 
-        clock_t start = clock();
-        float diff;       
         fprintf(stderr, "%lu hexbd setup\n", count);
         // Get hexaboards ready.
         for(hx = 0; hx < MAXHEXBDS; hx++) {
@@ -254,8 +252,6 @@ int main(int argc, char *argv[])
                 // res = HEXBD_send_command(hx, CMD_SETSTARTACQ); // this acts as a software trigger - don't use!
             }
         }
-        diff = (clock() - start)*1000./CLOCKS_PER_SEC;
-        fprintf(stderr, "%lu skiroc conf time: %fms\n", count, diff);
 
         // get the next trigger
         if(PED) {
@@ -270,11 +266,6 @@ int main(int argc, char *argv[])
             // send RDOUT_DONE to get a new trigger
             CTL_put_done();
 
-            // fprintf(stderr, "%lu set date stamp\n", count);
-            // // skirocs are armed! set the date stamp
-            // CTL_put_date_stamp0(1);
-
-            start = clock();
             // wait for trigger count to increment
             fprintf(stderr, "%lu wait for trig\n", count);
             fprintf(stderr, "%lu    before loop - curr: %7lu old: %7lu\n", count, curr_trig, old_trig);
@@ -282,19 +273,16 @@ int main(int argc, char *argv[])
                 curr_trig = CTL_get_trig_count0() | (CTL_get_trig_count1() << 16);
                 // usleep(1); // this ruins timing measurements
             }
-            diff = (clock() - start)*1000./CLOCKS_PER_SEC;
             fprintf(stderr, "%lu    after loop - curr: %7lu old: %7lu\n", count, curr_trig, old_trig);
             old_trig = curr_trig;
-
-            // fprintf(stderr, "%lu clear date stamp\n", count);
-            // // no more triggers! clear the date stamp
-            // CTL_put_date_stamp0(0);
 
             clock_count = CTL_get_clk_count0() | (CTL_get_clk_count1() << 16) | ((uint64_t)CTL_get_clk_count2() << 32);
             fprintf(stderr, "%lu    clock count: %llu (diff=%llu)\n", count, clock_count, clock_count-prev_clock_count);
             prev_clock_count = clock_count;
+            CTL_write_ipb_fifo(CTL_get_clk_count0());
+            CTL_write_ipb_fifo(CTL_get_clk_count1());
+            CTL_write_ipb_fifo(CTL_get_clk_count2());
 
-            fprintf(stderr, "%lu trig wait time: %fms\n", count, diff);
         }
 
         fprintf(stderr, "%lu start rdout\n", count);
@@ -314,7 +302,6 @@ int main(int argc, char *argv[])
         }
         usleep(HX_DELAY4);
 
-        start = clock();
         fprintf(stderr, "%lu wait for fifo to empty\n", count);
         // wait for the FIFO to be empty, indicating IPBus has read it out
         int isFifoEmpty = 0;
@@ -322,8 +309,6 @@ int main(int argc, char *argv[])
             isFifoEmpty = CTL_get_empty();
             // usleep(1); // this ruins timing measurements
         }
-        diff = (clock() - start)*1000. /CLOCKS_PER_SEC;
-        fprintf(stderr, "%lu fifo wait time: %fms\n", count, diff);
 
         count++;
     }// event loop

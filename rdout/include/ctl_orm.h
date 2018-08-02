@@ -35,6 +35,7 @@
 #define CTL_OCCUPANCY        (0x12c)
 #define CTL_FIFO_0           (0x140)
 #define CTL_FIFO_1           (0x141)
+#define CTL_WRITE_IPB_FIFO   (0x10e)
 
 // IPbus address space
 
