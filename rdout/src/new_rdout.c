@@ -222,6 +222,7 @@ int main(int argc, char *argv[])
             (int)skiroc_mask1, (int)skiroc_mask0);
 
     uint32_t curr_trig, old_trig;
+    int rdout_done_pi_count;
     uint64_t clock_count, prev_clock_count = 0;
 
     // reset the fifos for new data
@@ -232,6 +233,8 @@ int main(int argc, char *argv[])
     signal(SIGINT, handler); // handle Ctrl-c
     uint32_t count = 0;
     old_trig = CTL_get_trig_count0() | (CTL_get_trig_count1() << 16);
+    rdout_done_pi_count = CTL_get_rdout_done_pi_count0() | (CTL_get_rdout_done_pi_count1() << 16);
+    int event_offset = count - rdout_done_pi_count;
     curr_trig = old_trig;
     while(keeprunning) {
 
@@ -251,6 +254,13 @@ int main(int argc, char *argv[])
                 // usleep(HX_DELAY2);// Can be reduced to 1 MuS
                 // res = HEXBD_send_command(hx, CMD_SETSTARTACQ); // this acts as a software trigger - don't use!
             }
+        }
+
+        // wait evt_offset < 2
+        fprintf(stderr, "%lu wait for evt_offset < 2\n", count);
+        while(event_offset >= 2) {
+            rdout_done_pi_count = CTL_get_rdout_done_pi_count0() | (CTL_get_rdout_done_pi_count1() << 16);
+            event_offset = count - rdout_done_pi_count;
         }
 
         // get the next trigger
@@ -311,14 +321,6 @@ int main(int argc, char *argv[])
             }
         }
         usleep(HX_DELAY4);
-
-        fprintf(stderr, "%lu wait for fifo to empty\n", count);
-        // wait for the FIFO to be empty, indicating IPBus has read it out
-        int isFifoEmpty = 0;
-        while(keeprunning && !isFifoEmpty){
-            isFifoEmpty = CTL_get_empty();
-            // usleep(1); // this ruins timing measurements
-        }
 
         count++;
     }// event loop
