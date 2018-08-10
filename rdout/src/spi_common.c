@@ -11,6 +11,7 @@
 // set page to talk to an ORM's EEPROM
 void spi_select_eeprom(int orm) {
     char page[1] = { 1 + (2 * (orm + 1)) };
+    page[0] |= page[0] << 4;
     bcm2835_spi_chipSelect(BCM2835_SPI_CS0);
     bcm2835_spi_writenb(page, 1);
     bcm2835_spi_chipSelect(BCM2835_SPI_CS1);
@@ -37,6 +38,7 @@ int get_board_id() {
 
 	bcm2835_spi_chipSelect(BCM2835_SPI_CS0);
 	char PAGE[] = {0xD};				// Chip has PAGE 13
+    PAGE[0] |= PAGE[0] << 4;
 	bcm2835_spi_writenb(PAGE,1);
 	bcm2835_spi_chipSelect(BCM2835_SPI_CS1);
 
@@ -55,6 +57,7 @@ int get_board_id() {
 void spi_select_orm(int orm) {
     char page[1];
     page[0] = 2 * (orm + 1);
+    page[0] |= page[0] << 4;
 
     // Select the appropriate oRM.
     bcm2835_spi_chipSelect(BCM2835_SPI_CS0);

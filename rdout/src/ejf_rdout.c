@@ -5,13 +5,12 @@
 int power_cycle_just_fpgas()
 {
   char PAGE[1];
-  char GPIO_PIN;
-  GPIO_PIN = 6;
+  char GPIO_PIN = 6;
   
   // Time to power cycle the FPGAs
   bcm2835_spi_chipSelect(BCM2835_SPI_CS0);	// CS0
   
-  PAGE[0] = 0xF;
+  PAGE[0] = 0xF | 0xF<<4;
   bcm2835_spi_writenb(PAGE, sizeof(PAGE));
   bcm2835_spi_chipSelect(BCM2835_SPI_CS1);	// CS1
   
@@ -48,7 +47,7 @@ int power_cycle(int orm)
   // Time to power cycle the FPGA
   bcm2835_spi_chipSelect(BCM2835_SPI_CS0);	// CS0
   
-  PAGE[0] = 0xF;
+  PAGE[0] = 0xF | 0xF<<4;
   bcm2835_spi_writenb(PAGE, sizeof(PAGE));
   bcm2835_spi_chipSelect(BCM2835_SPI_CS1);	// CS1
   
