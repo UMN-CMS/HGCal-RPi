@@ -124,3 +124,4 @@ int CTL_get_full(void);
 int CTL_get_occupancy(void);
 int CTL_get_fifo_LS16(void);
 int CTL_get_fifo_MS16(void);
+int CTL_write_ipb_fifo(int value16bits);
