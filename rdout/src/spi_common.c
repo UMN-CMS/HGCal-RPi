@@ -83,6 +83,8 @@ int spi_get_16bits(int orm, int addr) {
     cmd[1] = spi_command >> 16;
     cmd[2] = spi_command >> 8;
     cmd[3] = spi_command >> 0;
+    cmd[4] = 0;
+    cmd[5] = 0;
 
     // Send the command.
     error = 1;
