@@ -51,7 +51,7 @@ int HEXBD_read_generic(int hexbd, int a2, int a1, int a0)
     // Get the response.
     if ((hexbd & 1) == 0) spi_addr = DATA_HEXA0_RESPONSE;
     else spi_addr = DATA_HEXA1_RESPONSE;
-    result = spi_get_16bits((hexbd>>1)&3, spi_addr);
+    result = spi_get_16bits_fifo((hexbd>>1)&3, spi_addr);
     return(result & 0xFF);
 }
 
@@ -60,7 +60,7 @@ int HEXBD_queue_status(int hexbd)
     int spi_addr, result;
     if ((hexbd & 1) == 0) spi_addr = DATA_HEXA0_STATUS;
     else spi_addr = DATA_HEXA1_STATUS;
-    result = spi_get_16bits_fifo((hexbd>>1)&3, spi_addr);
+    result = spi_get_16bits((hexbd>>1)&3, spi_addr);
     if (0) fprintf(stderr,"queue_status: command=0x%02x response=0x%02x\n",
             (int)((result>>8)&0xFF),(int)(result&0xFF));
     return(result);
