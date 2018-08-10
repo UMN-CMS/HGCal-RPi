@@ -69,6 +69,7 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "ORM must be between 0 and 4\nDATA ORMs are 0-3, CTL/SYNC is 4\n");
         return -1;
     }
+    PAGE[0] |= PAGE[0]<<4;
 
 
     printf("\n\tFLASH MEMORY WRITE\n\n");
@@ -235,7 +236,7 @@ int main(int argc, char *argv[]) {
     bcm2835_spi_chipSelect(BCM2835_SPI_CS0);     // CS0
 
     char orm_page = PAGE[0];
-    PAGE[0] = 0xF;
+    PAGE[0] = 0xF | 0xf<<4;;
     bcm2835_spi_writenb(PAGE, sizeof(PAGE));
     bcm2835_spi_chipSelect(BCM2835_SPI_CS1);    // CS1
 
@@ -252,7 +253,7 @@ int main(int argc, char *argv[]) {
 
     // Waiting until we get a good chip ID
     printf("Checking chip ID..."); fflush(stdout);
-    PAGE[0] = orm_page;
+    PAGE[0] = orm_page | orm_page<<4;
     bcm2835_spi_chipSelect(BCM2835_SPI_CS0);		// CS0
     bcm2835_spi_writenb(PAGE,1);				    // Sending PAGE
     bcm2835_spi_chipSelect(BCM2835_SPI_CS1);		// CS1
