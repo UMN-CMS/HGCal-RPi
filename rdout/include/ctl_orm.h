@@ -8,6 +8,11 @@
 #define CTL_DUMMY_REG0       (0x104) // dummy_reg0[15:0] // writable, but does nothing
 #define CTL_DUMMY_REG1       (0x105) // dummy_reg1[15:0] // writable, but does nothing
 
+#define CTL_RDOUT_DONE_COUNT0     (0x10a) // 16-bits
+#define CTL_RDOUT_DONE_COUNT1     (0x10b) // 16-bits
+#define CTL_RDOUT_DONE_PI_COUNT0  (0x10c) // 16-bits
+#define CTL_RDOUT_DONE_PI_COUNT1  (0x10d) // 16-bits
+
 #define CTL_DISABLE_DEBUG    (0x110) // 1-bit disables the automatic data dump into the skiroc fifos
 #define CTL_MAC_ADDRESS0     (0x111)
 #define CTL_MAC_ADDRESS1     (0x112)
@@ -21,7 +26,7 @@
 #define CTL_BLOCK_SIZE       (0x11a) 
 #define CTL_PEDESTAL_MODE    (0x11b) // 1-bit 
 #define CTL_LEGACY_MODE      (0x11c) // 1-bit 
-#define CTL_RDOUT_DONE       (0x11d) // 1-bit 
+#define CTL_RDOUT_DONE       (0x11d) // 1-bit
 
 #define CTL_TRIG_COUNT0      (0x120) 
 #define CTL_TRIG_COUNT1      (0x121)  
@@ -72,7 +77,10 @@
 #define IPB_OCCUPANCY        (0x564)
 
 #define IPB_RDOUT_DONE       (0x565)
+#define IPB_RDOUT_DONE_COUNT     (0x566) // 32-bits
+#define IPB_RDOUT_DONE_PI_COUNT  (0x567) // 32-bits
 #define RDOUT_DONE_MAGIC     (0xABCD4321) // match this to make a pulse
+#define RDOUT_DONE_PI_MAGIC  (0xABCD4343) // match this to inc done_pi counter
 
 int CTL_reset_all(void);
 int CTL_reset_fifos(void);
@@ -112,6 +120,10 @@ int CTL_put_pedestal_mode(int value1bit);
 int CTL_get_legacy_mode(void);
 int CTL_put_legacy_mode(int value1bit);
 int CTL_put_done(void);
+int CTL_get_done_count0(void);
+int CTL_get_done_count1(void);
+int CTL_get_done_pi_count0(void);
+int CTL_get_done_pi_count1(void);
 int CTL_get_trig_count0(void);
 int CTL_get_trig_count1(void);
 int CTL_get_clk_count0(void);

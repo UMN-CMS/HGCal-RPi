@@ -122,6 +122,18 @@ int CTL_put_legacy_mode(int value1bit)
 int CTL_put_done(void)
 { return(spi_put_16bits(4, CTL_RDOUT_DONE, 0xEFEF)); }
 
+int CTL_get_done_count0(void)
+{ return(spi_get_16bits(4, CTL_RDOUT_DONE_COUNT0)); }
+
+int CTL_get_done_count1(void)
+{ return(spi_get_16bits(4, CTL_RDOUT_DONE_COUNT1)); }
+
+int CTL_get_done_pi_count0(void)
+{ return(spi_get_16bits(4, CTL_RDOUT_DONE_PI_COUNT0)); }
+
+int CTL_get_done_pi_count1(void)
+{ return(spi_get_16bits(4, CTL_RDOUT_DONE_PI_COUNT1)); }
+
 int CTL_get_trig_count0(void)
 { return(spi_get_16bits(4, CTL_TRIG_COUNT0)); }
 
