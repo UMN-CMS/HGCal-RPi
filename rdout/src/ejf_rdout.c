@@ -57,7 +57,7 @@ int power_cycle(int orm)
   bcm2835_spi_writenb(PIN_as_output, sizeof(PIN_as_output)+1);
   char PIN_low[] = {0x40, 0x13, PIN_SELECT};	// Set PIN to output low
   bcm2835_spi_writenb(PIN_low, sizeof(PIN_low)+1);
-  sleep(5);						// Wait!
+  sleep(1);						// Wait!
   char PIN_as_input[] = {0x40, 0x01, 0xFF};		// Set PIN as input again
   bcm2835_spi_writenb(PIN_as_input, sizeof(PIN_as_input)+1);
   
