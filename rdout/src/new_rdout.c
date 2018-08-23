@@ -340,11 +340,6 @@ int main(int argc, char *argv[])
         }
         usleep(HX_DELAY4);
 
-        for(hx=0; hx<8; hx++) {
-            HEXBD_read1000_local_fifo(hx,junk);
-            fprintf(stderr, "%lu hexbd=%d junk0=%x junk5=%x junk555=%x\n", count, hx, junk[0], junk[5], junk[555]);
-        }
-
         rdout_done_pi_count = CTL_get_done_pi_count0() | (CTL_get_done_pi_count1() << 16);
         fprintf(stderr, "%lu end loop: rdout_done_pi_count=%d\n", count, rdout_done_pi_count);
 
