@@ -237,8 +237,6 @@ int main(int argc, char *argv[])
     int event_offset = count - rdout_done_pi_count;
     curr_trig = old_trig;
     while(keeprunning) {
-        rdout_done_pi_count = CTL_get_done_pi_count0() | (CTL_get_done_pi_count1() << 16);
-        fprintf(stderr, "%lu start loop rdout_done_pi_count=%d\n", count, rdout_done_pi_count);
 
         fprintf(stderr, "%lu hexbd setup\n", count);
         // Get hexaboards ready.
@@ -262,7 +260,6 @@ int main(int argc, char *argv[])
         rdout_done_pi_count = CTL_get_done_pi_count0() | (CTL_get_done_pi_count1() << 16);
         event_offset = count - rdout_done_pi_count;
         fprintf(stderr, "%lu wait for evt_offset < 2 - curr=%d\n", count, event_offset);
-        fprintf(stderr, "%lu start evt_count wait: rdout_done_pi_count=%d\n", count, rdout_done_pi_count);
         while(keeprunning && event_offset >= 2) {
             rdout_done_pi_count = CTL_get_done_pi_count0() | (CTL_get_done_pi_count1() << 16);
             event_offset = count - rdout_done_pi_count;
@@ -271,8 +268,6 @@ int main(int argc, char *argv[])
         }
 
         rdout_done_pi_count = CTL_get_done_pi_count0() | (CTL_get_done_pi_count1() << 16);
-        fprintf(stderr, "%lu end evt_count wait: rdout_done_pi_count=%d\n", count, rdout_done_pi_count);
-
 
         // get the next trigger
         if(PED) {
@@ -307,10 +302,6 @@ int main(int argc, char *argv[])
             fprintf(stderr, "%lu    after loop - curr: %7lu old: %7lu\n", count, curr_trig, old_trig);
             old_trig = curr_trig;
 
-            rdout_done_pi_count = CTL_get_done_pi_count0() | (CTL_get_done_pi_count1() << 16);
-            fprintf(stderr, "%lu after trig: rdout_done_pi_count=%d\n", count, rdout_done_pi_count);
-
-
             clock_count = (uint64_t)CTL_get_clk_count0() | ((uint64_t)CTL_get_clk_count1() << 16) | ((uint64_t)CTL_get_clk_count2() << 32);
             fprintf(stderr, "%lu    clock count: %llu (diff=%llu)\n", count, clock_count, clock_count-prev_clock_count);
             prev_clock_count = clock_count;
@@ -319,9 +310,6 @@ int main(int argc, char *argv[])
             CTL_write_ipb_fifo(CTL_get_clk_count2());
 
         }
-        rdout_done_pi_count = CTL_get_done_pi_count0() | (CTL_get_done_pi_count1() << 16);
-        fprintf(stderr, "%lu before rdout: rdout_done_pi_count=%d\n", count, rdout_done_pi_count);
-
 
         fprintf(stderr, "%lu start rdout\n", count);
         // tell skirocs to start conversion
@@ -339,9 +327,6 @@ int main(int argc, char *argv[])
             }
         }
         usleep(HX_DELAY4);
-
-        rdout_done_pi_count = CTL_get_done_pi_count0() | (CTL_get_done_pi_count1() << 16);
-        fprintf(stderr, "%lu end loop: rdout_done_pi_count=%d\n", count, rdout_done_pi_count);
 
         count++;
     }// event loop

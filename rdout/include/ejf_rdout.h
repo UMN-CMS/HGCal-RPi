@@ -36,7 +36,7 @@
 #define HX_DELAY1 100
 #define HX_DELAY2 100
 #define HX_DELAY3 3100
-#define HX_DELAY4 800
+#define HX_DELAY4 3100//800
 /////////////////////////////////////////////////
 
 #define RAWSIZE 30787
