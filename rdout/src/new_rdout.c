@@ -289,9 +289,6 @@ int main(int argc, char *argv[])
             clock_count = CTL_get_clk_count0() | (CTL_get_clk_count1() << 16) | ((uint64_t)CTL_get_clk_count2() << 32);
             fprintf(stderr, "%lu    clock count: %llu (diff=%llu)\n", count, clock_count, clock_count-prev_clock_count);
             prev_clock_count = clock_count;
-            CTL_write_ipb_fifo(CTL_get_clk_count0());
-            CTL_write_ipb_fifo(CTL_get_clk_count1());
-            CTL_write_ipb_fifo(CTL_get_clk_count2());
 
         }
 
