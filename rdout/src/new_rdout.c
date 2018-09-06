@@ -263,11 +263,8 @@ int main(int argc, char *argv[])
         while(keeprunning && event_offset >= 2) {
             rdout_done_pi_count = CTL_get_done_pi_count0() | (CTL_get_done_pi_count1() << 16);
             event_offset = count - rdout_done_pi_count;
-            // fprintf(stderr, "%lu rdout_done_pi_count=%d\n", count, rdout_done_pi_count);
             usleep(10);
         }
-
-        rdout_done_pi_count = CTL_get_done_pi_count0() | (CTL_get_done_pi_count1() << 16);
 
         // get the next trigger
         if(PED) {
