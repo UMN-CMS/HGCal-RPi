@@ -3,6 +3,7 @@
 
 source etc/config
 
+./stop_pi_exes
 ./etc/copy_dirs
 
 for SYNC_PI_ALIAS in "${SYNC_PI_ALIASES[@]}"
