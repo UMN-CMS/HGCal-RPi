@@ -33,6 +33,7 @@ do
     ssh $RDOUT_PI_ALIAS "cd $PI_RDOUTDIR; ./run_rdout" &
 done
 wait
+sleep 1
 
 
 # check if the processes are up
