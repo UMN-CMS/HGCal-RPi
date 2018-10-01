@@ -1,6 +1,7 @@
 # HGCal-RPi : CERNtb-oct18
 
-This branch is used at CERN for the October 2018 beam tests. This README is OUT OF DATE.
+This branch is used at CERN for the October 2018 beam tests.
+Parts of this README may be out of date.
 The aliases in `etc/config` are for the current setup.
 
 The computer where this repository is cloned acts as the central hub for the Pis.
