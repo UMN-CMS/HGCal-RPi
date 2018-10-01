@@ -57,25 +57,7 @@ int main(int argc, char *argv[])
     // Startup the SPI interface on the Pi.
     init_spi();
 
-    // Set the date stamp to zero.
-    int date_stamp0, date_stamp1;
-    CTL_put_date_stamp0(0); // To be used as Trigger_Send_OK
-    CTL_put_date_stamp1(0);
-    date_stamp0 =  CTL_get_date_stamp0();
-    date_stamp1 =  CTL_get_date_stamp1();
-    fprintf(stderr,"date_stamp = 0x%04x 0x%04x\n",
-            (int)date_stamp1, (int)date_stamp0);
-
-    // Reset everything. twice...
-    DATA_reset_all(0);
-    DATA_reset_all(1);
-    DATA_reset_all(2);
-    DATA_reset_all(3);
-    DATA_reset_all(4);
-    DATA_reset_all(5);
-    DATA_reset_all(6);
-    DATA_reset_all(7);
-    CTL_reset_all();
+    // Reset everything.
     DATA_reset_all(0);
     DATA_reset_all(1);
     DATA_reset_all(2);
@@ -119,13 +101,6 @@ int main(int argc, char *argv[])
     int block_size;
     block_size = CTL_get_block_size();
     fprintf(stderr,"block_size = %d\n", (int)block_size);
-
-    // empty local fifo by forcing extra reads, ignore results
-    fprintf(stderr,"emptying local fifos (partially)...");
-    for (hx=0; hx<MAXHEXBDS; hx++) HEXBD_read1000_local_fifo(hx,junk);
-    for (hx=0; hx<MAXHEXBDS; hx++) HEXBD_read1000_local_fifo(hx,junk);
-    for (hx=0; hx<MAXHEXBDS; hx++) HEXBD_read1000_local_fifo(hx,junk);
-    fprintf(stderr,"done.\n");
 
     // Run a test on each of the 8 hexaboards looking for good communication.
     int hexbd_mask;
@@ -176,27 +151,11 @@ int main(int argc, char *argv[])
         }
     }
 
-    // empty local fifo by forcing extra reads, ignore results
-    fprintf(stderr,"Emptying local fifos (partially)...");
-    for (hx=0; hx<8; hx++) HEXBD_read1000_local_fifo(hx,junk);
-    for (hx=0; hx<8; hx++) HEXBD_read1000_local_fifo(hx,junk);
-    for (hx=0; hx<8; hx++) HEXBD_read1000_local_fifo(hx,junk);
-    fprintf(stderr,"done.\n");
-
     // Delay the start of "data taking" post configuration to 
     // stabilize the state of the chip
     fprintf(stderr,"Sleeping...");
-    usleep(10000);
     sleep(1);
     fprintf(stderr,"done.\n");
-
-    // Set the date stamp to non-zero, indicating we are done initializing.
-    CTL_put_date_stamp0(0xAABB);
-    CTL_put_date_stamp1(0x3434);
-    date_stamp0 =  CTL_get_date_stamp0();
-    date_stamp1 =  CTL_get_date_stamp1();
-    fprintf(stderr,"date_stamp = 0x%04x 0x%04x\n",
-            (int)date_stamp1, (int)date_stamp0);
 
 
     //===============================================================
