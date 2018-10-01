@@ -1,15 +1,13 @@
 # HGCal-RPi : CERNtb-oct18
 
 This branch is used at CERN for the October 2018 beam tests. This README is OUT OF DATE.
-The aliases in `etc/config` are for the current setup, and the `setup_ipbus` script does NOT program the ORMs, since we are having problems with the hexaboards being too cold to startup after a power cycle.
-There is also a special configuration string for the 29th layer which is used for timing.
-This is dealt with inside the `rdout_timing/` folder, which is only copied to the last readout board (the one connected to the timing hexaboard).
+The aliases in `etc/config` are for the current setup.
 
 The computer where this repository is cloned acts as the central hub for the Pis.
 The Raspberry Pi software and ORM firmware are copied out from the hub at the start of each run using `rsync`, ensuring each is running the latest versions.
 Boards are designated as readout or sync in `etc/config`, and their respective code/fw is in `rdout/` and `sync/`.
 A number of shell scripts are provided to facilitate this process.
-The most notable scripts are `setup_ipbus`, `start_pi_exes`, and `stop_pi_exes`; others can be found in `etc/config`, `rdout/`, and `sync/` (though the last two folders contain scripts that are only run on the Pis after the corresponding directory has been copied over).
+The most notable scripts are `setup_ipbus`, `start_pi_exes`, and `stop_pi_exes`; others can be found in `etc/`, `rdout/`, and `sync/` (though the last two folders contain scripts that are only run on the Pis after the corresponding directory has been copied over).
 
 
 ## Table of Contents
@@ -137,11 +135,10 @@ During each iteration of the event loop, the following actions are performed:
   1. Each hexaboard is sent the reset command (`CMD_RESETPULSE`)
   2. Each hexaboard is sent the command to start acquisition (`CMD_SETSTARTACQ`)
   3. The CTL's FIFOs are reset
-  4. We wait for a trigger
-    - The `date_stamp` register is used to tell EUDAQ when we are OK for the next trigger.
-      This register is set to 1 when we are OK to recieve one, and set to 0 when we don't currently want one (while we wait for readout to complete, etc...)
-  5. Once we have recieved a trigger, each hexaboard is sent the start conversion command (`CMD_STARTCONPUL`) and then the start readout command (`CMD_STARTROPUL`)
-  6. We wait until the FIFO is empty, as an empty FIFO indicates that the IPBus readout is complete and we can safely move on to the next event.
+  4. The Raspberry Pi sends the `RDOUT_DONE` signal to the syncboard, indicating we are ready for the next trigger
+  5. We wait for a trigger
+  6. Once we have recieved a trigger, each hexaboard is sent the start conversion command (`CMD_STARTCONPUL`) and then the start readout command (`CMD_STARTROPUL`)
+  7. We wait until the FIFO is empty, as an empty FIFO indicates that the IPBus readout is complete and we can safely move on to the next event.
    This process is repeated for each event until the data taking is complete.
 
 An example output is as follows (with comments after the hashes):
@@ -208,8 +205,10 @@ skiroc_mask = 0x000f 0x0000
 ### Power Cycling
 The script to power cycle the ORMs is `etc/pwr_cycle`.
 This power cycles all 4 data ORMs and the CTL ORM on each readout board.
-At the moment, this also power cycles the hexaboards connected to the ORMs.
-Be sure that the hexaboards turn back on before taking data - sometimes they may need to be warmed up.
+There is a small hardware modification on the RDOUTv2 boards that allow them to keep the hexaboards powered.
+These boards must use the `rdout/src/v2_pwr_cycle.c` power cycling script, while the original v1 boards use `rdout/src/pwr_cycle_fpgas.c`
+The hexaboards do not recieve a clock while the ORMs are power cycling.
+Be sure that the hexaboards turn back on before taking data - sometimes they may need to be warmed up before they will start up.
 
 ### FPGA Programming
 The ORMs can be reprogrammed using the `etc/prog_orms` script.
@@ -230,7 +229,7 @@ You can check `ip.log` on the board that failed to see what happened.
 ## Current Software/Firmware
 These are the current versions:
 ### Firmware
-  - CTL ORM: `ctl_orm_dly.hex`
+  - CTL ORM: `ctl_orm_cs.hex`
   - DATA ORM: `data_orm_dly.hex`
   - SYNC ORM: `sync_orm_busy2.hex`
 
