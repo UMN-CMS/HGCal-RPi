@@ -35,6 +35,6 @@ do
     wait "$PID"
     if [ $? -ne 0 ]
     then
-        echo "Setting IPBus (pid $PID) failed. Check prog.log on the rdout board with that pid"
+        echo "Setting IPBus (pid $PID) failed. Check ip.log on the rdout board with that pid"
     fi
 done
