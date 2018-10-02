@@ -17,8 +17,8 @@ gcc -c src/hexbd_config.c $CCFLAGS -o obj/hexbd_config.o
 # compile executables
 gcc -O src/new_rdout.c       obj/ejf_rdout.o obj/ctl_orm.o obj/data_orm.o obj/hexbd.o obj/hexbd_config.o obj/spi_common.o $CCFLAGS -o bin/new_rdout
 gcc -O src/program_fpga.c    obj/spi_common.o                                                                             $CCFLAGS -o bin/program_fpga
-gcc -O src/pwr_cycle_fpgas.c obj/ejf_rdout.o obj/ctl_orm.o obj/data_orm.o obj/hexbd.o obj/hexbd_config.o obj/spi_common.o $CCFLAGS -o bin/pwr_cycle_fpgas
-gcc -O src/v2_pwr_cycle.c    obj/ejf_rdout.o obj/ctl_orm.o obj/data_orm.o obj/hexbd.o obj/hexbd_config.o obj/spi_common.o $CCFLAGS -o bin/v2_pwr_cycle
+gcc -O src/pwr_cycle_v1.c    obj/ejf_rdout.o obj/ctl_orm.o obj/data_orm.o obj/hexbd.o obj/hexbd_config.o obj/spi_common.o $CCFLAGS -o bin/pwr_cycle_v1
+gcc -O src/pwr_cycle_v2.c    obj/ejf_rdout.o obj/ctl_orm.o obj/data_orm.o obj/hexbd.o obj/hexbd_config.o obj/spi_common.o $CCFLAGS -o bin/pwr_cycle_v2
 gcc -O src/get_board_id.c    obj/spi_common.o                                                                             $CCFLAGS -o bin/get_board_id
 gcc -O src/set_ipbus_ip.c    obj/ctl_orm.o obj/spi_common.o                                                               $CCFLAGS -o bin/set_ipbus_ip
 gcc -O src/write_fifo.c      obj/ctl_orm.o obj/spi_common.o                                                               $CCFLAGS -o bin/write_fifo

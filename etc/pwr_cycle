@@ -8,7 +8,7 @@ source etc/config
 for RDOUT_PI_ALIAS in "${RDOUT_PI_ALIASES[@]}"
 do
     echo "power cycling $RDOUT_PI_ALIAS"
-    # ssh $RDOUT_PI_ALIAS "cd $PI_RDOUTDIR; sudo ./bin/pwr_cycle_fpgas" &
-    ssh $RDOUT_PI_ALIAS "cd $PI_RDOUTDIR; sudo ./bin/v2_pwr_cycle" &
+    # ssh $RDOUT_PI_ALIAS "cd $PI_RDOUTDIR; sudo ./bin/pwr_cycle_v1" &
+    ssh $RDOUT_PI_ALIAS "cd $PI_RDOUTDIR; sudo ./bin/pwr_cycle_v2" &
 done
 wait
