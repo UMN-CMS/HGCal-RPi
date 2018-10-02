@@ -1,0 +1,6 @@
+#!/bin/bash
+
+source etc/config
+
+parallel $PARALLEL_RDOUT_ARGS 'sudo pkill new_rdout ; pgrep new_rdout >> /dev/null && echo "process was not killed"'
+parallel $PARALLEL_SYNC_ARGS  'sudo pkill sync_debug ; pgrep sync_debug >> /dev/null && echo "process was not killed"'

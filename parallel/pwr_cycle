@@ -1,0 +1,7 @@
+#!/bin/bash
+
+source etc/config
+
+./parallel/stop
+
+parallel $PARALLEL_RDOUT_ARGS 'cd rdout/ && sudo ./bin/v2_pwr_cycle'

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+source etc/config
+
+./parallel/stop
+
+parallel $PARALLEL_RDOUT_ARGS 'cd rdout/ && ./run_rdout ; sleep 1.1 ; pgrep new_rdout >> /dev/null || echo "process was not started"'
+parallel $PARALLEL_SYNC_ARGS  'cd sync/ && ./run_sync ; sleep 1.1 ; pgrep sync_debug >> /dev/null || echo "process was not started"'
