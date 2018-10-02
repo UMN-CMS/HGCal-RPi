@@ -2,6 +2,7 @@
 
 source etc/config
 
+./stop_pi_exes
 
 # power cycle
 for RDOUT_PI_ALIAS in "${RDOUT_PI_ALIASES[@]}"
