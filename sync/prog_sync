@@ -3,3 +3,8 @@
 # SYNC ORM
 echo "Programming SYNC ORM"
 sudo ./bin/program_fpga 4 < fw/sync_orm_busy2.hex > prog.log 2>&1
+if [ $? -ne 0 ]
+then
+    echo "programming failed - check prog.log"
+    exit 1
+fi
