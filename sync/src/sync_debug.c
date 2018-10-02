@@ -7,7 +7,7 @@
 #include <signal.h>
 
 
-#define ENABLE_VETO1 0
+#define ENABLE_VETO1 1
 #define ENABLE_VETO2 0
 
 static int keeprunning = 1;
