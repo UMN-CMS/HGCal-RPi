@@ -27,7 +27,3 @@ RSYNC_FLAGS=(-az --delete '--filter=P *.log')
     # -az: archive & compress data
     # --delete: delete files in dest directory that aren't in source directory
     # --filter=P *.log: don't delete .log files
-
-PARALLEL_ARGS="-j0 --tag --nonall -M"
-PARALLEL_RDOUT_ARGS="$PARALLEL_ARGS --sshloginfile etc/rdoutpis"
-PARALLEL_SYNC_ARGS="$PARALLEL_ARGS --sshloginfile etc/syncpis"
