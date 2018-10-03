@@ -1,0 +1,10 @@
+#!/bin/bash
+
+source etc/config
+
+
+for SYNC_PI_ALIAS in "${SYNC_PI_ALIASES[@]}"
+do
+    echo "$SYNC_PI_ALIAS ---------------------------------------- $SYNC_PI_ALIAS"
+    ssh $SYNC_PI_ALIAS "tail $PI_SYNCDIR/sync.log"
+done
