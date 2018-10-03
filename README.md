@@ -215,8 +215,8 @@ skiroc_mask = 0x000f 0x0000
 The script to power cycle the ORMs is `etc/pwr_cycle`.
 This power cycles all 4 data ORMs and the CTL ORM on each readout board.
 There is a small hardware modification on the RDOUTv2 boards that allow them to keep the hexaboards powered.
-These boards must use the `rdout/src/v2_pwr_cycle.c` power cycling script, while the original v1 boards use `rdout/src/pwr_cycle_fpgas.c`
-The hexaboards do not recieve a clock while the ORMs are power cycling.
+These boards must use the `rdout/bin/pwr_cycle_v2 power cycling executable, while the original v1 boards use `rdout/bin/pwr_cycle_v1`
+The hexaboards do not recieve a clock while the ORMs are power cycling in the case of the v2 boards.
 Be sure that the hexaboards turn back on before taking data - sometimes they may need to be warmed up before they will start up.
 
 ### FPGA Programming
