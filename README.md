@@ -47,6 +47,7 @@ Since we are using two NICs on the same subnet, we must add routes:
 route add -host 192.168.222.50 dev em3
 ```
 This command should be repeated for each pi and the IPBus ip addresses with the corresponding interface for that crate.
+We have added AHCAL (192.168.222.42) onto its own separate NIC (em4) to not interfere with our system.
 
 ### 2. Stop Previously Running Executables
 Make sure there are no running executables on the pis with `./stop_pi_exes`.
