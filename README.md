@@ -36,9 +36,17 @@ NOTE: The example outputs that are in these sections are not necessarily accurat
 Modify `RDOUT_PI_ALIASES` and `SYNC_PI_ALIASES` in `etc/config` to be the ssh aliases of the Raspberry Pis on your readout and sync boards.
 As an example, if you have 3 readout boards with rpi ssh aliases `rdout0` through `rdout2` and one sync board with rpi ssh alias`sync0`, `etc/config` should read:
 ```bash
-RDOUT_PI_ALIASES=("rdout0 rdout1 rdout2")   # ssh aliases of the readout board pis
-SYNC_PI_ALIASES=("sync0")                   # ssh aliases of the sync board pis
+RDOUT_PI_ALIASES=("piR0 piR1 piR2")   # ssh aliases of the readout board pis
+SYNC_PI_ALIASES=("piS0")                   # ssh aliases of the sync board pis
 ```
+With the current setup, we have two crates.
+Crate 1 contains rdoutboard pis 50-57, and crate 2 contains rdoutboard pis 58-63,65 and syncboard pi 20.
+Crate 1 is connected to `em3` on the server, and crate 2 is connected to `em2`.
+Since we are using two NICs on the same subnet, we must add routes:
+```
+route add -host 192.168.222.50 dev em3
+```
+This command should be repeated for each pi and the IPBus ip addresses with the corresponding interface for that crate.
 
 ### 2. Stop Previously Running Executables
 Make sure there are no running executables on the pis with `./stop_pi_exes`.
