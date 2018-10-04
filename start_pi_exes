@@ -5,5 +5,5 @@ source etc/config
 
 ./stop_pi_exes
 
-parallel $parallel_rdout_args "cd $pi_rdoutdir && ./run_rdout ; sleep 1.1 ; pgrep $rdoutexe >> /dev/null || echo '\033[0;91mprocess was not started\033[0m'"
-parallel $parallel_sync_args "cd $pi_syncdir && ./run_sync ; sleep 1.1 ; pgrep $syncexe >> /dev/null || echo '\033[0;91mprocess was not started\033[0m'"
+parallel $parallel_rdout_args "cd $pi_rdoutdir && ./run_rdout ; sleep 1.1 ; pgrep $rdoutexe >> /dev/null || echo -e '\033[0;91mprocess was not started\033[0m'"
+parallel $parallel_sync_args "cd $pi_syncdir && ./run_sync ; sleep 1.1 ; pgrep $syncexe >> /dev/null || echo -e '\033[0;91mprocess was not started\033[0m'"

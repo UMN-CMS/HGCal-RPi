@@ -12,7 +12,7 @@ do
     skirocmask="${skirocmask:14}"
     hexbds="$(echo "$skirocmask" | awk -F"f" '{print NF-1}')"
 
-    if [ $hexbds -eq 0 ]
+    if [ $hexbds -le 0 ]
     then
         echo -e "\033[0;91m$rdout_pi_alias:\t$skirocmask ($hexbds hexbds)\033[0m"
 	missinghexbds=1
