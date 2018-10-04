@@ -1,5 +1,6 @@
 #!/bin/bash
 # copy the directories over to all of the pis
+# and compile the software
 
 source etc/config
 
@@ -7,14 +8,11 @@ source etc/config
 # copy directories over
 for rdout_pi_alias in "${rdout_pi_aliases[@]}"
 do
-    echo "copying to $rdout_pi_alias"
-
     rsync "${rsync_flags[@]}" rdout/ $rdout_pi_alias:$pi_rdoutdir &
 done
 
 for sync_pi_alias in "${sync_pi_aliases[@]}"
 do
-    echo "copying to $sync_pi_alias"
     rsync "${rsync_flags[@]}" sync/ $sync_pi_alias:$pi_syncdir &
 done
 wait
@@ -23,13 +21,11 @@ wait
 # compile
 for rdout_pi_alias in "${rdout_pi_aliases[@]}"
 do
-    echo "compiling on $rdout_pi_alias"
     ssh $rdout_pi_alias "cd $pi_rdoutdir; ./compile" &
 done
 
 for sync_pi_alias in "${sync_pi_aliases[@]}"
 do
-    echo "compiling on $sync_pi_alias"
     ssh $sync_pi_alias "cd $pi_syncdir; ./compile" &
 done
 wait
