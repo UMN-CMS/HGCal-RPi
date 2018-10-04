@@ -11,30 +11,30 @@ source etc/config
 
 
 # set IPBus ip addresses
-PIDS=""
-BOARDNUM=0
-for RDOUT_PI_ALIAS in "${RDOUT_PI_ALIASES[@]}"
+pids=""
+boardnum=0
+for rdout_pi_alias in "${rdout_pi_aliases[@]}"
 do
 
     # set ip/mac addresses
-    ssh $RDOUT_PI_ALIAS "cd $PI_RDOUTDIR; ./set_ipbus_ip $BOARDNUM" &
-    PID="$!"
-    echo "setting IPBus ip on $RDOUT_PI_ALIAS (board number $BOARDNUM, pid $PID)"
+    ssh $rdout_pi_alias "cd $pi_rdoutdir; ./set_ipbus_ip $boardnum" &
+    pid="$!"
+    echo "setting IPBus ip on $rdout_pi_alias (board number $boardnum, pid $pid)"
 
     # keep pid for later
-    PIDS+=" $PID"
+    pids+=" $pid"
 
     # next board
-    BOARDNUM=$((BOARDNUM+1))
+    boardnum=$((boardnum+1))
 done
 
 
 # make sure everything exits ok
-for PID in $PIDS
+for pid in $pids
 do
-    wait "$PID"
+    wait "$pid"
     if [ $? -ne 0 ]
     then
-        echo "Setting IPBus (pid $PID) failed. Check ip.log on the rdout board with that pid"
+        echo "Setting IPBus (pid $pid) failed. Check ip.log on the rdout board with that pid"
     fi
 done

@@ -1,26 +1,26 @@
 #!/bin/bash
 # check the log files and see which hexbds are connected on each rdout board
 
-TOTAL=0
-MISSINGHEXBDS=0
+total=0
+missinghexbds=0
 
 source etc/config
 
-for RDOUT_PI_ALIAS in "${RDOUT_PI_ALIASES[@]}"
+for rdout_pi_alias in "${rdout_pi_aliases[@]}"
 do
-    SKIROCMASK="$(ssh $RDOUT_PI_ALIAS "cat $PI_RDOUTDIR/rdout.log | grep -m 1 skiroc_mask")"
-    SKIROCMASK="${SKIROCMASK:14}"
-    HEXBDS="$(echo "$SKIROCMASK" | awk -F"f" '{print NF-1}')"
+    skirocmask="$(ssh $rdout_pi_alias "cat $pi_rdoutdir/rdout.log | grep -m 1 skiroc_mask")"
+    skirocmask="${skirocmask:14}"
+    hexbds="$(echo "$skirocmask" | awk -F"f" '{print NF-1}')"
 
-    if [ $HEXBDS -eq 0 ]
+    if [ $hexbds -eq 0 ]
     then
-        echo -e "\033[0;91m$RDOUT_PI_ALIAS:\t$SKIROCMASK ($HEXBDS hexbds)\033[0m"
-	MISSINGHEXBDS=1
+        echo -e "\033[0;91m$rdout_pi_alias:\t$skirocmask ($hexbds hexbds)\033[0m"
+	missinghexbds=1
     else
-        echo -e "$RDOUT_PI_ALIAS:\t$SKIROCMASK ($HEXBDS hexbds)"
+        echo -e "$rdout_pi_alias:\t$skirocmask ($hexbds hexbds)"
     fi
 
-    TOTAL=$((TOTAL+HEXBDS))
+    total=$((total+hexbds))
 done
 
-echo -e "total:\t$TOTAL hexbds"
+echo -e "total:\t$total hexbds"

@@ -3,8 +3,8 @@
 source etc/config
 
 
-for SYNC_PI_ALIAS in "${SYNC_PI_ALIASES[@]}"
+for sync_pi_alias in "${sync_pi_aliases[@]}"
 do
-    echo "$SYNC_PI_ALIAS ---------------------------------------- $SYNC_PI_ALIAS"
-    ssh $SYNC_PI_ALIAS "tail $PI_SYNCDIR/sync.log"
+    echo "$sync_pi_alias ---------------------------------------- $sync_pi_alias"
+    ssh $sync_pi_alias "tail $pi_syncdir/sync.log"
 done

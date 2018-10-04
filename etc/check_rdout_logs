@@ -3,8 +3,8 @@
 source etc/config
 
 
-for RDOUT_PI_ALIAS in "${RDOUT_PI_ALIASES[@]}"
+for rdout_pi_alias in "${rdout_pi_aliases[@]}"
 do
-    echo "$RDOUT_PI_ALIAS ---------------------------------------- $RDOUT_PI_ALIAS"
-    ssh $RDOUT_PI_ALIAS "tail $PI_RDOUTDIR/rdout.log"
+    echo "$rdout_pi_alias ---------------------------------------- $rdout_pi_alias"
+    ssh $rdout_pi_alias "tail $pi_rdoutdir/rdout.log"
 done

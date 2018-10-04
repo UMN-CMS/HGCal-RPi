@@ -1,3 +1,5 @@
+#!/bin/bash
+
 ./stop_pi_exes
 ./etc/pwr_cycle
 ./setup_ipbus

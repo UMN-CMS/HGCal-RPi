@@ -1,34 +1,34 @@
 #!/bin/bash
 # waits for the ORMs to show up on the network
 
-BASE_IP="192.168.222."
-OFFSET=200
+base_ip="192.168.222."
+offset=200
 
 source etc/config
 
-BOARDNUM=0
-for RDOUT_PI_ALIAS in "${RDOUT_PI_ALIASES[@]}"
+boardnum=0
+for rdout_pi_alias in "${rdout_pi_aliases[@]}"
 do
-    echo "$RDOUT_PI_ALIAS ($BOARDNUM):"
+    echo "$rdout_pi_alias ($boardnum):"
 
-    IP="$BASE_IP$((OFFSET+BOARDNUM))"
+    ip="$base_ip$((offset+boardnum))"
 
-    FOUND=0
+    found=0
     for i in {1..30}
     do
-        ping -c1 -w1 $IP &> /dev/null
+        ping -c1 -w1 $ip &> /dev/null
         if [ $? -eq 0 ]
         then
-	    FOUND=1
+	    found=1
             echo "found!"
             break
         fi
     done
-    if [ $FOUND -ne 1 ]
+    if [ $found -ne 1 ]
     then
         echo "not found in 30s - exiting"
         exit 1
     fi
 
-    BOARDNUM=$((BOARDNUM+1))
+    boardnum=$((boardnum+1))
 done

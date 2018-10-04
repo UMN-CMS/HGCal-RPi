@@ -5,32 +5,32 @@ source etc/config
 
 
 # copy directories over
-for RDOUT_PI_ALIAS in "${RDOUT_PI_ALIASES[@]}"
+for rdout_pi_alias in "${rdout_pi_aliases[@]}"
 do
-    echo "copying to $RDOUT_PI_ALIAS"
+    echo "copying to $rdout_pi_alias"
 
-    rsync "${RSYNC_FLAGS[@]}" rdout/ $RDOUT_PI_ALIAS:$PI_RDOUTDIR &
+    rsync "${rsync_flags[@]}" rdout/ $rdout_pi_alias:$pi_rdoutdir &
 done
 
-for SYNC_PI_ALIAS in "${SYNC_PI_ALIASES[@]}"
+for sync_pi_alias in "${sync_pi_aliases[@]}"
 do
-    echo "copying to $SYNC_PI_ALIAS"
-    rsync "${RSYNC_FLAGS[@]}" sync/ $SYNC_PI_ALIAS:$PI_SYNCDIR &
+    echo "copying to $sync_pi_alias"
+    rsync "${rsync_flags[@]}" sync/ $sync_pi_alias:$pi_syncdir &
 done
 wait
 
 
 # compile
-for RDOUT_PI_ALIAS in "${RDOUT_PI_ALIASES[@]}"
+for rdout_pi_alias in "${rdout_pi_aliases[@]}"
 do
-    echo "compiling on $RDOUT_PI_ALIAS"
-    ssh $RDOUT_PI_ALIAS "cd $PI_RDOUTDIR; ./compile" &
+    echo "compiling on $rdout_pi_alias"
+    ssh $rdout_pi_alias "cd $pi_rdoutdir; ./compile" &
 done
 
-for SYNC_PI_ALIAS in "${SYNC_PI_ALIASES[@]}"
+for sync_pi_alias in "${sync_pi_aliases[@]}"
 do
-    echo "compiling on $SYNC_PI_ALIAS"
-    ssh $SYNC_PI_ALIAS "cd $PI_SYNCDIR; ./compile" &
+    echo "compiling on $sync_pi_alias"
+    ssh $sync_pi_alias "cd $pi_syncdir; ./compile" &
 done
 wait
 

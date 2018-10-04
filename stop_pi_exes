@@ -4,15 +4,15 @@
 source etc/config
 
 # stop any old executables
-for SYNC_PI_ALIAS in "${SYNC_PI_ALIASES[@]}"
+for sync_pi_alias in "${sync_pi_aliases[@]}"
 do
-    echo "stopping exes on $SYNC_PI_ALIAS"
-    ssh $SYNC_PI_ALIAS "sudo killall $SYNC_EXE" &
+    echo "stopping exes on $sync_pi_alias"
+    ssh $sync_pi_alias "sudo killall $syncexe" &
 done
 
-for RDOUT_PI_ALIAS in "${RDOUT_PI_ALIASES[@]}"
+for rdout_pi_alias in "${rdout_pi_aliases[@]}"
 do
-    echo "stopping exes on $RDOUT_PI_ALIAS:"
-    ssh $RDOUT_PI_ALIAS "sudo killall $RDOUT_EXE" &
+    echo "stopping exes on $rdout_pi_alias:"
+    ssh $rdout_pi_alias "sudo killall $rdoutexe" &
 done
 wait

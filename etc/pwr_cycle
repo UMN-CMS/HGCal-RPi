@@ -5,10 +5,10 @@ source etc/config
 ./stop_pi_exes
 
 # power cycle
-for RDOUT_PI_ALIAS in "${RDOUT_PI_ALIASES[@]}"
+for rdout_pi_alias in "${rdout_pi_aliases[@]}"
 do
-    echo "power cycling $RDOUT_PI_ALIAS"
-    # ssh $RDOUT_PI_ALIAS "cd $PI_RDOUTDIR; sudo ./bin/pwr_cycle_v1" &
-    ssh $RDOUT_PI_ALIAS "cd $PI_RDOUTDIR; sudo ./bin/pwr_cycle_v2" &
+    echo "power cycling $rdout_pi_alias"
+    # ssh $rdout_pi_alias "cd $pi_rdoutdir; sudo ./bin/pwr_cycle_v1" &
+    ssh $rdout_pi_alias "cd $pi_rdoutdir; sudo ./bin/pwr_cycle_v2" &
 done
 wait
