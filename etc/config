@@ -9,12 +9,10 @@ check_retval () {
 }
 
 # ssh aliases
-rdout_pi_aliases=("piR51" "piR52" "piR53"   # ssh aliases of the readout board pis
-                  "piR54" "piR55" "piR56"
-                  "piR57" "piR58" "piR59"
-                  "piR60" "piR61" "piR62"
-                  "piR63" "piR65")
-sync_pi_aliases=("piS20")                   # ssh aliases of the sync board pis
+declare -a rdout_pi_aliases
+declare -a sync_pi_aliases
+readarray -t rdout_pi_aliases < etc/rdoutpis
+readarray -t sync_pi_aliases < etc/syncpis
 
 # raspberry pi file/folder names
 pi_rdoutdir="/home/pi/rdout/"               # directory to copy code into on rdout pis
