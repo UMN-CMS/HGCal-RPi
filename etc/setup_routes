@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# crate 1 (em3) - 8 rb
+# crate 2 (em2) - 7 rb, 1 sb
+
+# rdout boards
+for i in {50..57}
+do
+    sudo route add -host piR$i dev em3
+done
+for i in {58..63}
+do
+    sudo route add -host piR$i dev em2
+done
+
+# sync board
+sudo route add -host piS20 dev em2
+
+# current monitor pis
+sudo route add -host piM130 dev em2
+sudo route add -host piM131 dev em3
+
+# ahcal pc
+sudo route add -host pcahcal dev em4

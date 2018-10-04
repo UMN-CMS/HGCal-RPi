@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# make sure network is set up properly
+./etc/setup_routes >> /dev/null 2>&1
+
 # function to check return values
 check_retval () {
     if [ $1 -ne 0 ]
