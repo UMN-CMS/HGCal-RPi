@@ -14,7 +14,7 @@ do
 
     if [ $hexbds -le 0 ]
     then
-        echo -e "\033[0;91m$rdout_pi_alias:\t$skirocmask ($hexbds hexbds)\033[0m"
+        echo -e "$rdout_pi_alias\t\033[0;91m$skirocmask ($hexbds hexbds)\033[0m"
 	missinghexbds=1
     else
         echo -e "$rdout_pi_alias:\t$skirocmask ($hexbds hexbds)"
