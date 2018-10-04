@@ -12,6 +12,15 @@ for i in {58..63}
 do
     sudo route add -host piR$i dev em2
 done
+sudo route add -host piR65 dev em2
+for i in {200..206}
+do
+    sudo route add -host 192.168.222.$i dev em3
+done
+for i in {207..213}
+do
+    sudo route add -host 192.168.222.$i dev em2
+done
 
 # sync board
 sudo route add -host piS20 dev em2
