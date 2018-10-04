@@ -9,8 +9,8 @@ source etc/config
 # copy and compile
 ./etc/copy_dirs
 
-
 # set IPBus ip addresses
+declare -A pid_map
 pids=""
 boardnum=0
 for rdout_pi_alias in "${rdout_pi_aliases[@]}"
@@ -19,15 +19,14 @@ do
     # set ip/mac addresses
     ssh $rdout_pi_alias "cd $pi_rdoutdir; ./set_ipbus_ip $boardnum" &
     pid="$!"
-    echo "setting IPBus ip on $rdout_pi_alias (board number $boardnum, pid $pid)"
 
     # keep pid for later
-    pids+=" $pid"
+    pid_map[$pid]="$rdout_pi_alias"
+    pids="$pids $pid"
 
     # next board
     boardnum=$((boardnum+1))
 done
-
 
 # make sure everything exits ok
 for pid in $pids
@@ -35,6 +34,6 @@ do
     wait "$pid"
     if [ $? -ne 0 ]
     then
-        echo "Setting IPBus (pid $pid) failed. Check ip.log on the rdout board with that pid"
+        echo -e "${pid_map[$pid]}\t\033[0;91msetting ipbus ip/mac failed - check ip.log\033[0m"
     fi
 done
