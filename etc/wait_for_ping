@@ -9,8 +9,6 @@ source etc/config
 boardnum=0
 for rdout_pi_alias in "${rdout_pi_aliases[@]}"
 do
-    echo "$rdout_pi_alias ($boardnum):"
-
     ip="$base_ip$((offset+boardnum))"
 
     found=0
@@ -20,13 +18,12 @@ do
         if [ $? -eq 0 ]
         then
 	    found=1
-            echo "found!"
             break
         fi
     done
     if [ $found -ne 1 ]
     then
-        echo "not found in 30s - exiting"
+        echo -e "\033[0;31m$rdout_pi_alias ($ip) not found in 30s - exiting\033[0m"
         exit 1
     fi
 
