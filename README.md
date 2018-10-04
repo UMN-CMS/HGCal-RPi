@@ -51,7 +51,7 @@ An error message will be printed if this was unsuccessful on a Pi.
 
 #### 2. Power Cycle
 Power cycle the ORMs on each rdout board with `etc/pwr_cycle`.
-If a power cycle fails (usually because the syncboard cable is disconnected -> no clock), an error will be printed.
+If a power cycle fails (usually because the syncboard cable is disconnected -> no clock), an error message will be printed.
 
 #### 3. IPBus Setup
 Setup IPBus with `./setup_ipbus`.
@@ -184,7 +184,7 @@ skiroc_mask = 0x000f 0x0000
 The script to power cycle the ORMs is `etc/pwr_cycle`.
 This power cycles all 4 data ORMs and the CTL ORM on each readout board.
 There is a small hardware modification on the RDOUTv2 boards that allow them to keep the hexaboards powered.
-These boards must use the `rdout/bin/pwr_cycle_v2 power cycling executable, while the original v1 boards use `rdout/bin/pwr_cycle_v1`
+These boards must use the `rdout/bin/pwr_cycle_v2` power cycling executable, while the original v1 boards use `rdout/bin/pwr_cycle_v1`
 The hexaboards do not recieve a clock while the ORMs are power cycling in the case of the v2 boards.
 Be sure that the hexaboards turn back on before taking data - sometimes they may need to be warmed up before they will start up.
 
