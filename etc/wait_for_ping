@@ -23,7 +23,7 @@ do
     done
     if [ $found -ne 1 ]
     then
-        echo -e "$rdout_pi_alias\t\033[0;91m$($ip) not found in 30s - exiting\033[0m"
+        echo -e "$rdout_pi_alias\t\033[0;91m($ip) not found in 30s - exiting\033[0m"
         exit 1
     fi
 
