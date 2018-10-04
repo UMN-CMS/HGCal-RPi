@@ -25,3 +25,6 @@ rsync_flags=(-az --delete '--filter=P *.log')
     # -az: archive & compress data
     # --delete: delete files in dest directory that aren't in source directory
     # --filter=P *.log: don't delete .log files
+parallel_args="-j0 --tag --nonall -M"
+parallel_rdout_args="$parallel_args --sshloginfile etc/rdoutpis"
+parallel_sync_args="$parallel_args --sshloginfile etc/syncpis"

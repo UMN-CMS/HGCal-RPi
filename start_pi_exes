@@ -1,51 +1,9 @@
 #!/bin/bash
 # starts the executables on the raspberry pis
 
-
-check_process_up () {
-    pid="$(ssh $1 "pgrep $2")"
-    if [ -z "$pid" ]
-    then
-        echo "Aborting - the process on $1 was not started"
-        exit 1
-    fi
-}
-
 source etc/config
 
-
-# stop any old executables
 ./stop_pi_exes
 
-
-# startup exes
-# sync boards
-for sync_pi_alias in "${sync_pi_aliases[@]}"
-do
-    echo "starting exe on $sync_pi_alias"
-    ssh $sync_pi_alias "cd $pi_syncdir; ./run_sync" &
-done
-
-# rdout boards
-for rdout_pi_alias in "${rdout_pi_aliases[@]}"
-do
-    echo "starting exe on $rdout_pi_alias"
-    ssh $rdout_pi_alias "cd $pi_rdoutdir; ./run_rdout" &
-done
-wait
-sleep 1
-
-
-# check if the processes are up
-# sync boards
-for sync_pi_alias in "${sync_pi_aliases[@]}"
-do
-    check_process_up "$sync_pi_alias" "$syncexe" &
-done
-
-# rdout boards
-for rdout_pi_alias in "${rdout_pi_aliases[@]}"
-do
-    check_process_up "$rdout_pi_alias" "$rdoutexe" &
-done
-wait
+parallel $parallel_rdout_args "cd $pi_rdoutdir && ./run_rdout ; sleep 1.1 ; pgrep $rdoutexe >> /dev/null || echo '\033[0;91mprocess was not started\033[0m'"
+parallel $parallel_sync_args "cd $pi_syncdir && ./run_sync ; sleep 1.1 ; pgrep $syncexe >> /dev/null || echo '\033[0;91mprocess was not started\033[0m'"
