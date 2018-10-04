@@ -1,24 +1,23 @@
 # HGCal-RPi : CERNtb-oct18
 
 This branch is used at CERN for the October 2018 beam tests.
-Parts of this README may be out of date.
-The aliases in `etc/config` are for the current setup.
+The aliases in `etc/rdoutpis` and `etc/syncpis` are for the current setup.
 
 The computer where this repository is cloned acts as the central hub for the Pis.
 The Raspberry Pi software and ORM firmware are copied out from the hub at the start of each run using `rsync`, ensuring each is running the latest versions.
-Boards are designated as readout or sync in `etc/config`, and their respective code/fw is in `rdout/` and `sync/`.
+Boards are designated as readout or sync in `etc/rdoutpis` and `etc/syncpis`, and their respective code/fw is in `rdout/` and `sync/`.
 A number of shell scripts are provided to facilitate this process.
-The most notable scripts are `setup_ipbus`, `start_pi_exes`, and `stop_pi_exes`; others can be found in `etc/`, `rdout/`, and `sync/` (though the last two folders contain scripts that are only run on the Pis after the corresponding directory has been copied over).
 
 
 ## Table of Contents
   * [Instructions](#instructions)
      * [1. Setup](#1-setup)
-     * [2. Stop Previously Running Executables](#2-stop-previously-running-executables)
-     * [3. IPBus Setup](#3-ipbus-setup)
-     * [4. Start Executables](#4-start-executables)
-     * [5. Start Data Taking](#5-start-data-taking)
-     * [6. Finishing Up](#6-finishing-up)
+     * [2. Start](#2-start)
+        * [1. Stop Previously Running Executables](#1-stop-previously-running-executables)
+        * [2. IPBus Setup](#2-ipbus-setup)
+        * [3. Start Executables](#3-start-executables)
+        * [4. Start Data Taking](#4-start-data-taking)
+        * [5. Finishing Up](#5-finishing-up)
   * [Documentation](#documentation)
      * [sync_debug](#sync_debug)
      * [new_rdout](#new_rdout)
@@ -30,76 +29,45 @@ The most notable scripts are `setup_ipbus`, `start_pi_exes`, and `stop_pi_exes`;
 
 ## Instructions
 
-NOTE: The example outputs that are in these sections are not necessarily accurate. Things run in parallel now, so the output scheme is being changed.
-
 ### 1. Setup
-Modify `RDOUT_PI_ALIASES` and `SYNC_PI_ALIASES` in `etc/config` to be the ssh aliases of the Raspberry Pis on your readout and sync boards.
-As an example, if you have 3 readout boards with rpi ssh aliases `rdout0` through `rdout2` and one sync board with rpi ssh alias`sync0`, `etc/config` should read:
-```bash
-RDOUT_PI_ALIASES=("piR0 piR1 piR2")   # ssh aliases of the readout board pis
-SYNC_PI_ALIASES=("piS0")                   # ssh aliases of the sync board pis
-```
+Modify `etc/rdoutpis` and `etc/syncpis` to contain the ssh aliases of the Raspberry Pis on your readout and sync boards.
 With the current setup, we have two crates.
-Crate 1 contains rdoutboard pis 50-57, and crate 2 contains rdoutboard pis 58-63,65 and syncboard pi 20.
+Crate 1 contains rdoutboard Pis 50-57, and crate 2 contains rdoutboard Pis 58-63,65 and syncboard Pi 20.
 Crate 1 is connected to `em3` on the server, and crate 2 is connected to `em2`.
 Since we are using two NICs on the same subnet, we must add routes:
 ```
 route add -host 192.168.222.50 dev em3
 ```
-This command should be repeated for each pi and the IPBus ip addresses with the corresponding interface for that crate.
-We have added AHCAL (192.168.222.42) onto its own separate NIC (em4) to not interfere with our system.
+This is done automatically on svhgcal01 using the script `etc/setup_routes`.
+Use this script after a reboot, since the routing table we create is not saved.
 
-### 2. Stop Previously Running Executables
-Make sure there are no running executables on the pis with `./stop_pi_exes`.
-Each ssh alias will be printed in the order of execution.
-If no executable is running on that Pi, you will see a line containing `no process found`.
-If an executable is running, no output will be produced.
-An example output is as follows (with `rdout` and `sync` as the ssh aliases)
-```
-sync:                            # syncboard Pi ssh alias
-sync_debug: no process found     # not printed if there is a process running
-rdout:                           # rdoutboad Pi ssh alias
-new_rdout: no process found      # not printed if there is a process running
-```
-### 3. IPBus Setup
+### 2. Start
+After setup, run `./reset` to get the Pis ready for data taking.
+The `reset` script encompasses the following steps:
+
+#### 1. Stop Previously Running Executables
+Make sure there are no running executables on the Pis with `./stop_pi_exes`.
+An error message will be printed if this was unsuccessful on a Pi.
+
+#### 2. Power Cycle
+Power cycle the ORMs on each rdout board with `etc/pwr_cycle`.
+If a power cycle fails (usually because the syncboard cable is disconnected -> no clock), an error will be printed.
+
+#### 3. IPBus Setup
 Setup IPBus with `./setup_ipbus`.
-Each ssh alias will be printed just like in the previous step.
 The ORMs on that board will be programmed - this can be changed with the `DOPROG` variable in the `setup_ipbus` script.
-The board number will be printed after readout board aliases.
-The board number starts from 0 and determines the IPBus IP address of the CTL ORM.
+The board number starts from 0 and increments while it iterates through `etc/rdoutpis`.
 The IP is determined in `rdout/src/set_ipbus_ip.c` - currently, the structure is `192.168.222.[200 + BOARD NUMBER]`.
-An example output for this script follows:
-```
-sync:
-Programming SYNC ORM
-rdout (0):
-Programming DATA ORM0
-Programming DATA ORM1
-Programming DATA ORM2
-Programming DATA ORM3
-Programming CTL ORM
-Setting IPBus IP/MAC
-```
+An error message will be printed if this was unsuccessful on a Pi.
 
-The script should print an error message and halt if any problems occur.
-
-### 4. Start Executables
+#### 4. Start Executables
 Run `./start_pi_exes` to start the executables on the Pis.
-It first checks and stops any currently running executables, so you will likely see more `no process found` lines.
-An example output is below:
-```
-sync:
-sync_debug: no process found
-rdout:
-new_rdout: no process found
-```
+If the process was not started (i.e. there is no pid for the process), the script will print an error message.
 
-If the process was not started (i.e. there is no pid for the process), the script will print an error message and exit.
-
-### 5. Start Data Taking
+#### 5. Start Data Taking
 Once these executables are started, you can begin taking data with EUDAQ.
 
-### 6. Finishing Up
+#### 6. Finishing Up
 Once data taking is done, stop the executables again with `./stop_pi_exes`.
 
 
@@ -223,15 +191,15 @@ Be sure that the hexaboards turn back on before taking data - sometimes they may
 ### FPGA Programming
 The ORMs can be reprogrammed using the `etc/prog_orms` script.
 This programs all of the readout and sync board ORMs.
-The `rdout/prog_rdout` and `sync/prog_sync` scripts get run on the pis over ssh - these contain the names of the firmware to be used.
+The `rdout/prog_rdout` and `sync/prog_sync` scripts get run on the Pis over ssh - these contain the names of the firmware to be used.
 You can also check the [Current Software/Firmware](#current-softwarefirmware) section for the hex files to use; this should be updated whenever there is new firmware.
 If programming an ORM fails, you will be notified.
-You can check the `prog.log` file on the pi where the programming failed to see what went wrong.
+You can check the `prog.log` file on the Pi where the programming failed to see what went wrong.
 Make sure any executables are stopped before running this script.
 
 ### Setting IPBus IP
-The IPBus IP addresses on each ctl ORM are set during execution of `setup_ipbus`, which calls `rdout/set_ipbus_ip` on the pis.
-The IP form is currently `192.168.222.[200+BOARD NUMBER]` where the board number is determined by the position of the pi's alias in `etc/config` (starting from 0).
+The IPBus IP addresses on each ctl ORM are set during execution of `setup_ipbus`, which calls `rdout/set_ipbus_ip` on the Pis.
+The IP form is currently `192.168.222.[200+BOARD NUMBER]` where the board number is determined by the position of the Pi's alias in `etc/config` (starting from 0).
 This can be changed in `rdout/src/set_ipbus_ip.c`.
 This script will print an error message and exit if the IP setting fails for some reason.
 You can check `ip.log` on the board that failed to see what happened.
