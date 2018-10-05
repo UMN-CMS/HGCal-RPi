@@ -3,7 +3,7 @@
 check_retval () {
     if [ $1 -ne 0 ]
     then
-        echo "Programming failed. Check prog.log"
+        echo "programming failed - check prog.log"
         exit 1
     fi
 }
@@ -21,9 +21,5 @@ done
 
 # CTL ORM
 echo "Programming CTL ORM"
-#sudo ./bin/program_fpga 4 < fw/ctl_orm_dly.hex >> prog.log 2>&1
-#sudo ./bin/program_fpga 4 < fw/ctl_orm_rst.hex >> prog.log 2>&1
-#sudo ./bin/program_fpga 4 < fw/ctl_orm_regs.hex >> prog.log 2>&1
-#sudo ./bin/program_fpga 4 < fw/ctl_orm_piw.hex >> prog.log 2>&1
 sudo ./bin/program_fpga 4 < fw/ctl_orm_cs.hex >> prog.log 2>&1
 check_retval "$?"
