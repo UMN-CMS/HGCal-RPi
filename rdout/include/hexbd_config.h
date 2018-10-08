@@ -31,5 +31,8 @@
 int ConvertProgrStrBytetoBit(char * bytes, char * bits);
 int ConvertProgrStrBittoByte(char * bits, char * bytes);
 int prog384(int hexbd, char * pNew, char * pPrevious, int verbose);
-int progandverify48 (int hexbd, char * pConfBytes, char * pPrevious, int verbose);
+int progandverify48(int hexbd, char * pConfBytes, char * pPrevious, int verbose);
 int configure_hexaboard(int hexbd, int verbose);
+int prog384_singlechip(int hexbd, char *pNew, char *pPrevious, int verbose);
+int progandverify48_singlechip(int hexbd, char * pConfBytes, char * pPrevious, int verbose);
+int configure_hexaboard_perskiroc(int hexbd, int verbose);
