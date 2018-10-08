@@ -168,26 +168,19 @@ int progandverify48_singlechip(int hexbd, char * pConfBytes, char * pPrevious, i
 
 int configure_hexaboard_perskiroc(int hexbd, int verbose)
 {
-    // set up the config strings
     char return_strings[4][48];
-    char prog_string[48] = 
-    {   0xda, 0xa0, 0xf9, 0x32, 0xe0, 0xc1, 0x2e, 0x10, 0x98, 0xb0,	\
-        0x40, 0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x1f, 0xff,	\
-        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,	\
-        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,	\
-        0xff, 0xff, 0xe9, 0xd7, 0xae, 0xba, 0x80, 0x25
-    };
+    int status1,status2,status3,status4;
 
     // make sure the hexaboard is ready to be configured
     HEXBD_send_command(hexbd, CMD_RESETPULSE);
     HEXBD_send_command(hexbd, CMD_SETSELECT | 1);
     HEXBD_send_command(hexbd, CMD_RSTBPULSE);
 
-    int status1,status2,status3,status4;
-    status1 = progandverify48_singlechip(hexbd, prog_string, return_strings[0], verbose);    
-    status2 = progandverify48_singlechip(hexbd, prog_string, return_strings[1], verbose);    
-    status3 = progandverify48_singlechip(hexbd, prog_string, return_strings[2], verbose);    
-    status4 = progandverify48_singlechip(hexbd, prog_string, return_strings[3], verbose);    
+    // configure the 4 skirocs
+    status1 = progandverify48_singlechip(hexbd, default_prog_string, return_strings[0], verbose);    
+    status2 = progandverify48_singlechip(hexbd, default_prog_string, return_strings[1], verbose);    
+    status3 = progandverify48_singlechip(hexbd, default_prog_string, return_strings[2], verbose);    
+    status4 = progandverify48_singlechip(hexbd, default_prog_string, return_strings[3], verbose);    
 
     // done configuring
     HEXBD_send_command(hexbd, CMD_SETSELECT | 0);
