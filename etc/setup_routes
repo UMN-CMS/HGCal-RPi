@@ -3,6 +3,8 @@
 # crate 1 (em3) - 8 rb
 # crate 2 (em2) - 7 rb, 1 sb
 
+if [ "1" ]
+then
 # rdout boards
 for i in {50..57}
 do
@@ -15,11 +17,11 @@ done
 sudo route add -host piR65 dev em2
 for i in {200..206}
 do
-    sudo route add -host 192.168.222.$i dev em3
+    sudo route add -host 192.168.222.$i dev em2
 done
 for i in {207..213}
 do
-    sudo route add -host 192.168.222.$i dev em2
+    sudo route add -host 192.168.222.$i dev em3
 done
 
 # sync board
@@ -31,3 +33,74 @@ sudo route add -host piM131 dev em3
 
 # ahcal pc
 sudo route add -host pcahcal dev em4
+fi
+
+
+if [ ]
+then
+# rdout boards
+for i in {50..57}
+do
+    sudo route del -host piR$i
+done
+for i in {58..63}
+do
+    sudo route del -host piR$i
+done
+sudo route del -host piR65
+for i in {200..206}
+do
+    sudo route del -host 192.168.222.$i
+done
+for i in {207..213}
+do
+    sudo route del -host 192.168.222.$i
+done
+
+# sync board
+sudo route del -host piS20
+
+# current monitor pis
+sudo route del -host piM130
+sudo route del -host piM131
+
+# ahcal pc
+sudo route del -host pcahcal
+fi
+
+
+if [ ]
+then
+for i in {50..54}
+do
+    sudo route add -host piR$i dev em2
+done
+for i in {55..59}
+do
+    sudo route add -host piR$i dev em3
+done
+for i in {60..63}
+do
+    sudo route add -host piR$i dev em4
+done
+sudo route add -host piR65 dev em4
+
+for i in {200..204}
+do
+    sudo route add -host 192.168.222.$i dev em4
+done
+for i in {205..209}
+do
+    sudo route add -host 192.168.222.$i dev em3
+done
+for i in {210..213}
+do
+    sudo route add -host 192.168.222.$i dev em2
+done
+
+sudo route add -host piM130 dev em2
+sudo route add -host piM131 dev em2
+
+sudo route add -host piS20 dev em2
+sudo route add -host pcahcal dev em2
+fi
