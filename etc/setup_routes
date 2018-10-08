@@ -33,6 +33,9 @@ sudo route add -host piM131 dev em3
 
 # ahcal pc
 sudo route add -host pcahcal dev em4
+
+# pcminn03
+sudo route add -host pcminn03 dev em4
 fi
 
 
