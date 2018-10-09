@@ -35,4 +35,5 @@ int progandverify48(int hexbd, char * pConfBytes, char * pPrevious, int verbose)
 int configure_hexaboard(int hexbd, int verbose);
 int prog384_singlechip(int hexbd, char *pNew, char *pPrevious, int verbose);
 int progandverify48_singlechip(int hexbd, char * pConfBytes, char * pPrevious, int verbose);
-int configure_hexaboard_perskiroc(int hexbd, int verbose);
+int configure_hexaboard_perskiroc(int hexbd, char prog_strings[4][48], int verbose);
+void setup_prog_strings(int prog_strings[8][4][48]);

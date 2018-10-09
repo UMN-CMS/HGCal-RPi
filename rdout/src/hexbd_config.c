@@ -1,6 +1,25 @@
 #include "hexbd_config.h"
 #include "data_orm.h"
 
+#include <string.h>
+
+void setup_prog_strings(int prog_strings[8][4][48]) {
+    char default_prog_string[48] = 
+    {   0xda, 0xa0, 0xf9, 0x32, 0xe0, 0xc1, 0x2e, 0x10, 0x98, 0xb0,	\
+        0x40, 0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x1f, 0xff,	\
+        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,	\
+        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,	\
+        0xff, 0xff, 0xe9, 0xd7, 0xae, 0xba, 0x80, 0x25
+    };
+    
+    int hexbd, chip;
+    for(hexbd = 0; hexbd < 8; hexbd++) {
+        for(chip = 0; chip < 8; chip++) {
+            memcpy(prog_strings[hexbd][chip], default_prog_string, sizeof(default_prog_string));
+        }
+    }
+}
+
 int ConvertProgrStrBytetoBit(char * bytes, char * bits)
 {
     int i, j;
@@ -166,17 +185,11 @@ int progandverify48_singlechip(int hexbd, char * pConfBytes, char * pPrevious, i
 }
 
 
-int configure_hexaboard_perskiroc(int hexbd, int verbose)
+int configure_hexaboard_perskiroc(int hexbd, char prog_strings[4][48], int verbose)
 {
-    char default_prog_string[48] = 
-    {   0xda, 0xa0, 0xf9, 0x32, 0xe0, 0xc1, 0x2e, 0x10, 0x98, 0xb0,	\
-        0x40, 0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x1f, 0xff,	\
-        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,	\
-        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,	\
-        0xff, 0xff, 0xe9, 0xd7, 0xae, 0xba, 0x80, 0x25
-    };
     char return_strings[4][48];
-    int status1,status2,status3,status4;
+    int status[4];
+    int chip;
 
     // make sure the hexaboard is ready to be configured
     HEXBD_send_command(hexbd, CMD_RESETPULSE);
@@ -184,13 +197,12 @@ int configure_hexaboard_perskiroc(int hexbd, int verbose)
     HEXBD_send_command(hexbd, CMD_RSTBPULSE);
 
     // configure the 4 skirocs
-    status1 = progandverify48_singlechip(hexbd, default_prog_string, return_strings[0], verbose);    
-    status2 = progandverify48_singlechip(hexbd, default_prog_string, return_strings[1], verbose);    
-    status3 = progandverify48_singlechip(hexbd, default_prog_string, return_strings[2], verbose);    
-    status4 = progandverify48_singlechip(hexbd, default_prog_string, return_strings[3], verbose);    
+    for(chip = 0; chip < 4; chip++) {
+        status[chip] = progandverify48_singlechip(hexbd, prog_strings[chip], return_strings[chip], verbose);
+    }
 
     // done configuring
     HEXBD_send_command(hexbd, CMD_SETSELECT | 0);
 
-    return(status1+status2+status3+status4);
+    return status[0]+status[1]+status[2]+status[3];
 }
