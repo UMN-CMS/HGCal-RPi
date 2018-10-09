@@ -34,8 +34,9 @@ void handler(int signum) {
 int main(int argc, char *argv[])
 {
     int res, hx;
-
     int junk[2000];
+
+
 
     //====================================================================
     // ARGUMENT PROCESSING
@@ -49,6 +50,8 @@ int main(int argc, char *argv[])
     }
 
     PED = atoi(argv[1]);
+
+
 
     //====================================================================
     // PRE-RUN SETUP
@@ -128,6 +131,8 @@ int main(int argc, char *argv[])
 
     // Configure the active hexaboards here, before enabling the 
     // automatic xfer mechanism (which ignores hexaboard SPI commands).
+    char prog_strings[8][4][48];
+    setup_prog_strings(prog_strings);
     int config_status;
     for (hx=0; hx<MAXHEXBDS; hx++) {
         if ((hexbd_mask & (1<<hx)) != 0) {
@@ -141,8 +146,8 @@ int main(int argc, char *argv[])
 
             // Configure the hexaboard.
             fprintf(stderr,"Configuring hexbd %d...",(int)hx);
-            config_status = configure_hexaboard(hx,0);
-            config_status = configure_hexaboard(hx,1);
+            config_status = configure_hexaboard_perskiroc(hx, prog_strings[hx], 0);
+            config_status = configure_hexaboard_perskiroc(hx, prog_strings[hx], 1);
             fprintf(stderr,"done.\n");
             if (config_status < 0) {
                 fprintf(stderr,"ERROR in configuration.\n");
@@ -156,6 +161,7 @@ int main(int argc, char *argv[])
     fprintf(stderr,"Sleeping...");
     sleep(1);
     fprintf(stderr,"done.\n");
+
 
 
     //===============================================================
@@ -280,11 +286,11 @@ int main(int argc, char *argv[])
     }// event loop
 
 
+
     //===============================================================
     // CLOSING ACTIONS
     //===============================================================
 
-    // done
     end_spi();
     return 0;    
 
