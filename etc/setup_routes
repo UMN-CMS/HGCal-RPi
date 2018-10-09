@@ -3,7 +3,10 @@
 # crate 1 (em3) - 8 rb
 # crate 2 (em2) - 7 rb, 1 sb
 
-if [ "1" ]
+# set this to 1 to add routes to the network table, and 0 to remove them
+addroutes=1
+
+if [ $addroutes -eq 1 ]
 then
 # rdout boards
 for i in {50..57}
@@ -39,7 +42,7 @@ sudo route add -host pcminn03 dev em4
 fi
 
 
-if [ ]
+if [ $addroutes -ne 1 ]
 then
 # rdout boards
 for i in {50..57}
