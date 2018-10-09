@@ -174,7 +174,7 @@ int progandverify48_singlechip(int hexbd, char * pConfBytes, char * pPrevious, i
     ConvertProgrStrBytetoBit(pConfBytes, pNewConfBits);
 
     status1 = prog384_singlechip(hexbd, pNewConfBits, pOldConfBits, verbose);
-    status2 = prog384_singlechip(hexbd, pNewConfBits, pOldConfBits, verbose);
+    status2 = 0;//prog384_singlechip(hexbd, pNewConfBits, pOldConfBits, verbose);
 
     ConvertProgrStrBittoByte(pOldConfBits, pPrevious);
 
