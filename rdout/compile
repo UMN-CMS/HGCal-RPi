@@ -21,4 +21,3 @@ gcc -O src/pwr_cycle_v1.c    obj/ejf_rdout.o obj/ctl_orm.o obj/data_orm.o obj/he
 gcc -O src/pwr_cycle_v2.c    obj/ejf_rdout.o obj/ctl_orm.o obj/data_orm.o obj/hexbd.o obj/hexbd_config.o obj/spi_common.o $CCFLAGS -o bin/pwr_cycle_v2
 gcc -O src/get_board_id.c    obj/spi_common.o                                                                             $CCFLAGS -o bin/get_board_id
 gcc -O src/set_ipbus_ip.c    obj/ctl_orm.o obj/spi_common.o                                                               $CCFLAGS -o bin/set_ipbus_ip
-gcc -O src/write_fifo.c      obj/ctl_orm.o obj/spi_common.o                                                               $CCFLAGS -o bin/write_fifo
