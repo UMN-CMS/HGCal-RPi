@@ -1,7 +1,8 @@
 # HGCal-RPi : CERNtb-oct18
 
 This branch is used at CERN for the October 2018 beam tests.
-The aliases in `etc/rdoutpis` and `etc/syncpis` are for the current setup.
+[GNU Parallel](https://www.gnu.org/software/parallel/) is used in some scripts to control the Pis.
+The ssh aliases in `etc/rdoutpis` and `etc/syncpis` are for the current setup.
 
 The computer where this repository is cloned acts as the central hub for the Pis.
 The Raspberry Pi software and ORM firmware are copied out from the hub at the start of each run using `rsync`, ensuring each is running the latest versions.
@@ -40,6 +41,7 @@ route add -host 192.168.222.50 dev em3
 ```
 This is done automatically on svhgcal01 using the script `etc/setup_routes`.
 Use this script after a reboot, since the routing table we create is not saved.
+Modify the variable `addroutes` in the script to add/delete routes as necessary.
 
 ### 2. Start
 After setup, run `./reset` to get the Pis ready for data taking.
