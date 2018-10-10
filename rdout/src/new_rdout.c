@@ -131,7 +131,7 @@ int main(int argc, char *argv[])
 
     // Configure the active hexaboards here, before enabling the 
     // automatic xfer mechanism (which ignores hexaboard SPI commands).
-    char prog_strings[8][4][48];
+    char prog_strings[4][48];
     setup_prog_strings(prog_strings);
     int config_status;
     for (hx=0; hx<MAXHEXBDS; hx++) {
@@ -146,8 +146,8 @@ int main(int argc, char *argv[])
 
             // Configure the hexaboard.
             fprintf(stderr,"Configuring hexbd %d...",(int)hx);
-            config_status = configure_hexaboard_perskiroc(hx, prog_strings[hx], 0);
-            config_status = configure_hexaboard_perskiroc(hx, prog_strings[hx], 1);
+            config_status = configure_hexaboard_perskiroc(hx, prog_strings, 0);
+            config_status = configure_hexaboard_perskiroc(hx, prog_strings, 1);
             fprintf(stderr,"done.\n");
             if (config_status < 0) {
                 fprintf(stderr,"ERROR in configuration.\n");

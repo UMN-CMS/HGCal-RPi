@@ -3,7 +3,7 @@
 
 #include <string.h>
 
-void setup_prog_strings(int prog_strings[8][4][48]) {
+void setup_prog_strings(int prog_strings[4][48]) {
     char default_prog_string[48] = 
     {   0xda, 0xa0, 0xf9, 0x32, 0xe0, 0xc1, 0x2e, 0x10, 0x98, 0xb0,	\
         0x40, 0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x1f, 0xff,	\
@@ -12,11 +12,9 @@ void setup_prog_strings(int prog_strings[8][4][48]) {
         0xff, 0xff, 0xe9, 0xd7, 0xae, 0xba, 0x80, 0x25
     };
     
-    int hexbd, chip;
-    for(hexbd = 0; hexbd < 8; hexbd++) {
-        for(chip = 0; chip < 8; chip++) {
-            memcpy(prog_strings[hexbd][chip], default_prog_string, sizeof(default_prog_string));
-        }
+    int chip;
+    for(chip = 0; chip < 4; chip++) {
+        memcpy(prog_strings[chip], default_prog_string, sizeof(default_prog_string));
     }
 }
 
