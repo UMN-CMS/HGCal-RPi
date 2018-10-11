@@ -3,7 +3,10 @@
 # crate 1 (em3) - 8 rb
 # crate 2 (em2) - 7 rb, 1 sb
 
-if [ "1" ]
+# set this to 1 to add routes to the network table, and 0 to remove them
+addroutes=1
+
+if [ $addroutes -eq 1 ]
 then
 # rdout boards
 for i in {50..57}
@@ -39,7 +42,7 @@ sudo route add -host pcminn03 dev em4
 fi
 
 
-if [ ]
+if [ $addroutes -ne 1 ]
 then
 # rdout boards
 for i in {50..57}
@@ -69,41 +72,7 @@ sudo route del -host piM131
 
 # ahcal pc
 sudo route del -host pcahcal
-fi
 
-
-if [ ]
-then
-for i in {50..54}
-do
-    sudo route add -host piR$i dev em2
-done
-for i in {55..59}
-do
-    sudo route add -host piR$i dev em3
-done
-for i in {60..63}
-do
-    sudo route add -host piR$i dev em4
-done
-sudo route add -host piR65 dev em4
-
-for i in {200..204}
-do
-    sudo route add -host 192.168.222.$i dev em4
-done
-for i in {205..209}
-do
-    sudo route add -host 192.168.222.$i dev em3
-done
-for i in {210..213}
-do
-    sudo route add -host 192.168.222.$i dev em2
-done
-
-sudo route add -host piM130 dev em2
-sudo route add -host piM131 dev em2
-
-sudo route add -host piS20 dev em2
-sudo route add -host pcahcal dev em2
+# pcminn03
+sudo route del -host pcminn03
 fi
