@@ -23,7 +23,7 @@ void setup_prog_strings(char prog_strings[4][48]) {
 
     // copy the default prog string in for all 4 chips
     int chip;
-    for(chip = 0; chip < 0; chip++) {
+    for(chip = 0; chip < 4; chip++) {
         memcpy(prog_strings[chip], default_prog_string, sizeof(default_prog_string));
     }
 
@@ -40,23 +40,12 @@ void setup_prog_strings_timing(char prog_strings[4][48]) {
         0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,  \
         0xFF,0xFF,0xE9,0xD7,0xAE,0xBA,0x80,0x25
     };
-    char maskch22_prog_string[48] =
-    {   0xda, 0xa0, 0xf9, 0x32, 0xe0, 0xc1, 0x2c, 0xe0, 0x98, 0xb0, \
-        0x40, 0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x1f, 0xff, \
-        0xff, 0xff, 0xff, 0xf7, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, \
-        0xff, 0xf7, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xf7, \
-        0xff, 0xff, 0xe9, 0xd7, 0xae, 0xba, 0x80, 0x25
-    };
 
-    // copy the default prog string in for all 4 chips
+    // copy the timing prog string in for all 4 chips
     int chip;
-    for(chip = 0; chip < 0; chip++) {
+    for(chip = 0; chip < 4; chip++) {
         memcpy(prog_strings[chip], timing_prog_string, sizeof(timing_prog_string));
     }
-
-    // copy the special string into the first element of the array
-    // this will get pushed into the last chip (chip 3)
-    memcpy(prog_strings[0], maskch22_prog_string, sizeof(maskch22_prog_string));
 }
 
 int ConvertProgrStrBytetoBit(char * bytes, char * bits)

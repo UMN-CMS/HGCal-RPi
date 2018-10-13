@@ -21,7 +21,7 @@ void setup_prog_strings(char prog_strings[4][48]) {
 
     // copy the default prog string in for all 4 chips
     int chip;
-    for(chip = 0; chip < 0; chip++) {
+    for(chip = 0; chip < 4; chip++) {
         memcpy(prog_strings[chip], default_prog_string, sizeof(default_prog_string));
     }
 
