@@ -133,10 +133,12 @@ int main(int argc, char *argv[])
     // automatic xfer mechanism (which ignores hexaboard SPI commands).
     char prog_strings[4][48];
     setup_prog_strings(prog_strings);
+    char prog_strings_timing[4][48];
+    setup_prog_strings(prog_strings_timing[4][48]);
     int chip,byte;
     for(chip = 0; chip < 4; chip++) {
         for(byte = 0; byte < 48; byte++) {
-            fprintf(stderr, "%2d %3d 0x%2x\n", prog_strings[chip][byte]);
+            fprintf(stderr, "%2d %3d 0x%2x\n", prog_strings_timing[chip][byte]);
         }
         fprintf(stderr, "\n");
     }
@@ -153,8 +155,13 @@ int main(int argc, char *argv[])
 
             // Configure the hexaboard.
             fprintf(stderr,"Configuring hexbd %d...",(int)hx);
-            config_status = configure_hexaboard_perskiroc(hx, prog_strings, 0);
-            config_status = configure_hexaboard_perskiroc(hx, prog_strings, 1);
+            if(hx == TIMING_HEXBD) {
+                config_status = configure_hexaboard_perskiroc(hx, prog_strings_timing, 0);
+                config_status = configure_hexaboard_perskiroc(hx, prog_strings_timing, 1);
+            } else {
+                config_status = configure_hexaboard_perskiroc(hx, prog_strings, 0);
+                config_status = configure_hexaboard_perskiroc(hx, prog_strings, 1);
+            }
             fprintf(stderr,"done.\n");
             if (config_status < 0) {
                 fprintf(stderr,"ERROR in configuration.\n");
