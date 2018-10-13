@@ -239,11 +239,11 @@ int main(int argc, char *argv[])
                 usleep(10); // this ruins timing measurements
             }
             if(curr_trig != old_trig+1) {
-                fprintf(stderr, "%lu    bad increment! trig=%d old=%d\n", count, curr_trig, old_trig);
+                fprintf(stderr, "%lu    bad increment! trig=%lu old=%lu\n", count, curr_trig, old_trig);
                 curr_trig = CTL_get_trig_count0() | (CTL_get_trig_count1() << 16);
-                fprintf(stderr, "%lu    again: trig=%d old=%d\n", count, curr_trig, old_trig);
+                fprintf(stderr, "%lu    again: trig=%lu old=%lu\n", count, curr_trig, old_trig);
                 if(curr_trig != old_trig+1) {
-                    fprintf(stderr, "%lu    exit on bad trig increment: trig=%d old=%d\n", count, curr_trig, old_trig);
+                    fprintf(stderr, "%lu    exit on bad trig increment: trig=%lu old=%lu\n", count, curr_trig, old_trig);
                     keeprunning = 0;
                 }
             }
