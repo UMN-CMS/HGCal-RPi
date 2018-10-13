@@ -9,6 +9,9 @@ The Raspberry Pi software and ORM firmware are copied out from the hub at the st
 Boards are designated as readout or sync in `etc/rdoutpis` and `etc/syncpis`, and their respective code/fw is in `rdout/` and `sync/`.
 A number of shell scripts are provided to facilitate this process.
 
+There is a special timing hexaboard which requires a special configuration.
+The folder `timing_hexbd/` contains a special `hexbd_config.c` to deal with this.
+
 
 ## Table of Contents
   * [Instructions](#instructions)
