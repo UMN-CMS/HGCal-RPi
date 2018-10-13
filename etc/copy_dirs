@@ -18,7 +18,7 @@ done
 wait
 
 # special timing hexaboard
-scp timing-hexbd/hexbd_config.c $timing_rdout_alias:~/rdout/src/hexbd_config.c
+scp timing-hexbd/hexbd_config.c $timing_rdout_alias:~/rdout/src/hexbd_config.c >> /dev/null
 
 
 # compile
