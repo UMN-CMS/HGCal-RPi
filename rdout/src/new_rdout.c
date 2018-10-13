@@ -133,6 +133,15 @@ int main(int argc, char *argv[])
     // automatic xfer mechanism (which ignores hexaboard SPI commands).
     char prog_strings[4][48];
     setup_prog_strings(prog_strings);
+    char prog_strings_timing[4][48];
+    setup_prog_strings(prog_strings_timing[4][48]);
+    int chip,byte;
+    for(chip = 0; chip < 4; chip++) {
+        for(byte = 0; byte < 48; byte++) {
+            fprintf(stderr, "%2d %3d 0x%2x\n", prog_strings_timing[chip][byte]);
+        }
+        fprintf(stderr, "\n");
+    }
     int config_status;
     for (hx=0; hx<MAXHEXBDS; hx++) {
         if ((hexbd_mask & (1<<hx)) != 0) {
