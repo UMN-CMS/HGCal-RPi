@@ -9,7 +9,7 @@ source etc/config
 for sync_pi_alias in "${sync_pi_aliases[@]}"
 do
     echo "$sync_pi_alias:"
-    # ssh $sync_pi_alias "cd $pi_syncdir; ./prog_sync"
+    ssh $sync_pi_alias "cd $pi_syncdir; ./prog_sync"
     # check_retval "$?"
 done
 
