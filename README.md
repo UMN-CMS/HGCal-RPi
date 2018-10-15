@@ -36,7 +36,7 @@ The folder `timing_hexbd/` contains a special `hexbd_config.c` to deal with this
 ### 1. Setup
 Modify `etc/rdoutpis` and `etc/syncpis` to contain the ssh aliases of the Raspberry Pis on your readout and sync boards.
 With the current setup, we have two crates.
-Crate 1 contains rdoutboard Pis 50-57, and crate 2 contains rdoutboard Pis 58-63,65 and syncboard Pi 20.
+Crate 1 contains rdoutboard Pis 50-57, and crate 2 contains rdoutboard Pis 58-63,65 and syncboard Pi 21.
 Crate 1 is connected to `em3` on the server, and crate 2 is connected to `em2`.
 Since we are using two NICs on the same subnet, we must add routes:
 ```
