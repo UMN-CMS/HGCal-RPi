@@ -6,17 +6,5 @@ source etc/config
 ./stop_pi_exes
 ./etc/copy_dirs
 
-for sync_pi_alias in "${sync_pi_aliases[@]}"
-do
-    echo "$sync_pi_alias:"
-    ssh $sync_pi_alias "cd $pi_syncdir; ./prog_sync"
-    # check_retval "$?"
-done
-
-for rdout_pi_alias in "${rdout_pi_aliases[@]}"
-do
-    echo "$rdout_pi_alias:"
-    ssh $rdout_pi_alias "cd $pi_rdoutdir; ./prog_rdout" &
-    # check_retval "$?"
-done
-wait
+parallel $parallel_rdout_args "cd $pi_rdoutdir; ./prog_rdout"
+parallel $parallel_sync_args  "cd $pi_syncdir;  ./prog_sync"

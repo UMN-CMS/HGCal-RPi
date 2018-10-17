@@ -3,7 +3,7 @@
 check_retval () {
     if [ $1 -ne 0 ]
     then
-        echo "programming failed - check prog.log"
+        echo -e "\033[0;91mprogramming failed - check prog.log\033[0m"
         exit 1
     fi
 }
@@ -14,12 +14,12 @@ echo "" > prog.log
 # DATA ORMs
 for ORM_IDX in {0..3}
 do
-    echo "Programming DATA ORM$ORM_IDX"
+    echo "Programming DATA ORM$ORM_IDX" >> prog.log
     sudo ./bin/program_fpga $ORM_IDX < fw/data_orm_dly.hex >> prog.log 2>&1
     check_retval "$?"
 done
 
 # CTL ORM
-echo "Programming CTL ORM"
+echo "Programming CTL ORM" >> prog.log
 sudo ./bin/program_fpga 4 < fw/ctl_orm_cs.hex >> prog.log 2>&1
 check_retval "$?"

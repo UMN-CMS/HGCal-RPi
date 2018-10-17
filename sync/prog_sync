@@ -5,6 +5,6 @@ echo "Programming SYNC ORM"
 sudo ./bin/program_fpga 4 < fw/sync_orm_busy2.hex > prog.log 2>&1
 if [ $? -ne 0 ]
 then
-    echo "programming failed - check prog.log"
+    echo -e "\033[0;91mprogramming failed - check prog.log\033[0m"
     exit 1
 fi
