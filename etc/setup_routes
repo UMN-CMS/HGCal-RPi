@@ -13,19 +13,30 @@ for i in {50..57}
 do
     sudo route add -host piR$i dev em3
 done
-for i in {58..63}
+for i in {58..65}
 do
+    if [ $i -eq 60 ]
+    then
+        echo 60
+        sudo route add -host piR$i dev em3
+        continue
+    fi
+    if [ $i -eq 64 ]
+    then
+        echo 64
+        continue
+    fi
     sudo route add -host piR$i dev em2
 done
-sudo route add -host piR65 dev em2
-for i in {200..206}
+for i in {200..204}
 do
     sudo route add -host 192.168.222.$i dev em2
 done
-for i in {207..213}
+for i in {205..212}
 do
     sudo route add -host 192.168.222.$i dev em3
 done
+sudo route add -host 192.168.222.213 dev em2
 
 # sync boards
 sudo route add -host piS20 dev em2
@@ -66,6 +77,7 @@ done
 
 # sync board
 sudo route del -host piS20
+sudo route del -host piS21
 
 # current monitor pis
 sudo route del -host piM130

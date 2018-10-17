@@ -19,7 +19,7 @@
 #include "spi_common.h"
 
 #define BLOCKSIZE 30000
-#define TIMING_HEXBD 7
+#define TIMING_HEXBD (0)
 
 
 static int keeprunning = 1;
