@@ -200,6 +200,8 @@ int main(int argc, char *argv[])
     curr_trig = old_trig;
     while(keeprunning) {
 
+        fprintf(stderr, "\n");
+
         fprintf(stderr, "%lu hexbd setup\n", count);
         // Get hexaboards ready.
         for(hx = 0; hx < MAXHEXBDS; hx++) {
