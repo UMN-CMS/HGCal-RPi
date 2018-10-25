@@ -1,19 +1,15 @@
 # HGCal-RPi
 
-This branch is used at CERN for the October 2018 beam tests.
-[GNU Parallel](https://www.gnu.org/software/parallel/) is used in some scripts to control the Pis.
-The ssh aliases in `etc/rdoutpis` and `etc/syncpis` are for the current setup.
+HGCal-RPi provides tools to facilitate the readout of UMN-produced DAQ hardware for beam tests of prototype HGCal modules.
 
-The computer where this repository is cloned acts as the central hub for the Pis.
+The computer where this repository is cloned acts as the central hub for the Raspberry Pis.
+The 'hub' computer remotely starts and stops the readout helper processes on the Pis.
 The Raspberry Pi software and ORM firmware are copied out from the hub at the start of each run using `rsync`, ensuring each is running the latest versions.
-Boards are designated as readout or sync in `etc/rdoutpis` and `etc/syncpis`, and their respective code/fw is in `rdout/` and `sync/`.
-A number of shell scripts are provided to facilitate this process.
-
-There is a special timing hexaboard which requires a special configuration.
-The folder `timing_hexbd/` contains a special `hexbd_config.c` to deal with this.
+Boards are designated as readout or sync in `etc/rdoutpis` and `etc/syncpis`, and their respective code and firmware are in the `rdout/` and `sync/` directories.
 
 
 ## Table of Contents
+  * [Requirements](#requirements)
   * [Instructions](#instructions)
      * [1. Setup](#1-setup)
      * [2. Start](#2-start)
@@ -29,6 +25,28 @@ The folder `timing_hexbd/` contains a special `hexbd_config.c` to deal with this
      * [FPGA Programming](#fpga-programming)
      * [Setting IPBus IP](#setting-ipbus-ip)
   * [Current Software/Firmware](#current-softwarefirmware)
+
+
+## Requirements
+  * Server Software
+    * [Bash](https://www.gnu.org/software/bash/)
+      * Used to run all of the scripts (each expects bash in `/bin/bash`).
+      * Version must be >= 4 for `readarray` support. Bash 4.1.2 is what has been used for the beam tests.
+    * [GNU Parallel](https://www.gnu.org/software/parallel/)
+      * Used in some scripts to remotely execute software on the pis and automatically format the output.
+      * GNU Parallel must also be installed on the Raspberry Pis.
+      * All scripts can be modified to not use parallel at all, if necessary. This removes the requirement for GNU Parallel on the Raspberry Pis as well.
+      * Version 20150522 was used during the beam tests, though most (if not all) versions should work.
+        * Needs support for running over ssh and the `--sshloginfile` options.
+    * [rsync](https://rsync.samba.org/)
+      * Used to sync the server software and firmware with the Raspberry Pis.
+      * Version 3.0.6 was used during the beam tests, though most (if not all) versions should work.
+  * Raspberry Pi Software
+    * The Raspbian OS should provide gcc, bash, and others.
+    * [GNU Parallel](https://www.gnu.org/software/parallel/)
+      * Required for the parallel scripts on the server to work correctly.
+    * [bcm2835 C Library](https://www.airspayce.com/mikem/bcm2835/)
+      * Required to communicate with the FPGAs and other devices on the readout/sync boards.
 
 
 ## Instructions
