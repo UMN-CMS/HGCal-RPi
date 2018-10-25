@@ -1,12 +1,26 @@
 #!/bin/bash
 # check the log files and see which hexbds are connected on each rdout board
 
+total=0
+missinghexbds=0
+
 source etc/config
 
-for RDOUT_PI_ALIAS in "${RDOUT_PI_ALIASES[@]}"
+for rdout_pi_alias in "${rdout_pi_aliases[@]}"
 do
-    echo "$RDOUT_PI_ALIAS:"
-    SKIROCMASK="$(ssh $RDOUT_PI_ALIAS "cat $PI_RDOUTDIR/rdout.log | grep -m 1 skiroc_mask")"
-    HEXBDS="$(echo "$SKIROCMASK" | awk -F"f" '{print NF-1}')"
-    echo "$SKIROCMASK ($HEXBDS hexbds)"
+    skirocmask="$(ssh $rdout_pi_alias "cat $pi_rdoutdir/rdout.log | grep -m 1 skiroc_mask")"
+    skirocmask="${skirocmask:14}"
+    hexbds="$(echo "$skirocmask" | awk -F"f" '{print NF-1}')"
+
+    if [ $hexbds -le 0 ]
+    then
+        echo -e "$rdout_pi_alias\t\033[0;91m$skirocmask ($hexbds hexbds)\033[0m"
+	missinghexbds=1
+    else
+        echo -e "$rdout_pi_alias:\t$skirocmask ($hexbds hexbds)"
+    fi
+
+    total=$((total+hexbds))
 done
+
+echo -e "total:\t$total hexbds"

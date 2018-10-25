@@ -3,6 +3,7 @@
 
 #include <string.h>
 
+
 void setup_prog_strings(char prog_strings[4][48]) {
     char default_prog_string[48] = 
     {   0xda, 0xa0, 0xf9, 0x32, 0xe0, 0xc1, 0x2c, 0xe0, 0x98, 0xb0, \
@@ -28,6 +29,22 @@ void setup_prog_strings(char prog_strings[4][48]) {
     // copy the special string into the first element of the array
     // this will get pushed into the last chip (chip 3)
     memcpy(prog_strings[0], maskch22_prog_string, sizeof(maskch22_prog_string));
+}
+
+void setup_prog_strings_timing(char prog_strings[4][48]) {
+    char timing_prog_string[48] = 
+    {   0xDA,0xA0,0xFF,0x32,0xE0,0xC1,0x2E,0x10,0x98,0xB0,  \
+        0x40,0x00,0x20,0x08,0x00,0x00,0x00,0x00,0x1F,0xFF,  \
+        0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,  \
+        0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,  \
+        0xFF,0xFF,0xE9,0xD7,0xAE,0xBA,0x80,0x25
+    };
+
+    // copy the timing prog string in for all 4 chips
+    int chip;
+    for(chip = 0; chip < 4; chip++) {
+        memcpy(prog_strings[chip], timing_prog_string, sizeof(timing_prog_string));
+    }
 }
 
 int ConvertProgrStrBytetoBit(char * bytes, char * bits)
@@ -131,7 +148,7 @@ int configure_hexaboard(int hexbd, int verbose)
     HEXBD_send_command(hexbd, CMD_SETSELECT | 1);
     HEXBD_send_command(hexbd, CMD_RSTBPULSE);
 
-    status = progandverify48(hexbd, prog_string, return_string, verbose);    
+    status = progandverify48(hexbd, prog_string, return_string, verbose);
 
     HEXBD_send_command(hexbd, CMD_SETSELECT | 0);
 

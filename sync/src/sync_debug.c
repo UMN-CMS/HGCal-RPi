@@ -7,7 +7,7 @@
 #include <signal.h>
 
 
-#define ENABLE_VETO1 0
+#define ENABLE_VETO1 1
 #define ENABLE_VETO2 0
 
 static int keeprunning = 1;
@@ -82,9 +82,9 @@ int main(int argc, char *argv[])
 	SYNC_put_enable_fake40(0);
 	SYNC_put_enable_fake65(0);
 
-	// Create ~100 Hz fake trigger rate based on 25 MHz clock.
-	SYNC_put_max0_fake25((int)(249999 % (1<<16)));
-	SYNC_put_max1_fake25((int)(249999 / (1<<16)));
+	// Create ~1000 Hz fake trigger rate based on 25 MHz clock.
+	SYNC_put_max0_fake25((int)(24999 % (1<<16)));
+	SYNC_put_max1_fake25((int)(24999 / (1<<16)));
 	SYNC_put_thresh_fake25(25); // 1 usec
 	SYNC_put_enable_fake25(1);
 

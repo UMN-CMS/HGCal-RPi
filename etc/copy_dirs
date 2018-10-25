@@ -1,36 +1,36 @@
 #!/bin/bash
 # copy the directories over to all of the pis
+# and compile the software
 
 source etc/config
 
 
 # copy directories over
-for RDOUT_PI_ALIAS in "${RDOUT_PI_ALIASES[@]}"
+for rdout_pi_alias in "${rdout_pi_aliases[@]}"
 do
-    echo "copying to $RDOUT_PI_ALIAS"
-
-    rsync "${RSYNC_FLAGS[@]}" rdout/ $RDOUT_PI_ALIAS:$PI_RDOUTDIR &
+    rsync "${rsync_flags[@]}" rdout/ $rdout_pi_alias:$pi_rdoutdir &
 done
 
-for SYNC_PI_ALIAS in "${SYNC_PI_ALIASES[@]}"
+for sync_pi_alias in "${sync_pi_aliases[@]}"
 do
-    echo "copying to $SYNC_PI_ALIAS"
-    rsync "${RSYNC_FLAGS[@]}" sync/ $SYNC_PI_ALIAS:$PI_SYNCDIR &
+    rsync "${rsync_flags[@]}" sync/ $sync_pi_alias:$pi_syncdir &
 done
 wait
 
+# special timing hexaboard
+scp timing-hexbd/hexbd_config.c $timing_rdout_alias:~/rdout/src/hexbd_config.c >> /dev/null
+scp timing-hexbd/new_rdout.c $timing_rdout_alias:~/rdout/src/new_rdout.c >> /dev/null
+
 
 # compile
-for RDOUT_PI_ALIAS in "${RDOUT_PI_ALIASES[@]}"
+for rdout_pi_alias in "${rdout_pi_aliases[@]}"
 do
-    echo "compiling on $RDOUT_PI_ALIAS"
-    ssh $RDOUT_PI_ALIAS "cd $PI_RDOUTDIR; ./compile" &
+    ssh $rdout_pi_alias "cd $pi_rdoutdir; ./compile" &
 done
 
-for SYNC_PI_ALIAS in "${SYNC_PI_ALIASES[@]}"
+for sync_pi_alias in "${sync_pi_aliases[@]}"
 do
-    echo "compiling on $SYNC_PI_ALIAS"
-    ssh $SYNC_PI_ALIAS "cd $PI_SYNCDIR; ./compile" &
+    ssh $sync_pi_alias "cd $pi_syncdir; ./compile" &
 done
 wait
 

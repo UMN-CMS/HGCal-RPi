@@ -9,17 +9,23 @@ check_retval () {
 }
 
 # ssh aliases
-RDOUT_PI_ALIASES=("pi2" "pi3" "pi4" "pi5")  # ssh aliases of the readout board pis
-SYNC_PI_ALIASES=("piS")                     # ssh aliases of the sync board pis
+declare -a rdout_pi_aliases
+declare -a sync_pi_aliases
+readarray -t rdout_pi_aliases < etc/rdoutpis
+readarray -t sync_pi_aliases < etc/syncpis
+timing_rdout_alias="piR63"
 
 # raspberry pi file/folder names
-PI_RDOUTDIR="/home/pi/rdout/"               # directory to copy code into on rdout pis
-PI_SYNCDIR="/home/pi/sync/"                 # directory to copy code into on sync pis
-RDOUT_EXE="new_rdout"                       # name of the rdout executable
-SYNC_EXE="sync_debug"                       # name of the sync executable
+pi_rdoutdir="/home/pi/rdout/"               # directory to copy code into on rdout pis
+pi_syncdir="/home/pi/sync/"                 # directory to copy code into on sync pis
+rdoutexe="new_rdout"                        # name of the rdout executable
+syncexe="sync_debug"                        # name of the sync executable
 
 # program flags
-RSYNC_FLAGS=(-az --delete '--filter=P *.log')
+rsync_flags=(-az --delete '--filter=P *.log')
     # -az: archive & compress data
     # --delete: delete files in dest directory that aren't in source directory
     # --filter=P *.log: don't delete .log files
+parallel_args="-j0 --tag --nonall -M"
+parallel_rdout_args="$parallel_args --sshloginfile etc/rdoutpis"
+parallel_sync_args="$parallel_args --sshloginfile etc/syncpis"

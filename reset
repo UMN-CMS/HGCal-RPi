@@ -1,0 +1,19 @@
+#!/bin/bash
+
+echo "stopping exes"
+./stop_pi_exes
+
+echo "power cycling"
+./etc/pwr_cycle
+
+echo "setting ipbus ip/mac"
+./setup_ipbus
+
+echo "starting exes"
+./start_pi_exes
+
+echo "waiting for ping"
+./etc/wait_for_ping
+
+echo "checking hexboards"
+./etc/hexbd_conn

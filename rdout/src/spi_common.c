@@ -11,6 +11,7 @@
 // set page to talk to an ORM's EEPROM
 void spi_select_eeprom(int orm) {
     char page[1] = { 1 + (2 * (orm + 1)) };
+    page[0] |= page[0] << 4;
     bcm2835_spi_chipSelect(BCM2835_SPI_CS0);
     bcm2835_spi_writenb(page, 1);
     bcm2835_spi_chipSelect(BCM2835_SPI_CS1);
@@ -37,6 +38,7 @@ int get_board_id() {
 
 	bcm2835_spi_chipSelect(BCM2835_SPI_CS0);
 	char PAGE[] = {0xD};				// Chip has PAGE 13
+    PAGE[0] |= PAGE[0] << 4;
 	bcm2835_spi_writenb(PAGE,1);
 	bcm2835_spi_chipSelect(BCM2835_SPI_CS1);
 
@@ -55,6 +57,7 @@ int get_board_id() {
 void spi_select_orm(int orm) {
     char page[1];
     page[0] = 2 * (orm + 1);
+    page[0] |= page[0] << 4;
 
     // Select the appropriate oRM.
     bcm2835_spi_chipSelect(BCM2835_SPI_CS0);
@@ -63,8 +66,42 @@ void spi_select_orm(int orm) {
 }
 
 
-// Send a 32-bit spi_read command, and keep the 16 bits that are returned.
 int spi_get_16bits(int orm, int addr) {
+    char cmd[6], data[6];
+    unsigned spi_read, spi_auto_inc, spi_addr, spi_command;
+    int result1, result2, error;
+
+    // Select the appropriate oRM.
+    spi_select_orm(orm);
+
+    // Create the 32-bit command word.
+    spi_read = 1;
+    spi_auto_inc = 0;
+    spi_addr = addr & 0x3FF;
+    spi_command = (spi_read<<31) | (spi_auto_inc<<30) | (spi_addr<<20);
+    cmd[0] = spi_command >> 24;
+    cmd[1] = spi_command >> 16;
+    cmd[2] = spi_command >> 8;
+    cmd[3] = spi_command >> 0;
+    cmd[4] = 0;
+    cmd[5] = 0;
+
+    // Send the command.
+    error = 1;
+    while(error) {
+        bcm2835_spi_transfernb(cmd, data, 6);
+        result1 = (data[2]<<8) | data[3];
+        result2 = (data[4]<<8) | data[5];
+
+        if((spi_auto_inc != 0) || (result1 == result2))
+            error = 0;
+    }
+
+    return result1;
+}
+
+// Send a 32-bit spi_read command, and keep the 16 bits that are returned.
+int spi_get_16bits_fifo(int orm, int addr) {
     char cmd[4], data[4];
     unsigned spi_read, spi_auto_inc, spi_addr, spi_command;
 

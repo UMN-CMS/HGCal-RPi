@@ -2,11 +2,6 @@
 
 source etc/config
 
+./stop_pi_exes
 
-# power cycle
-for RDOUT_PI_ALIAS in "${RDOUT_PI_ALIASES[@]}"
-do
-    echo "power cycling $RDOUT_PI_ALIAS"
-    ssh $RDOUT_PI_ALIAS "cd $PI_RDOUTDIR; sudo ./bin/pwr_cycle_fpgas" &
-done
-wait
+parallel $parallel_rdout_args "cd $pi_rdoutdir; sudo ./bin/pwr_cycle_v2 > pwr.log || echo -e '\033[0;91mpower cycle failed - check pwr.log\033[0m'"

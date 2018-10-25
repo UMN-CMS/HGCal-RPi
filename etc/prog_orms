@@ -3,18 +3,8 @@
 
 source etc/config
 
+./stop_pi_exes
 ./etc/copy_dirs
 
-for SYNC_PI_ALIAS in "${SYNC_PI_ALIASES[@]}"
-do
-    echo "$SYNC_PI_ALIAS:"
-    ssh $SYNC_PI_ALIAS "cd $PI_SYNCDIR; ./prog_sync"
-    check_retval "$?"
-done
-
-for RDOUT_PI_ALIAS in "${RDOUT_PI_ALIASES[@]}"
-do
-    echo "$RDOUT_PI_ALIAS:"
-    ssh $RDOUT_PI_ALIAS "cd $PI_RDOUTDIR; ./prog_rdout"
-    check_retval "$?"
-done
+parallel $parallel_rdout_args "cd $pi_rdoutdir; ./prog_rdout"
+parallel $parallel_sync_args  "cd $pi_syncdir;  ./prog_sync"

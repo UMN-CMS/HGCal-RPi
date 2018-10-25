@@ -35,6 +35,7 @@
 #define CTL_OCCUPANCY        (0x12c)
 #define CTL_FIFO_0           (0x140)
 #define CTL_FIFO_1           (0x141)
+#define CTL_WRITE_IPB_FIFO   (0x10e)
 
 // IPbus address space
 
@@ -123,3 +124,4 @@ int CTL_get_full(void);
 int CTL_get_occupancy(void);
 int CTL_get_fifo_LS16(void);
 int CTL_get_fifo_MS16(void);
+int CTL_write_ipb_fifo(int value16bits);

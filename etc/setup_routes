@@ -1,0 +1,89 @@
+#!/bin/bash
+
+# crate 1 (em3) - 8 rb
+# crate 2 (em2) - 7 rb, 1 sb
+
+# set this to 1 to add routes to the network table, and 0 to remove them
+addroutes=1
+
+if [ $addroutes -eq 1 ]
+then
+# rdout boards
+for i in {50..57}
+do
+    sudo route add -host piR$i dev em3
+done
+for i in {58..65}
+do
+    if [ $i -eq 60 ]
+    then
+        sudo route add -host piR$i dev em3
+        continue
+    fi
+    if [ $i -eq 64 ]
+    then
+        continue
+    fi
+    sudo route add -host piR$i dev em2
+done
+for i in {200..204}
+do
+    sudo route add -host 192.168.222.$i dev em2
+done
+for i in {205..212}
+do
+    sudo route add -host 192.168.222.$i dev em3
+done
+sudo route add -host 192.168.222.213 dev em2
+
+# sync boards
+sudo route add -host piS20 dev em2
+sudo route add -host piS21 dev em2
+
+# current monitor pis
+sudo route add -host piM130 dev em2
+sudo route add -host piM131 dev em3
+
+# ahcal pc
+sudo route add -host pcahcal dev em4
+
+# pcminn03
+sudo route add -host pcminn03 dev em4
+fi
+
+
+if [ $addroutes -ne 1 ]
+then
+# rdout boards
+for i in {50..57}
+do
+    sudo route del -host piR$i
+done
+for i in {58..63}
+do
+    sudo route del -host piR$i
+done
+sudo route del -host piR65
+for i in {200..206}
+do
+    sudo route del -host 192.168.222.$i
+done
+for i in {207..213}
+do
+    sudo route del -host 192.168.222.$i
+done
+
+# sync board
+sudo route del -host piS20
+sudo route del -host piS21
+
+# current monitor pis
+sudo route del -host piM130
+sudo route del -host piM131
+
+# ahcal pc
+sudo route del -host pcahcal
+
+# pcminn03
+sudo route del -host pcminn03
+fi

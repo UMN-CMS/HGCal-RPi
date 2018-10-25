@@ -1,0 +1,10 @@
+#!/bin/bash
+
+source etc/config
+
+
+for rdout_pi_alias in "${rdout_pi_aliases[@]}"
+do
+    echo "$rdout_pi_alias ---------------------------------------- $rdout_pi_alias"
+    ssh $rdout_pi_alias "tail $pi_rdoutdir/rdout.log"
+done

@@ -19,6 +19,7 @@
 #include "spi_common.h"
 
 #define BLOCKSIZE 30000
+#define TIMING_HEXBD (0)
 
 
 static int keeprunning = 1;
@@ -133,6 +134,8 @@ int main(int argc, char *argv[])
     // automatic xfer mechanism (which ignores hexaboard SPI commands).
     char prog_strings[4][48];
     setup_prog_strings(prog_strings);
+    char prog_strings_timing[4][48];
+    setup_prog_strings(prog_strings_timing);
     int config_status;
     for (hx=0; hx<MAXHEXBDS; hx++) {
         if ((hexbd_mask & (1<<hx)) != 0) {
@@ -146,8 +149,13 @@ int main(int argc, char *argv[])
 
             // Configure the hexaboard.
             fprintf(stderr,"Configuring hexbd %d...",(int)hx);
-            config_status = configure_hexaboard_perskiroc(hx, prog_strings, 0);
-            config_status = configure_hexaboard_perskiroc(hx, prog_strings, 1);
+            if(hx == TIMING_HEXBD) {
+                config_status = configure_hexaboard_perskiroc(hx, prog_strings_timing, 0);
+                config_status = configure_hexaboard_perskiroc(hx, prog_strings_timing, 1);
+            } else {
+                config_status = configure_hexaboard_perskiroc(hx, prog_strings, 0);
+                config_status = configure_hexaboard_perskiroc(hx, prog_strings, 1);
+            }
             fprintf(stderr,"done.\n");
             if (config_status < 0) {
                 fprintf(stderr,"ERROR in configuration.\n");
@@ -199,8 +207,6 @@ int main(int argc, char *argv[])
     old_trig = CTL_get_trig_count0() | (CTL_get_trig_count1() << 16);
     curr_trig = old_trig;
     while(keeprunning) {
-
-        fprintf(stderr, "\n");
 
         fprintf(stderr, "%lu hexbd setup\n", count);
         // Get hexaboards ready.

@@ -1,5 +1,5 @@
 #!/bin/bash
 
 PED=0
-
+sleep 1
 nohup sudo ./bin/new_rdout $PED > rdout.log 2>&1 &

@@ -3,16 +3,5 @@
 
 source etc/config
 
-# stop any old executables
-for SYNC_PI_ALIAS in "${SYNC_PI_ALIASES[@]}"
-do
-    echo "stopping exes on $SYNC_PI_ALIAS"
-    ssh $SYNC_PI_ALIAS "sudo killall $SYNC_EXE" &
-done
-
-for RDOUT_PI_ALIAS in "${RDOUT_PI_ALIASES[@]}"
-do
-    echo "stopping exes on $RDOUT_PI_ALIAS:"
-    ssh $RDOUT_PI_ALIAS "sudo killall $RDOUT_EXE" &
-done
-wait
+parallel $parallel_rdout_args "sudo pkill $rdoutexe ; pgrep $rdoutexe >> /dev/null && echo -e '\033[0;91mprocess was not killed\033[0m'"
+parallel $parallel_sync_args "sudo pkill $syncexe ; pgrep $syncexe >> /dev/null && echo -e '\033[0;91mprocess was not killed\033[0m'"
