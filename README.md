@@ -51,47 +51,81 @@ Boards are designated as readout or sync in `etc/rdoutpis` and `etc/syncpis`, an
 
 ## Instructions
 
+### 0. System Configuration
+For these instructions, we have assumed a 'dummy' setup, consisting of:
+  * Two readout boards with Raspberry Pi ssh aliases `piR1` and `piR2`. There are two hexaboards connected to the top two ports of both readout boards.
+  * One sync board with Raspberry Pi ssh alias `piS`
+We assume the network has been set up correctly, ssh keys have been copied, and all requirements have been installed.
+You can see the test beam branches for examples of real configurations.
+
 ### 1. Setup
 Modify `etc/rdoutpis` and `etc/syncpis` to contain the ssh aliases of the Raspberry Pis on your readout and sync boards.
-With the current setup, we have two crates.
-Crate 1 is connected to `em3` on the server, and crate 2 is connected to `em2`.
-The rdout boards inside of these crates may change.
-Since we are using two NICs on the same subnet, we must add routes:
+You should have the following in `etc/rdoutpis`:
 ```
-route add -host 192.168.222.50 dev em3
+piR1
+piR2
 ```
-This is done automatically on svhgcal01 using the script `etc/setup_routes`.
-Use this script after a reboot, since the routing table we create is not saved.
-Modify the variable `addroutes` in the script to add/delete routes as necessary.
+And in `etc/syncpis`:
+```
+piS
+```
 
 ### 2. Start
 After setup, run `./reset` to get the Pis ready for data taking.
+Once the script finishes, you will be ready to take data through IPBus.
+
 The `reset` script encompasses the following steps:
 
 #### 1. Stop Previously Running Executables
-Make sure there are no running executables on the Pis with `./stop_pi_exes`.
+All running executables on the Pis are stopped with `./stop_pi_exes`.
+
 An error message will be printed if this was unsuccessful on a Pi.
+If this is unsuccessful, you should reboot the misbehaving Pis.
 
 #### 2. Power Cycle
-Power cycle the ORMs on each rdout board with `etc/pwr_cycle`.
-If a power cycle fails (usually because the syncboard cable is disconnected -> no clock), an error message will be printed.
+The ORMs on each readout board are power cycled with `./etc/pwr_cycle`.
+This creates a log file `pwr.log` on each readout board.
+
+If a power cycle fails, an error message will be printed.
+Usually, this fails because the ORM is not receiving a stable clock.
+If there is a failure, first make sure the sync board is on.
+If it is on, try unplugging/replugging the sync board HDMI cables on both ends.
+If this fails, reboot the misbehaving Pis and try again.
+If none of the above steps work, there has either been corruption in the ORM configuration stored in the EEPROM, or the ORM is broken.
+You can try programming the ORMs with `etc/prog_orms`, but if that does not work, you will have to reflash through JTAG or replace the ORM.
+
 
 #### 3. IPBus Setup
-Setup IPBus with `./setup_ipbus`.
-The ORMs on that board will be programmed - this can be changed with the `DOPROG` variable in the `setup_ipbus` script.
+The IPBus firmware on the ORMs is configured with `./setup_ipbus`.
+This creates a log file `ip.log` on each readout board.
+You can program the ORMs during this step with the `DOPROG` variable.
 The board number starts from 0 and increments while it iterates through `etc/rdoutpis`.
+  * The board with `piR1` will have board number 0 (IP 192.168.222.200 by default).
+  * The board with `piR2` will have board number 1 (IP 192.168.222.201 by default).
 The IP is determined in `rdout/src/set_ipbus_ip.c` - currently, the structure is `192.168.222.[200 + BOARD NUMBER]`.
+After setting the IP addresses, the `etc/wait_for_ping` script is run to wait until all boards appear on the network.
+
 An error message will be printed if this was unsuccessful on a Pi.
+If this fails, follow the same debugging steps as seen in the [power cycle section](#2-power-cycle).
 
 #### 4. Start Executables
-Run `./start_pi_exes` to start the executables on the Pis.
+The script `start_pi_exes` is run to start the executables on the Pis.
+This creates a log file `rdout.log` on readout boards and `sync.log` on sync boards.
+
 If the process was not started (i.e. there is no pid for the process), the script will print an error message.
+Check the `rdout.log` file on the misbehaving Pis to see if the hexaboards failed to configure.
+This may indicate a bad module, bad cable, or bad HDMI port.
 
-#### 5. Start Data Taking
-Once these executables are started, you can begin taking data with EUDAQ.
-
-#### 6. Finishing Up
-Once data taking is done, stop the executables again with `./stop_pi_exes`.
+#### 5. Check Hexaboard Connections
+The script `etc/hexbd_conn` is run to display a printout of the connected hexaboards.
+An example printout is below for the dummy setup, with comments after the `#`:
+```
+piR1:   0x0000 0x00ff (2 hexbds)    # top two hexaboards show all four skirocs - one bit per skiroc
+piR2:   0x0000 0x00ff (2 hexbds)    # top->bottom on the readout board is right->left here
+total:  2 hexbds
+```
+If there are any boards with < 1 hexbd, the printout will be red.
+If you see any with -1, this means the executable was not started.
 
 
 ## Documentation
@@ -236,30 +270,11 @@ These are the current versions:
 
 ### Hexaboard Config Strings
 ```c
-// the normal config string
 char prog_string[48] =
 {   0xda, 0xa0, 0xf9, 0x32, 0xe0, 0xc1, 0x2c, 0xe0, 0x98, 0xb0, \
     0x40, 0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x1f, 0xff, \
     0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, \
     0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, \
     0xff, 0xff, 0xe9, 0xd7, 0xae, 0xba, 0x80, 0x25
-};
-
-// to mask channel 22
-char maskch22_prog_string[48] =
-{   0xda, 0xa0, 0xf9, 0x32, 0xe0, 0xc1, 0x2c, 0xe0, 0x98, 0xb0, \
-    0x40, 0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x1f, 0xff, \
-    0xff, 0xff, 0xff, 0xf7, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, \
-    0xff, 0xf7, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xf7, \
-    0xff, 0xff, 0xe9, 0xd7, 0xae, 0xba, 0x80, 0x25
-};
-
-// for the timing hexaboard
-char timing_prog_string[48] =
-{   0xDA,0xA0,0xFF,0x32,0xE0,0xC1,0x2E,0x10,0x98,0xB0,  \
-    0x40,0x00,0x20,0x08,0x00,0x00,0x00,0x00,0x1F,0xFF,  \
-    0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,  \
-    0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,  \
-    0xFF,0xFF,0xE9,0xD7,0xAE,0xBA,0x80,0x25
 };
 ```
