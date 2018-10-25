@@ -1,7 +1,12 @@
 #!/bin/bash
+# stops the executables and power cycles the ORMs on the readout boards.
+# make sure you use the correct power cycling executable - both are shown below.
+
+# pwr_exe="bin/pwr_cycle_v1"    # for version 1 readout boards (hexaboards get power cycled)
+pwr_exe="bin/pwr_cycle_v2"      # for version 2 readout boards (hexaboards do not get power cycled)
 
 source etc/config
 
 ./stop_pi_exes
 
-parallel $parallel_rdout_args "cd $pi_rdoutdir; sudo ./bin/pwr_cycle_v2 > pwr.log || echo -e '\033[0;91mpower cycle failed - check pwr.log\033[0m'"
+parallel $parallel_rdout_args "cd $pi_rdoutdir; sudo ./$pwr_exe > pwr.log || echo -e '\033[0;91mpower cycle failed - check pwr.log\033[0m'"
