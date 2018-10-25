@@ -13,7 +13,7 @@ declare -a rdout_pi_aliases
 declare -a sync_pi_aliases
 readarray -t rdout_pi_aliases < etc/rdoutpis
 readarray -t sync_pi_aliases < etc/syncpis
-timing_rdout_alias="piR59"
+timing_rdout_alias="piR63"
 
 # raspberry pi file/folder names
 pi_rdoutdir="/home/pi/rdout/"               # directory to copy code into on rdout pis

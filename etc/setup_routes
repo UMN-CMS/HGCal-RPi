@@ -17,13 +17,11 @@ for i in {58..65}
 do
     if [ $i -eq 60 ]
     then
-        echo 60
         sudo route add -host piR$i dev em3
         continue
     fi
     if [ $i -eq 64 ]
     then
-        echo 64
         continue
     fi
     sudo route add -host piR$i dev em2
