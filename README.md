@@ -9,8 +9,8 @@ Setup the DAQ hardware by running `./reset`.
 This will power cycle the FPGAs on the readout board, setup the IPBus IP address, and start the helper executables on the Raspberry Pis.
 After running this command, make sure you see all of the connected hexaboards in the skiroc mask.
 Right to left in the skiroc mask reads top to bottom along the readout board ports.
-A `0` appears in the skiroc mask for ports without a hexaboard, and an `f` appears for ports with a hexaboard.
-A setup with two hexaboards plugged into the top two readout board ports would have `skiroc_mask = 0x000000ff`. 
+A `0` appears in the skiroc mask for ports without a hexaboard, and an `f` appears for ports with a hexaboard (ignoring the starting `0x`s).
+A setup with two hexaboards plugged into the top two readout board ports would have `skiroc_mask = 0x0000 0x00ff`. 
 
 If things get stuck, you can run the `./reset` command again.
 
