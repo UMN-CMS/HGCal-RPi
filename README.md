@@ -15,7 +15,7 @@ A setup with two hexaboards plugged into the top two readout board ports would h
 If things get stuck, you can run the `./reset` command again.
 
 If a hexaboard is plugged in but not visible in the skiroc mask, check that the LEDs on the module are on.
-If they are not, you can use a heat gun to warm it up and get it to turn on.
+If they are not, you can use a heat gun to warm it up and get it to turn on (Assuming you can actually access the module, and we don't have a water cooler setup connected! The water cooler setup should already regulate the temperature of the modules, so this shouldn't be an issue.)
 Run the `./reset` command and use the heat gun on the affected modules while the reset cycle runs, and it should turn on with the rest of the hexaboards.
 Be sure to not melt things when using the heat gun!
 Don't hold it in one spot for too long.
